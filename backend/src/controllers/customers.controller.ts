@@ -176,3 +176,31 @@ export const deleteCustomer = async (req: Request, res: Response): Promise<void>
     });
   }
 };
+
+export const getCustomerStats = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const statsQuery = `
+      SELECT
+        COUNT(*) as total_customers,
+        SUM(CASE WHEN is_active = TRUE THEN 1 ELSE 0 END) as active_customers,
+        SUM(CASE WHEN is_active = FALSE THEN 1 ELSE 0 END) as inactive_customers,
+        SUM(CASE WHEN created_date >= DATE_SUB(NOW(), INTERVAL 1 MONTH) THEN 1 ELSE 0 END) as new_this_month
+      FROM customers
+    `;
+
+    const [stats] = await sequelize.query(statsQuery, {
+      type: QueryTypes.SELECT,
+    }) as any;
+
+    res.status(200).json({
+      success: true,
+      data: stats,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve customer stats',
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+};

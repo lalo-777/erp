@@ -24,6 +24,7 @@ export class ConfirmDialogComponent {
   @ViewChild('modalElement') modalElement!: ElementRef;
 
   private modalInstance: any;
+  private confirmCallback?: () => void;
 
   get variantClass(): string {
     const classMap = {
@@ -45,6 +46,14 @@ export class ConfirmDialogComponent {
     return iconMap[this.variant] || this.icon;
   }
 
+  open(title: string, message: string, confirmCallback: () => void, variant: 'danger' | 'warning' | 'info' | 'primary' = 'warning'): void {
+    this.title = title;
+    this.message = message;
+    this.confirmCallback = confirmCallback;
+    this.variant = variant;
+    this.openDialog();
+  }
+
   openDialog(): void {
     if (!this.modalInstance) {
       this.modalInstance = new bootstrap.Modal(this.modalElement.nativeElement, {
@@ -62,6 +71,9 @@ export class ConfirmDialogComponent {
   }
 
   onConfirm(): void {
+    if (this.confirmCallback) {
+      this.confirmCallback();
+    }
     this.confirm.emit();
     this.closeDialog();
   }

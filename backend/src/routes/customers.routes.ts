@@ -5,6 +5,7 @@ import {
   createCustomer,
   updateCustomer,
   deleteCustomer,
+  getCustomerStats,
 } from '../controllers/customers.controller';
 import { authenticate } from '../middleware/auth';
 
@@ -13,6 +14,7 @@ const router = Router();
 router.use(authenticate);
 
 router.get('/', getAllCustomers);
+router.get('/stats', getCustomerStats);
 router.get('/:id', getCustomerById);
 router.post('/', createCustomer);
 router.put('/:id', updateCustomer);

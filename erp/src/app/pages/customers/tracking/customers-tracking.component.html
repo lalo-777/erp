@@ -1,0 +1,243 @@
+<div class="container-fluid">
+  <!-- Breadcrumb -->
+  <div class="row mb-3">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/home">Inicio</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink="/customers">Clientes</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ customer()?.company_name || 'Detalle' }}
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="text-center py-5">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  }
+  <!-- Error State -->
+  @else if (error()) {
+    <app-error-alert [message]="error()!" (retry)="loadCustomer(customerId()!)"></app-error-alert>
+  }
+  <!-- Customer Details -->
+  @else if (customer()) {
+    <!-- Page Header -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h2>{{ customer()!.company_name }}</h2>
+            <p class="text-muted mb-2">{{ customer()!.rfc }}</p>
+            <app-badge
+              [color]="getBadgeVariant(customer()!.is_active)"
+              [text]="getBadgeText(customer()!.is_active)"
+            ></app-badge>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-outline-primary" (click)="onEdit()">
+              <i class="bi bi-pencil me-2"></i>
+              Editar
+            </button>
+            <button class="btn btn-outline-danger" (click)="onDelete()">
+              <i class="bi bi-trash me-2"></i>
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Information Cards -->
+    <div class="row mb-4">
+      <!-- Contact Information Card -->
+      <div class="col-md-6 mb-3">
+        <div class="card h-100">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+              <i class="bi bi-person-circle me-2"></i>
+              Información de Contacto
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="text-muted small">Nombre del Contacto</label>
+              <p class="mb-0">{{ customer()!.contact_name || 'N/A' }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="text-muted small">Email</label>
+              <p class="mb-0">
+                @if (customer()!.contact_email) {
+                  <a href="mailto:{{ customer()!.contact_email }}">{{
+                    customer()!.contact_email
+                  }}</a>
+                } @else {
+                  N/A
+                }
+              </p>
+            </div>
+            <div class="mb-0">
+              <label class="text-muted small">Teléfono</label>
+              <p class="mb-0">
+                @if (customer()!.contact_phone) {
+                  <a href="tel:{{ customer()!.contact_phone }}">{{ customer()!.contact_phone }}</a>
+                } @else {
+                  N/A
+                }
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address Information Card -->
+      <div class="col-md-6 mb-3">
+        <div class="card h-100">
+          <div class="card-header bg-info text-white">
+            <h5 class="mb-0">
+              <i class="bi bi-geo-alt me-2"></i>
+              Dirección
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="text-muted small">Dirección</label>
+              <p class="mb-0">{{ customer()!.address || 'N/A' }}</p>
+            </div>
+            <div class="row">
+              <div class="col-6 mb-3">
+                <label class="text-muted small">Ciudad</label>
+                <p class="mb-0">{{ customer()!.city || 'N/A' }}</p>
+              </div>
+              <div class="col-6 mb-3">
+                <label class="text-muted small">Estado</label>
+                <p class="mb-0">{{ customer()!.state_name || 'N/A' }}</p>
+              </div>
+            </div>
+            <div class="mb-0">
+              <label class="text-muted small">Código Postal</label>
+              <p class="mb-0">{{ customer()!.postal_code || 'N/A' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Information Tabs -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="invoices-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#invoices"
+                  type="button"
+                  role="tab"
+                >
+                  <i class="bi bi-file-earmark-text me-2"></i>
+                  Facturas
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="projects-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#projects"
+                  type="button"
+                  role="tab"
+                >
+                  <i class="bi bi-folder me-2"></i>
+                  Proyectos
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="notes-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#notes"
+                  type="button"
+                  role="tab"
+                >
+                  <i class="bi bi-sticky me-2"></i>
+                  Notas
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="card-body">
+            <div class="tab-content">
+              <!-- Invoices Tab -->
+              <div class="tab-pane fade show active" id="invoices" role="tabpanel">
+                <div class="alert alert-info mb-0">
+                  <i class="bi bi-info-circle me-2"></i>
+                  <strong>Próximamente:</strong> Lista de facturas relacionadas con este cliente.
+                </div>
+              </div>
+
+              <!-- Projects Tab -->
+              <div class="tab-pane fade" id="projects" role="tabpanel">
+                <div class="alert alert-info mb-0">
+                  <i class="bi bi-info-circle me-2"></i>
+                  <strong>Próximamente:</strong> Lista de proyectos relacionados con este cliente.
+                </div>
+              </div>
+
+              <!-- Notes Tab -->
+              <div class="tab-pane fade" id="notes" role="tabpanel">
+                <div class="alert alert-info mb-0">
+                  <i class="bi bi-info-circle me-2"></i>
+                  <strong>Próximamente:</strong> Notas y comentarios sobre este cliente.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metadata -->
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row text-muted small">
+              <div class="col-md-4">
+                <strong>Creado por:</strong> {{ customer()!.created_by_name || 'N/A' }}
+              </div>
+              <div class="col-md-4">
+                <strong>Fecha de creación:</strong> {{ customer()!.created_date | date: 'short' }}
+              </div>
+              <div class="col-md-4">
+                <strong>Última modificación:</strong>
+                {{ customer()!.modified_date | date: 'short' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Edit Customer Modal -->
+<app-new-customer-modal
+  [customerId]="customerId()"
+  (customerSaved)="onCustomerSaved()"
+></app-new-customer-modal>
+
+<!-- Confirm Dialog -->
+<app-confirm-dialog></app-confirm-dialog>

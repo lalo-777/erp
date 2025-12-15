@@ -1,0 +1,197 @@
+<div
+  class="modal fade"
+  id="newCustomerModal"
+  tabindex="-1"
+  aria-labelledby="newCustomerModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newCustomerModalLabel">{{ modalTitle() }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          @if (isLoading()) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else {
+            @if (error()) {
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ error() }}
+                <button type="button" class="btn-close" (click)="error.set(null)"></button>
+              </div>
+            }
+
+            <div class="row">
+              <!-- Company Information -->
+              <div class="col-12 mb-3">
+                <h6 class="text-muted mb-3">Información de la Empresa</h6>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="company_name" class="form-label"
+                  >Nombre de la Empresa <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="company_name"
+                  formControlName="company_name"
+                  [class.is-invalid]="hasError('company_name')"
+                />
+                @if (hasError('company_name')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('company_name') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="rfc" class="form-label">RFC</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="rfc"
+                  formControlName="rfc"
+                  placeholder="ABC123456XYZ"
+                  [class.is-invalid]="hasError('rfc')"
+                />
+                @if (hasError('rfc')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('rfc') }}</div>
+                }
+              </div>
+
+              <!-- Contact Information -->
+              <div class="col-12 mb-3 mt-3">
+                <h6 class="text-muted mb-3">Información de Contacto</h6>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="contact_name" class="form-label">Nombre del Contacto</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="contact_name"
+                  formControlName="contact_name"
+                  [class.is-invalid]="hasError('contact_name')"
+                />
+                @if (hasError('contact_name')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('contact_name') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="contact_email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="contact_email"
+                  formControlName="contact_email"
+                  [class.is-invalid]="hasError('contact_email')"
+                />
+                @if (hasError('contact_email')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('contact_email') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="contact_phone" class="form-label">Teléfono</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="contact_phone"
+                  formControlName="contact_phone"
+                  [class.is-invalid]="hasError('contact_phone')"
+                />
+                @if (hasError('contact_phone')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('contact_phone') }}</div>
+                }
+              </div>
+
+              <!-- Address Information -->
+              <div class="col-12 mb-3 mt-3">
+                <h6 class="text-muted mb-3">Dirección</h6>
+              </div>
+
+              <div class="col-12 mb-3">
+                <label for="address" class="form-label">Dirección</label>
+                <textarea
+                  class="form-control"
+                  id="address"
+                  formControlName="address"
+                  rows="2"
+                  [class.is-invalid]="hasError('address')"
+                ></textarea>
+                @if (hasError('address')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('address') }}</div>
+                }
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label for="city" class="form-label">Ciudad</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="city"
+                  formControlName="city"
+                  [class.is-invalid]="hasError('city')"
+                />
+                @if (hasError('city')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('city') }}</div>
+                }
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label for="state_id" class="form-label">Estado</label>
+                <select
+                  class="form-select"
+                  id="state_id"
+                  formControlName="state_id"
+                  [class.is-invalid]="hasError('state_id')"
+                >
+                  <option [value]="null">Seleccionar estado</option>
+                  @for (state of states(); track state.id) {
+                    <option [value]="state.id">{{ state.state_name }}</option>
+                  }
+                </select>
+                @if (hasError('state_id')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('state_id') }}</div>
+                }
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label for="postal_code" class="form-label">Código Postal</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="postal_code"
+                  formControlName="postal_code"
+                  [class.is-invalid]="hasError('postal_code')"
+                />
+                @if (hasError('postal_code')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('postal_code') }}</div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" [disabled]="isSaving()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="isSaving() || isLoading()">
+            @if (isSaving()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+            }
+            {{ isEditMode() ? 'Actualizar' : 'Crear' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
