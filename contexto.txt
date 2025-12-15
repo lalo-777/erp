@@ -1,0 +1,55 @@
+3. Módulos de la nueva plataforma
+
+Desarrollar y completar los módulos del sistema:
+
+Módulos Financieros:
+- Facturas de contado
+- Facturas a crédito
+- Cuentas por cobrar (seguimiento y cobranza)
+- Comprobación de gastos
+- Atención de comprobación de gastos
+
+Módulos de Proyectos:
+- Módulo de obra (gestión detallada de proyectos de construcción)
+- Proyectos
+- Avance de obra (registro de progreso físico y fotográfico)
+- Órdenes de trabajo
+- Contratos (generación y seguimiento)
+
+Módulos de Operaciones:
+- Mano de obra (registro de jornales y rendimientos)
+- Almacén (control de inventarios actualizado)
+- Preinventario (preparación para inventario físico)
+- Renovación de almacén (reorganización de stock)
+- Pedidos (órdenes de compra a proveedores)
+- Atender requisiciones de combustible
+
+4. Implementación de Machine Learning
+
+Desarrollar e implementar 5 modelos de machine learning:
+
+- Modelo de Predicción de Costos de Proyecto:
+  - Algoritmo: Random Forest Regressor
+  - Variables de entrada: Tipo de proyecto, metros cuadrados, ubicación, complejidad, materiales principales
+  - Precisión: MAE de 8.5%, RMSE de 12.3%
+  - Entrenamiento: 200 proyectos históricos
+
+- Modelo de Predicción de Duración de Proyecto:
+  - Algoritmo: Gradient Boosting Regressor
+  - Variables de entrada: Tipo de proyecto, m², número de trabajadores, clima histórico de la zona
+  - Precisión: MAE de 7 días, RMSE de 10 días
+
+- Modelo de Segmentación de Clientes:
+  - Algoritmo: K-Means Clustering
+  - Variables de entrada: Volumen de compra anual, frecuencia de proyectos, antigüedad, tipo de industria
+  - Resultado: 4 segmentos identificados (Clientes VIP, Frecuentes, Esporádicos, Nuevos)
+
+- Modelo de Predicción de Rotación de Personal:
+  - Algoritmo: Logistic Regression
+  - Variables de entrada: Antigüedad, salario, evaluaciones de desempeño, asistencias, horas extra
+  - Precisión: 82% de accuracy
+
+- Modelo de Optimización de Inventarios:
+  - Algoritmo: Time Series Forecasting (ARIMA)
+  - Predicción de demanda de materiales por categoría
+  - Reducción estimada del 20% en inventarios sin afectar disponibilidad

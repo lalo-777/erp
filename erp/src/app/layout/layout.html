@@ -1,0 +1,77 @@
+<div class="layout-container">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.collapsed]="isSidebarCollapsed()">
+    <div class="sidebar-header">
+      <h4 class="mb-0">{{ isSidebarCollapsed() ? 'ERP' : 'ERP Sistema' }}</h4>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul class="nav flex-column">
+        @for (item of menuItems; track item.route) {
+          @if (!item.adminOnly || (item.adminOnly && currentUser()?.role === 'admin')) {
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                [routerLink]="item.route"
+                [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+                routerLinkActive="active"
+              >
+                <span class="material-symbols-outlined">{{ item.icon }}</span>
+                @if (!isSidebarCollapsed()) {
+                  <span class="nav-label">{{ item.label }}</span>
+                }
+              </a>
+            </li>
+          }
+        }
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      @if (currentUser(); as user) {
+        <div class="user-info">
+          <div class="user-avatar">
+            {{ user.person?.first_name?.charAt(0) ?? user.email.charAt(0) }}
+          </div>
+          @if (!isSidebarCollapsed()) {
+            <div class="user-details">
+              <div class="user-name">
+                {{ user.person?.first_name }} {{ user.person?.last_name }}
+              </div>
+              <div class="user-role text-muted small">{{ user.role }}</div>
+            </div>
+          }
+        </div>
+      }
+
+      <button
+        class="btn btn-link text-white p-0"
+        (click)="logout()"
+        [title]="isSidebarCollapsed() ? 'Cerrar sesión' : ''"
+      >
+        <span class="material-symbols-outlined">logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="btn btn-link text-dark" (click)="toggleSidebar()">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+
+      <div class="topbar-actions">
+        <button class="btn btn-link text-dark" title="Notificaciones">
+          <span class="material-symbols-outlined">notifications</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="content">
+      <router-outlet />
+    </main>
+  </div>
+</div>
