@@ -1,0 +1,69 @@
+<div class="modal fade" #modalElement tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog" [ngClass]="sizeClass">
+    <div class="modal-content">
+      <!-- Loading Overlay -->
+      <div *ngIf="isLoading()" class="loading-overlay">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <span class="material-icons me-2">edit_document</span>
+          {{ title }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          [disabled]="isLoading()"
+          (click)="onCancel()"
+        ></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <!-- Error Alert -->
+        <div *ngIf="error()" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <div class="d-flex align-items-center">
+            <span class="material-icons me-2">error</span>
+            <span>{{ error() }}</span>
+          </div>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="clearError()"
+          ></button>
+        </div>
+
+        <!-- Form Content (projected) -->
+        <ng-content></ng-content>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          [disabled]="isLoading()"
+          (click)="onCancel()"
+        >
+          <span class="material-icons me-1">close</span>
+          {{ cancelText }}
+        </button>
+        <button
+          type="button"
+          class="btn"
+          [ngClass]="'btn-' + confirmVariant"
+          [disabled]="isLoading()"
+          (click)="onConfirm()"
+        >
+          <span *ngIf="!isLoading()" class="material-icons me-1">save</span>
+          <span *ngIf="isLoading()" class="spinner-border spinner-border-sm me-1"></span>
+          {{ confirmText }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<!-- Inline Spinner -->
+<div *ngIf="variant === 'inline'" class="spinner-inline">
+  <div
+    class="spinner-border"
+    [ngClass]="[sizeClass, colorClass]"
+    role="status"
+  >
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+  <span *ngIf="message" class="ms-2 spinner-message">{{ message }}</span>
+</div>
+
+<!-- Overlay Spinner (Full Page or Container) -->
+<div *ngIf="variant === 'overlay'" class="spinner-overlay">
+  <div class="spinner-content">
+    <div
+      class="spinner-border"
+      [ngClass]="[sizeClass, colorClass]"
+      role="status"
+    >
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p *ngIf="message" class="spinner-message mt-3">{{ message }}</p>
+  </div>
+</div>
+
+<!-- Button Spinner -->
+<div *ngIf="variant === 'button'" class="spinner-button">
+  <span
+    class="spinner-border spinner-border-sm"
+    [ngClass]="colorClass"
+    role="status"
+  >
+    <span class="visually-hidden">Cargando...</span>
+  </span>
+</div>

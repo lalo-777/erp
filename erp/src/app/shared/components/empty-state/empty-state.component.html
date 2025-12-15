@@ -1,0 +1,19 @@
+<div class="empty-state">
+  <div class="empty-state-icon">
+    <span class="material-icons">{{ icon }}</span>
+  </div>
+
+  <h3 class="empty-state-title">{{ title }}</h3>
+
+  <p class="empty-state-message">{{ message }}</p>
+
+  <button
+    *ngIf="actionText"
+    type="button"
+    class="btn btn-primary mt-3"
+    (click)="onActionClick()"
+  >
+    <span *ngIf="actionIcon" class="material-icons me-2">{{ actionIcon }}</span>
+    {{ actionText }}
+  </button>
+</div>

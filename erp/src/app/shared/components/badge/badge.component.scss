@@ -1,0 +1,105 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 500;
+  padding: 0.35em 0.65em;
+  font-size: 0.75rem;
+  line-height: 1;
+  transition: all 0.2s;
+
+  .badge-icon {
+    font-size: 14px;
+  }
+
+  .badge-text {
+    display: inline-block;
+  }
+
+  // Size Variants
+  &.badge-sm {
+    padding: 0.25em 0.5em;
+    font-size: 0.65rem;
+
+    .badge-icon {
+      font-size: 12px;
+    }
+  }
+
+  &.badge-lg {
+    padding: 0.45em 0.85em;
+    font-size: 0.875rem;
+
+    .badge-icon {
+      font-size: 16px;
+    }
+  }
+
+  // Pill Variant
+  &.rounded-pill {
+    border-radius: 50rem;
+  }
+}
+
+// Color Variants with proper contrast
+.bg-primary {
+  background-color: #0d6efd !important;
+  color: white;
+}
+
+.bg-success {
+  background-color: #198754 !important;
+  color: white;
+}
+
+.bg-warning {
+  background-color: #ffc107 !important;
+  color: #212529;
+}
+
+.bg-danger {
+  background-color: #dc3545 !important;
+  color: white;
+}
+
+.bg-info {
+  background-color: #0dcaf0 !important;
+  color: #212529;
+}
+
+.bg-secondary {
+  background-color: #6c757d !important;
+  color: white;
+}
+
+.bg-dark {
+  background-color: #212529 !important;
+  color: white;
+}
+
+// Hover effect (optional)
+.badge {
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+// Responsive
+@media (max-width: 576px) {
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.3em 0.6em;
+
+    .badge-icon {
+      font-size: 12px;
+    }
+
+    &.badge-lg {
+      font-size: 0.8rem;
+
+      .badge-icon {
+        font-size: 14px;
+      }
+    }
+  }
+}

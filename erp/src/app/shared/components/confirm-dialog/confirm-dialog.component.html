@@ -1,0 +1,42 @@
+<div class="modal fade" #modalElement tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <button
+          type="button"
+          class="btn-close"
+          (click)="onCancel()"
+        ></button>
+      </div>
+
+      <div class="modal-body text-center py-4">
+        <div class="icon-container mb-3">
+          <span class="material-icons icon" [ngClass]="variantClass">
+            {{ iconName }}
+          </span>
+        </div>
+
+        <h4 class="modal-title mb-3">{{ title }}</h4>
+        <p class="text-muted mb-0">{{ message }}</p>
+      </div>
+
+      <div class="modal-footer border-0 justify-content-center pb-4">
+        <button
+          type="button"
+          class="btn btn-secondary px-4"
+          (click)="onCancel()"
+        >
+          {{ cancelText }}
+        </button>
+        <button
+          type="button"
+          class="btn px-4"
+          [ngClass]="'btn-' + variant"
+          (click)="onConfirm()"
+        >
+          {{ confirmText }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

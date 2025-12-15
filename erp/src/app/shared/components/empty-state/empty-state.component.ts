@@ -1,0 +1,23 @@
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-empty-state',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './empty-state.component.html',
+  styleUrls: ['./empty-state.component.scss']
+})
+export class EmptyStateComponent {
+  @Input() icon = 'inbox';
+  @Input() title = 'No hay datos';
+  @Input() message = 'No se encontraron registros para mostrar.';
+  @Input() actionText?: string;
+  @Input() actionIcon?: string;
+
+  @Output() action = new EventEmitter<void>();
+
+  onActionClick(): void {
+    this.action.emit();
+  }
+}
