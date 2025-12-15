@@ -1,0 +1,52 @@
+.settings-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.settings-header {
+  margin-bottom: 2rem;
+
+  h1 {
+    color: #333;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  .text-muted {
+    font-size: 1rem;
+  }
+}
+
+.settings-section {
+  .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+
+    h5 {
+      color: #495057;
+      font-weight: 600;
+
+      mat-icon {
+        color: #04a9f5;
+      }
+    }
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .settings-header {
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+}

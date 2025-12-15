@@ -44,3 +44,8 @@ export interface ProfileResponse {
     user: User;
   };
 }
+
+export interface UpdateProfileRequest {
+  first_name: string;
+  last_name: string;
+}

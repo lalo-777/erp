@@ -1,0 +1,151 @@
+<!-- App Header (solo breadcrumb) -->
+<app-header></app-header>
+
+<div class="profile-container">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="profile-card">
+          <div class="profile-header">
+            <div class="profile-avatar">
+              <div class="avatar-circle">
+                {{ (currentUser()?.person?.first_name || '?').charAt(0).toUpperCase() }}{{ (currentUser()?.person?.last_name || '?').charAt(0).toUpperCase() }}
+              </div>
+            </div>
+            <div class="profile-info">
+              <h2>{{ currentUser()?.person?.first_name || 'N/A' }} {{ currentUser()?.person?.last_name || 'N/A' }}</h2>
+              <p class="text-muted">{{ currentUser()?.email || 'N/A' }}</p>
+              <span class="badge bg-primary">{{ currentUser()?.role || 'N/A' }}</span>
+            </div>
+          </div>
+
+          <div class="profile-body">
+            <div class="section-header">
+              <h4>Información Personal</h4>
+              @if (!editMode()) {
+              <button class="btn btn-outline-primary btn-sm" (click)="toggleEditMode()">
+                <mat-icon class="me-1">edit</mat-icon> Editar Perfil
+              </button>
+              }
+            </div>
+
+            @if (!editMode()) {
+            <div class="profile-details">
+              <div class="detail-item">
+                <label>Nombre</label>
+                <p>{{ currentUser()?.person?.first_name || 'No establecido' }}</p>
+              </div>
+              <div class="detail-item">
+                <label>Apellido</label>
+                <p>{{ currentUser()?.person?.last_name || 'No establecido' }}</p>
+              </div>
+              <div class="detail-item">
+                <label>Correo Electrónico</label>
+                <p>{{ currentUser()?.email }}</p>
+              </div>
+              <div class="detail-item">
+                <label>Estado de Cuenta</label>
+                <p>
+                  @if (currentUser()?.is_active) {
+                  <span class="badge bg-success">Activo</span>
+                  } @else {
+                  <span class="badge bg-danger">Inactivo</span>
+                  }
+                </p>
+              </div>
+              @if (currentUser()?.created_date) {
+              <div class="detail-item">
+                <label>Miembro Desde</label>
+                <p>{{ currentUser()?.created_date | date: 'longDate' : '' : 'es-ES' }}</p>
+              </div>
+              }
+            </div>
+            } @else {
+            <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="first_name" class="form-label">Nombre</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="first_name"
+                    formControlName="first_name"
+                    [class.is-invalid]="firstName?.invalid && firstName?.touched"
+                  />
+                  @if (firstName?.invalid && firstName?.touched) {
+                  <div class="invalid-feedback">
+                    @if (firstName?.hasError('required')) {
+                    <span>El nombre es requerido</span>
+                    } @if (firstName?.hasError('minlength')) {
+                    <span>El nombre debe tener al menos 2 caracteres</span>
+                    } @if (firstName?.hasError('pattern')) {
+                    <span>El nombre solo puede contener letras y espacios</span>
+                    }
+                  </div>
+                  }
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="last_name" class="form-label">Apellido</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="last_name"
+                    formControlName="last_name"
+                    [class.is-invalid]="lastName?.invalid && lastName?.touched"
+                  />
+                  @if (lastName?.invalid && lastName?.touched) {
+                  <div class="invalid-feedback">
+                    @if (lastName?.hasError('required')) {
+                    <span>El apellido es requerido</span>
+                    } @if (lastName?.hasError('minlength')) {
+                    <span>El apellido debe tener al menos 2 caracteres</span>
+                    } @if (lastName?.hasError('pattern')) {
+                    <span>El apellido solo puede contener letras y espacios</span>
+                    }
+                  </div>
+                  }
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="toggleEditMode()"
+                  [disabled]="loading()"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  [disabled]="loading() || profileForm.invalid"
+                >
+                  @if (loading()) {
+                  <span
+                    class="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Guardando...
+                  } @else {
+                  <span>Guardar Cambios</span>
+                  }
+                </button>
+              </div>
+            </form>
+            }
+          </div>
+
+          <div class="profile-footer">
+            <button class="btn btn-outline-danger" (click)="logout()">
+              <mat-icon class="me-2">logout</mat-icon>
+              Cerrar Sesión
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

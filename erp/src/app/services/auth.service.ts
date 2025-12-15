@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { User, LoginRequest, AuthResponse, ProfileResponse } from '../models/user.model';
+import { User, LoginRequest, AuthResponse, ProfileResponse, UpdateProfileRequest } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -54,6 +54,13 @@ export class AuthService {
 
   getProfile(): Observable<ProfileResponse> {
     return this.http.get<ProfileResponse>(`${environment.apiUrl}/auth/profile`).pipe(
+      tap((response) => this.setUser(response.data.user)),
+      catchError((error) => this.handleError(error))
+    );
+  }
+
+  updateProfile(data: UpdateProfileRequest): Observable<ProfileResponse> {
+    return this.http.put<ProfileResponse>(`${environment.apiUrl}/auth/profile`, data).pipe(
       tap((response) => this.setUser(response.data.user)),
       catchError((error) => this.handleError(error))
     );
