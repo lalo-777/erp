@@ -1,4 +1,5 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
@@ -12,6 +13,7 @@ import { User, LoginRequest, AuthResponse, ProfileResponse } from '../models/use
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private readonly TOKEN_KEY = 'auth_token';
   private readonly USER_KEY = 'auth_user';
@@ -72,20 +74,26 @@ export class AuthService {
   }
 
   private setToken(token: string): void {
-    localStorage.setItem(this.TOKEN_KEY, token);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(this.TOKEN_KEY, token);
+    }
     this.tokenSignal.set(token);
   }
 
   private setUser(user: User): void {
     const normalizedUser = this.normalizeUser(user);
-    localStorage.setItem(this.USER_KEY, JSON.stringify(normalizedUser));
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(this.USER_KEY, JSON.stringify(normalizedUser));
+    }
     this.currentUserSignal.set(normalizedUser);
     this.currentUser$.next(normalizedUser);
   }
 
   private clearAuth(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.USER_KEY);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem(this.TOKEN_KEY);
+      localStorage.removeItem(this.USER_KEY);
+    }
     this.tokenSignal.set(null);
     this.currentUserSignal.set(null);
     this.currentUser$.next(null);
@@ -96,6 +104,9 @@ export class AuthService {
   }
 
   private getUserFromStorage(): User | null {
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
     const userJson = localStorage.getItem(this.USER_KEY);
     if (!userJson) {
       return null;
@@ -110,6 +121,9 @@ export class AuthService {
   }
 
   private getTokenFromStorage(): string | null {
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
     return localStorage.getItem(this.TOKEN_KEY);
   }
 

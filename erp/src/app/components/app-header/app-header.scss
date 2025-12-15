@@ -1,0 +1,190 @@
+// Encabezado de la aplicacion - Layout flexbox responsivo que distribuye secciones
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  padding: 0.5rem 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+// Layout flexbox - wrap permite que las secciones salten de linea
+.app-header-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+// Seccion de breadcrumb - crece para ocupar el espacio disponible
+.breadcrumb-section {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: nowrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #6c757d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+
+  &:not(:last-child)::after {
+    margin: 0 0.35rem;
+    color: #adb5bd;
+    font-size: 1rem;
+    font-weight: 300;
+    flex-shrink: 0;
+  }
+
+  &.active {
+    color: #04a9f5;
+    font-weight: 500;
+
+    .breadcrumb-text {
+      color: #04a9f5;
+    }
+  }
+
+  &:first-child {
+    flex-shrink: 0;
+  }
+}
+
+.breadcrumb-link {
+  color: #495057;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.35rem;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover {
+    color: #04a9f5;
+    background-color: rgba(4, 169, 245, 0.1);
+    text-decoration: none;
+  }
+
+  mat-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  i {
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+}
+
+.breadcrumb-text {
+  padding: 0.2rem 0.35rem;
+  color: #04a9f5;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Seccion de botones de accion - display:contents para que sus hijos
+// fluyan directamente en el grid padre (efecto Tetris)
+.action-buttons-section {
+  display: contents;
+
+  &.collapsed {
+    display: none;
+  }
+}
+
+// Seccion de busqueda y filtros - display:contents para que sus hijos
+// fluyan directamente en el grid padre (efecto Tetris)
+.search-filters-section {
+  display: contents;
+
+  &.collapsed {
+    display: none;
+  }
+}
+
+// Oculta secciones vacias
+.action-buttons-section:empty,
+.search-filters-section:empty {
+  display: none;
+}
+
+// Boton para colapsar/expandir secciones opcionales
+.collapse-toggle-btn {
+  flex-shrink: 0;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #6c757d;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: rgba(4, 169, 245, 0.1);
+    color: #04a9f5;
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
+}
+
+// Responsive: De tablet a movil (768px)
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0.4rem 0.4rem;
+  }
+
+  .app-header-grid {
+    gap: 0.4rem;
+  }
+
+  .breadcrumb-item {
+    font-size: 0.8rem;
+  }
+
+  .breadcrumb-link {
+    padding: 0.1rem 0.2rem;
+
+    mat-icon {
+      font-size: 1.2rem;
+    }
+  }
+
+  .breadcrumb-text {
+    padding: 0.1rem 0.2rem;
+  }
+}

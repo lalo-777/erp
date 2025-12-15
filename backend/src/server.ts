@@ -6,6 +6,7 @@ import { errorHandler, notFound } from './middleware/errorHandler';
 
 // Import routes
 import authRoutes from './routes/auth.routes';
+import dashboardRoutes from './routes/dashboard.routes';
 import customersRoutes from './routes/customers.routes';
 import mlAnalysisRoutes from './routes/ml-analysis.routes';
 import invoicesRoutes from './routes/invoices.routes';
@@ -37,6 +38,7 @@ app.get('/health', (_req, res) => {
 
 // API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/customers', customersRoutes);
 app.use('/api/ml-analysis', mlAnalysisRoutes);
 app.use('/api/invoices', invoicesRoutes);
@@ -63,6 +65,7 @@ const startServer = async () => {
       console.log(`========================================`);
       console.log(`Available API Modules:`);
       console.log(`  ✓ Authentication (/api/auth)`);
+      console.log(`  ✓ Dashboard (/api/dashboard)`);
       console.log(`  ✓ Customers (/api/customers)`);
       console.log(`  ✓ Invoices (/api/invoices)`);
       console.log(`  ✓ Projects (/api/projects)`);

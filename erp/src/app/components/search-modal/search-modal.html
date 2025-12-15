@@ -1,0 +1,57 @@
+@if (isOpen()) {
+<div class="search-modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="search-modal-content">
+    <!-- Header with Search Input -->
+    <div class="search-modal-header">
+      <div class="search-input-wrapper">
+        <mat-icon>search</mat-icon>
+        <input
+          #searchInput
+          type="text"
+          class="search-modal-input"
+          placeholder="Buscar clientes, facturas, proyectos y más..."
+          (input)="onSearch($event)"
+          [value]="searchQuery()"
+        />
+      </div>
+      <button type="button" class="btn-close-modal" (click)="onClose()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Search Results by Category -->
+    <div class="search-modal-body">
+      @for (category of categories; track category.id) {
+        <div class="search-category">
+          <div class="category-header">
+            <mat-icon>{{ category.icon }}</mat-icon>
+            <h6>{{ category.label }}</h6>
+          </div>
+          <div class="category-items">
+            @for (item of category.items; track item.id) {
+              <a [href]="item.url" class="category-item" (click)="onClose()">
+                <div class="item-content">
+                  <span class="item-title">{{ item.title }}</span>
+                  @if (item.description) {
+                    <span class="item-description">{{ item.description }}</span>
+                  }
+                </div>
+                <mat-icon>chevron_right</mat-icon>
+              </a>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Footer -->
+    <div class="search-modal-footer">
+      <span class="footer-hint">
+        <kbd>/</kbd> para enfocar búsqueda
+        <span class="divider">•</span>
+        <kbd>ESC</kbd> para cerrar
+      </span>
+    </div>
+  </div>
+</div>
+}

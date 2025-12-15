@@ -1,77 +1,265 @@
-<div class="layout-container">
-  <!-- Sidebar -->
-  <aside class="sidebar" [class.collapsed]="isSidebarCollapsed()">
-    <div class="sidebar-header">
-      <h4 class="mb-0">{{ isSidebarCollapsed() ? 'ERP' : 'ERP Sistema' }}</h4>
-    </div>
-
-    <nav class="sidebar-nav">
-      <ul class="nav flex-column">
-        @for (item of menuItems; track item.route) {
-          @if (!item.adminOnly || (item.adminOnly && currentUser()?.role === 'admin')) {
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                [routerLink]="item.route"
-                [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
-                routerLinkActive="active"
-              >
-                <span class="material-symbols-outlined">{{ item.icon }}</span>
-                @if (!isSidebarCollapsed()) {
-                  <span class="nav-label">{{ item.label }}</span>
-                }
-              </a>
-            </li>
+<div class="layout-container d-flex flex-column vh-100">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <div class="navbar-container">
+      <!-- Left Section: Mobile menu toggle + Logo + Brand -->
+      <div class="navbar-left">
+        <!-- Mobile menu toggle button -->
+        @if (isMobileView()) {
+        <button
+          class="btn btn-link navbar-menu-toggle p-0 me-2"
+          type="button"
+          (click)="toggleModal()"
+          [attr.aria-label]="isModalOpen() ? 'Close menu' : 'Open menu'"
+        >
+          @if (isModalOpen()) {
+          <mat-icon class="text-white fs-5">close</mat-icon>
+          } @else {
+          <mat-icon class="text-white fs-4">menu</mat-icon>
           }
+        </button>
         }
-      </ul>
-    </nav>
 
-    <div class="sidebar-footer">
-      @if (currentUser(); as user) {
-        <div class="user-info">
-          <div class="user-avatar">
-            {{ user.person?.first_name?.charAt(0) ?? user.email.charAt(0) }}
+        <!-- Logo and Brand -->
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <div class="brand-logo">
+            <span class="brand-text">Balper ERP</span>
           </div>
-          @if (!isSidebarCollapsed()) {
-            <div class="user-details">
-              <div class="user-name">
-                {{ user.person?.first_name }} {{ user.person?.last_name }}
-              </div>
-              <div class="user-role text-muted small">{{ user.role }}</div>
-            </div>
+        </a>
+      </div>
+
+      <!-- Center Section: Search Bar (hidden on small mobile) -->
+      <div class="navbar-center">
+        <div class="search-bar" (click)="openSearchModal()">
+          <mat-icon>search</mat-icon>
+          @if (!isMobileView()) {
+            <span class="search-placeholder">Buscar (/) clientes, facturas, proyectos y más</span>
           }
         </div>
-      }
-
-      <button
-        class="btn btn-link text-white p-0"
-        (click)="logout()"
-        [title]="isSidebarCollapsed() ? 'Cerrar sesión' : ''"
-      >
-        <span class="material-symbols-outlined">logout</span>
-      </button>
-    </div>
-  </aside>
-
-  <!-- Main Content -->
-  <div class="main-content">
-    <!-- Top Bar -->
-    <header class="topbar">
-      <button class="btn btn-link text-dark" (click)="toggleSidebar()">
-        <span class="material-symbols-outlined">menu</span>
-      </button>
-
-      <div class="topbar-actions">
-        <button class="btn btn-link text-dark" title="Notificaciones">
-          <span class="material-symbols-outlined">notifications</span>
-        </button>
       </div>
-    </header>
 
-    <!-- Page Content -->
-    <main class="content">
-      <router-outlet />
+      <!-- Right Section: User Menu -->
+      <div class="navbar-right">
+        <!-- Mobile search icon -->
+        @if (isMobileView()) {
+        <button
+          class="btn btn-link navbar-search-toggle p-0 me-2"
+          type="button"
+          (click)="openSearchModal()"
+          aria-label="Open search"
+        >
+          <mat-icon class="text-white fs-5">search</mat-icon>
+        </button>
+        }
+
+        <!-- Full Screen Toggle -->
+        <button
+          class="btn btn-link p-0 me-2"
+          type="button"
+          (click)="toggleFullScreen()"
+          [matTooltip]="isFullScreen() ? 'Salir de pantalla completa' : 'Pantalla completa'"
+          [attr.aria-label]="isFullScreen() ? 'Salir de pantalla completa' : 'Pantalla completa'"
+        >
+          @if (isFullScreen()) {
+            <mat-icon class="text-white fs-5">fullscreen_exit</mat-icon>
+          } @else {
+            <mat-icon class="text-white fs-5">fullscreen</mat-icon>
+          }
+        </button>
+
+        @if (isAuthenticated()) {
+        <div class="dropdown">
+          <a
+            class="nav-link dropdown-toggle user-menu-link"
+            href="#"
+            id="navbarUserDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <div class="user-avatar">
+              {{ (currentUser()?.person?.first_name || '?').charAt(0).toUpperCase() }}{{ (currentUser()?.person?.last_name || '?').charAt(0).toUpperCase() }}
+            </div>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
+            <li>
+              <div class="dropdown-header">
+                <strong>{{ currentUser()?.person?.first_name }} {{ currentUser()?.person?.last_name }}</strong>
+                <small class="d-block text-muted">{{ currentUser()?.email }}</small>
+              </div>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item" [routerLink]="['/profile']">
+                <mat-icon class="me-2">person</mat-icon>
+                Mi Perfil
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" [routerLink]="['/settings']">
+                <mat-icon class="me-2">settings</mat-icon>
+                Configuración
+              </a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <button class="dropdown-item text-danger" (click)="logout()">
+                <mat-icon class="me-2">logout</mat-icon>
+                Cerrar Sesión
+              </button>
+            </li>
+          </ul>
+        </div>
+        }
+      </div>
+    </div>
+  </nav>
+
+  <!-- Search Modal -->
+  <app-search-modal [isOpen]="isSearchModalOpen()" (closeModal)="closeSearchModal()" />
+
+  <!-- Main Content Area (Sidebar + Body) -->
+  <div class="main-content d-flex flex-grow-1 overflow-hidden">
+    <!-- Modal Backdrop (mobile only) -->
+    @if (isMobileView() && isModalOpen()) {
+    <div class="sidebar-backdrop" (click)="onBackdropClick()"></div>
+    }
+
+    <!-- Sidebar -->
+    <aside
+      class="sidebar bg-dark"
+      [class.collapsed]="!isExpanded()"
+      [class.pinned]="isPinned()"
+      [class.modal-open]="isModalOpen()"
+      (mouseenter)="onSidebarMouseEnter()"
+      (mouseleave)="onSidebarMouseLeave()"
+    >
+      <!-- Sidebar Header with Toggle Button -->
+      <div class="sidebar-header d-flex align-items-center justify-content-between p-1">
+        <span [class.d-none]="!isExpanded()">Menú</span>
+
+        <!-- Pin/Unpin Toggle Button (desktop only, visible on hover) -->
+        @if (showToggleButtons()) {
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-black"
+          (click)="togglePin()"
+          [attr.aria-label]="isPinned() ? 'Desfijar menú' : 'Fijar menú'"
+        >
+          @if (isPinned()) {
+          <mat-icon>toggle_on</mat-icon>
+          } @else {
+          <mat-icon>toggle_off</mat-icon>
+          }
+        </button>
+        }
+      </div>
+
+      <!-- Sidebar Navigation -->
+      <nav class="sidebar-nav">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a
+              class="nav-link d-flex align-items-center"
+              routerLink="/home"
+              routerLinkActive="active"
+              (click)="onSidebarLinkClick()"
+            >
+              <mat-icon class="me-2">home</mat-icon>
+              <span [class.d-none]="!isExpanded()">Inicio</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link d-flex align-items-center"
+              routerLink="/customers"
+              routerLinkActive="active"
+              (click)="onSidebarLinkClick()"
+            >
+              <mat-icon class="me-2">groups</mat-icon>
+              <span [class.d-none]="!isExpanded()">Clientes</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link d-flex align-items-center"
+              routerLink="/invoices"
+              routerLinkActive="active"
+              (click)="onSidebarLinkClick()"
+            >
+              <mat-icon class="me-2">receipt_long</mat-icon>
+              <span [class.d-none]="!isExpanded()">Facturas</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link d-flex align-items-center"
+              routerLink="/projects"
+              routerLinkActive="active"
+              (click)="onSidebarLinkClick()"
+            >
+              <mat-icon class="me-2">apartment</mat-icon>
+              <span [class.d-none]="!isExpanded()">Proyectos</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link d-flex align-items-center"
+              routerLink="/materials"
+              routerLinkActive="active"
+              (click)="onSidebarLinkClick()"
+            >
+              <mat-icon class="me-2">inventory_2</mat-icon>
+              <span [class.d-none]="!isExpanded()">Materiales</span>
+            </a>
+          </li>
+          <!-- Administrador Menu with Submenu -->
+          <li class="nav-item">
+            <div
+              class="nav-link d-flex align-items-center justify-content-between"
+              [class.cursor-pointer]="isExpanded()"
+              (click)="isExpanded() && toggleSubmenu('admin')"
+            >
+              <div class="d-flex align-items-center">
+                <mat-icon class="me-2">settings</mat-icon>
+                <span [class.d-none]="!isExpanded()">Administrador</span>
+              </div>
+              @if (isExpanded()) {
+              <mat-icon>
+                {{ !isSubmenuExpanded('admin') ? 'expand_more' : 'expand_less' }}
+              </mat-icon>
+              }
+            </div>
+            <!-- Submenu -->
+            @if (isExpanded() && isSubmenuExpanded('admin')) {
+            <ul class="nav flex-column ms-3">
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center submenu-link"
+                  routerLink="/admin"
+                  [routerLinkActiveOptions]="{exact: true}"
+                  routerLinkActive="active"
+                  (click)="onSidebarLinkClick()"
+                >
+                  <mat-icon class="me-2">speed</mat-icon>
+                  <span>Dashboard</span>
+                </a>
+              </li>
+            </ul>
+            }
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Body (Content Area) -->
+    <main class="body-content flex-grow-1 overflow-auto">
+      <div class="container-fluid p-0">
+        <!-- Page Content -->
+        <div class="page-content">
+          <router-outlet />
+        </div>
+      </div>
     </main>
   </div>
 </div>

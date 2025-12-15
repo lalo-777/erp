@@ -1,0 +1,62 @@
+<div class="app-header">
+  <div class="app-header-grid">
+    <!-- Breadcrumb Section (Always present) -->
+    <nav class="breadcrumb-section" aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        @for (breadcrumb of breadcrumbs(); track breadcrumb.url) {
+          <li
+            class="breadcrumb-item"
+            [class.active]="breadcrumb.isActive"
+            [attr.aria-current]="breadcrumb.isActive ? 'page' : null"
+          >
+            @if (breadcrumb.isActive) {
+              <!-- Último elemento: sin enlace -->
+              <span class="breadcrumb-text">{{ breadcrumb.label }}</span>
+            } @else if ($first) {
+              <!-- Primer elemento: con icono home -->
+              <a [routerLink]="breadcrumb.url" class="breadcrumb-link">
+                <mat-icon class="me-1">home</mat-icon>
+                {{ breadcrumb.label }}
+              </a>
+            } @else {
+              <!-- Elementos intermedios: enlaces normales -->
+              <a [routerLink]="breadcrumb.url" class="breadcrumb-link">
+                {{ breadcrumb.label }}
+              </a>
+            }
+          </li>
+        }
+      </ol>
+    </nav>
+
+    <!-- Action Buttons Section (Optional) -->
+    <div
+      #actionButtonsSection
+      class="action-buttons-section"
+      [class.collapsed]="isCollapsed()"
+    >
+      <ng-content select="[action-buttons]"></ng-content>
+    </div>
+
+    <!-- Search & Filters Section (Optional) -->
+    <div
+      #searchFiltersSection
+      class="search-filters-section"
+      [class.collapsed]="isCollapsed()"
+    >
+      <ng-content select="[search-filters]"></ng-content>
+    </div>
+
+    <!-- Collapse/Expand Toggle Button -->
+    @if (hasOptionalContent()) {
+      <button
+        class="collapse-toggle-btn"
+        (click)="toggleCollapse()"
+        [matTooltip]="isCollapsed() ? 'Expandir' : 'Contraer'"
+        aria-label="Alternar visibilidad de acciones y filtros"
+      >
+        <mat-icon>{{ isCollapsed() ? 'expand_more' : 'expand_less' }}</mat-icon>
+      </button>
+    }
+  </div>
+</div>

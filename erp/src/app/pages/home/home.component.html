@@ -23,7 +23,11 @@
             <div class="d-flex align-items-center">
               <div class="flex-grow-1">
                 <h6 class="text-muted mb-1">Clientes</h6>
-                <h3 class="mb-0">--</h3>
+                <h3 class="mb-0">{{ stats()?.customers?.total || 0 }}</h3>
+                <small class="text-success">
+                  <span class="material-symbols-outlined" style="font-size: 14px; vertical-align: middle;">trending_up</span>
+                  {{ stats()?.customers?.new_this_month || 0 }} nuevos este mes
+                </small>
               </div>
               <div class="stats-icon bg-primary">
                 <span class="material-symbols-outlined">groups</span>
@@ -39,7 +43,15 @@
             <div class="d-flex align-items-center">
               <div class="flex-grow-1">
                 <h6 class="text-muted mb-1">Facturas</h6>
-                <h3 class="mb-0">--</h3>
+                <h3 class="mb-0">{{ stats()?.invoices?.total || 0 }}</h3>
+                <small class="text-muted">
+                  {{ stats()?.invoices?.paid || 0 }} pagadas,
+                  @if ((stats()?.invoices?.overdue || 0) > 0) {
+                    <span class="text-danger">{{ stats()?.invoices?.overdue || 0 }} vencidas</span>
+                  } @else {
+                    <span class="text-warning">{{ stats()?.invoices?.pending || 0 }} pendientes</span>
+                  }
+                </small>
               </div>
               <div class="stats-icon bg-success">
                 <span class="material-symbols-outlined">receipt_long</span>
@@ -55,7 +67,11 @@
             <div class="d-flex align-items-center">
               <div class="flex-grow-1">
                 <h6 class="text-muted mb-1">Proyectos</h6>
-                <h3 class="mb-0">--</h3>
+                <h3 class="mb-0">{{ stats()?.projects?.total || 0 }}</h3>
+                <small class="text-muted">
+                  {{ stats()?.projects?.active || 0 }} activos,
+                  {{ stats()?.projects?.completed || 0 }} completados
+                </small>
               </div>
               <div class="stats-icon bg-warning">
                 <span class="material-symbols-outlined">apartment</span>
@@ -71,7 +87,15 @@
             <div class="d-flex align-items-center">
               <div class="flex-grow-1">
                 <h6 class="text-muted mb-1">Materiales</h6>
-                <h3 class="mb-0">--</h3>
+                <h3 class="mb-0">{{ stats()?.materials?.total_items || 0 }}</h3>
+                <small [class.text-danger]="(stats()?.materials?.low_stock_count || 0) > 0" [class.text-muted]="(stats()?.materials?.low_stock_count || 0) === 0">
+                  @if ((stats()?.materials?.low_stock_count || 0) > 0) {
+                    <span class="material-symbols-outlined" style="font-size: 14px; vertical-align: middle;">warning</span>
+                    {{ stats()?.materials?.low_stock_count || 0 }} con stock bajo
+                  } @else {
+                    Stock en niveles óptimos
+                  }
+                </small>
               </div>
               <div class="stats-icon bg-info">
                 <span class="material-symbols-outlined">inventory_2</span>

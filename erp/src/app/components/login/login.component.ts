@@ -1,12 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, ActivatedRoute, RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, MatIconModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -14,25 +16,56 @@ export class LoginComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly fb = inject(FormBuilder);
+  private readonly toastService = inject(ToastService);
 
-  protected readonly email = signal('');
-  protected readonly password = signal('');
-  protected readonly isLoading = signal(false);
-  protected readonly error = signal<string | null>(null);
+  loginForm: FormGroup;
+  loading = signal(false);
+  errorMessage = signal<string | null>(null);
+  passwordVisible = signal(false);
 
-  protected onSubmit(): void {
-    this.error.set(null);
-    this.isLoading.set(true);
+  constructor() {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+    });
+  }
 
-    this.authService.login({ email: this.email(), password: this.password() }).subscribe({
-      next: (response) => {
-        this.isLoading.set(false);
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
+  }
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible.update((visible) => !visible);
+  }
+
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    this.loading.set(true);
+    this.errorMessage.set(null);
+
+    this.authService.login(this.loginForm.value).subscribe({
+      next: () => {
+        this.toastService.showSuccess('¡Bienvenido al sistema!');
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
         this.router.navigate([returnUrl]);
       },
-      error: (error) => {
-        this.isLoading.set(false);
-        this.error.set(error.message || 'Error al iniciar sesión');
+      error: (error: Error) => {
+        this.loading.set(false);
+        const message = error.message || 'Error al iniciar sesión';
+        this.errorMessage.set(message);
+        this.toastService.showError(message);
+      },
+      complete: () => {
+        this.loading.set(false);
       },
     });
   }
