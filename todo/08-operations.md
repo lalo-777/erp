@@ -1,6 +1,6 @@
 # Operations Modules
 
-## Phase Status: In Progress (5/15) - Labor Module Complete
+## Phase Status: In Progress (11/15) - Labor & Warehouse Modules Complete
 
 These modules handle day-to-day operations: labor tracking, warehouse management, purchase orders, and fuel requisitions.
 
@@ -65,19 +65,54 @@ Pending → Approved → Paid
 
 ---
 
-## 2. Warehouse/Almacén Module (0/3)
+## 2. Warehouse/Almacén Module (6/6) ✅ COMPLETE
 
 ### Backend
-- [ ] Extend materials controller with warehouse operations
-- [ ] Add warehouse reports endpoints
-- [ ] Create warehouse transactions endpoints
+- [x] Create `WarehouseLocation` model
+- [x] Create `InventoryTransaction` model
+- [x] Create `WarehouseReorganization` model
+- [x] Create `warehouse.controller.ts` (all operations + reports)
+- [x] Create `warehouse.routes.ts`
+- [x] Add routes to server.ts
 
 ### Frontend
-- [ ] Create warehouse dashboard
-- [ ] Create stock by location view
-- [ ] Create transfer materials modal
-- [ ] Create inventory adjustment modal
-- [ ] Create stock reports page
+- [x] Create warehouse service
+- [x] Create warehouse models and interfaces
+- [x] Create warehouse dashboard (stats, locations, transactions)
+- [x] Create stock by location view
+- [x] Create transfer materials modal
+- [x] Create inventory adjustment modal
+- [x] Implement transaction history
+- [x] Implement transfer history
+- [x] Implement stock reports
+
+### Implementation Details
+**Files Created:**
+- Backend: `backend/src/models/mysql/WarehouseLocation.ts`, `backend/src/models/mysql/InventoryTransaction.ts`, `backend/src/models/mysql/WarehouseReorganization.ts`, `backend/src/controllers/warehouse.controller.ts`, `backend/src/routes/warehouse.routes.ts`
+- Frontend: `erp/src/app/models/warehouse.model.ts`, `erp/src/app/services/warehouse.service.ts`, `erp/src/app/pages/warehouse/dashboard/`, `erp/src/app/pages/warehouse/stock/`, `erp/src/app/components/transfer-material-modal/`, `erp/src/app/components/adjust-inventory-modal/`
+
+**Transaction Types:**
+```
+Entry → Entrada (aumenta stock)
+Exit → Salida (disminuye stock)
+Transfer → Transferencia (entre ubicaciones)
+Adjustment → Ajuste (correcciones)
+```
+
+**Features Implemented:**
+- Auto-generated transaction numbers (TRX-000001, TRX-000002, etc.)
+- View stock by warehouse location with search
+- Transfer materials between locations with validation
+- Adjust inventory (entry, exit, adjustment)
+- Transaction history with filters (material, location, type, date range)
+- Transfer history with pagination
+- Warehouse statistics dashboard (locations, materials, transactions, values)
+- Stock reports with filters (location, category, low stock)
+- Real-time stock calculations by location
+- Integration with materials module
+- Stock status indicators (adequate, low, critical, out of stock)
+
+**Date Completed:** 2025-12-16
 
 **Features:**
 - View stock by warehouse location
@@ -85,6 +120,8 @@ Pending → Approved → Paid
 - Adjust inventory (corrections)
 - Generate stock reports
 - Track movements
+- Monitor stock levels per location
+- Generate transaction reports
 
 ---
 

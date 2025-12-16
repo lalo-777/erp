@@ -9,7 +9,7 @@
 - [x] Phase 5: Invoices Module (7/7)
 - [x] Phase 6: Projects Module (7/7)
 - [x] Phase 7: Materials Module (6/6)
-- [ ] Phase 8: Operations Modules (5/15) - Labor Module Complete
+- [ ] Phase 8: Operations Modules (11/15) - Labor & Warehouse Modules Complete
 - [ ] Phase 9: Admin Module (0/5)
 
 ## Quick Links
@@ -37,8 +37,21 @@
   - Integrated labor routes in app.routes.ts and added to navigation menu
   - Added helper functions (getPaymentStatusLabel, getPaymentStatusColor, calculatePaymentAmount, formatCurrency, formatHours)
 
+- [x] Phase 8.2: Warehouse/Almacén Module (6/6 tasks)
+  - Created WarehouseLocation, InventoryTransaction, and WarehouseReorganization models
+  - Implemented warehouse controller with all operations (getAllWarehouseLocations, getStockByLocation, transferMaterial, adjustInventory, getTransactionHistory, getTransferHistory, getWarehouseStats, getStockReport)
+  - Created warehouse routes and integrated in server.ts (/api/warehouse)
+  - Built Warehouse models and interfaces (WarehouseLocation, InventoryTransaction, StockByLocation, WarehouseStats, TransferMaterialRequest, AdjustInventoryRequest)
+  - Implemented Warehouse Service with all methods (locations, stock operations, transfers, adjustments, reports)
+  - Built Warehouse Dashboard with stats cards (locations, materials, transactions, values), location cards with stock counts, recent transactions table
+  - Built Stock by Location page with material stock view, search, stock value calculations, stock status indicators
+  - Built Transfer Material Modal with material selection, from/to location selection, quantity validation, reason field
+  - Built Adjust Inventory Modal with material selection, location selection, transaction type (entry/exit/adjustment), quantity, reference number, notes
+  - Integrated warehouse routes in app.routes.ts and added to navigation menu
+  - Added helper functions (getTransactionTypeColor, getTransactionTypeIcon, getTransactionTypeLabel)
+  - Implemented auto-generated transaction numbers (TRX-000001, TRX-000002, etc.)
+
 **Next Up:**
-- [ ] Phase 8.2: Warehouse/Almacén Module (0/3)
 - [ ] Phase 8.3: Pre-Inventory Module (0/3)
 - [ ] Phase 8.4: Purchase Orders Module (0/3)
 - [ ] Phase 8.5: Fuel Requisitions Module (0/1)
@@ -64,4 +77,4 @@
 
 ---
 
-**Last Updated:** 2025-12-16 (Phase 8.1 Complete - Labor/Mano de Obra Module)
+**Last Updated:** 2025-12-16 (Phase 8.1 & 8.2 Complete - Labor & Warehouse Modules)

@@ -224,6 +224,17 @@
               <span [class.d-none]="!isExpanded()">Mano de Obra</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a
+              class="nav-link d-flex align-items-center"
+              routerLink="/warehouse"
+              routerLinkActive="active"
+              (click)="onSidebarLinkClick()"
+            >
+              <mat-icon class="me-2">warehouse</mat-icon>
+              <span [class.d-none]="!isExpanded()">Almacén</span>
+            </a>
+          </li>
           <!-- Administrador Menu with Submenu -->
           <li class="nav-item">
             <div

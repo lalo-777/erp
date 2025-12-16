@@ -1,0 +1,156 @@
+<div
+  class="modal fade"
+  id="transferMaterialModal"
+  tabindex="-1"
+  aria-labelledby="transferMaterialModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="transferMaterialModalLabel">
+          <i class="bi bi-arrow-left-right me-2"></i>
+          Transferir Material
+        </h5>
+        <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+      </div>
+
+      <form [formGroup]="transferForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          @if (error()) {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <i class="bi bi-exclamation-triangle me-2"></i>
+              {{ error() }}
+              <button type="button" class="btn-close" (click)="error.set(null)"></button>
+            </div>
+          }
+
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="material_id" class="form-label">Material <span class="text-danger">*</span></label>
+              <select
+                id="material_id"
+                class="form-select"
+                formControlName="material_id"
+                [class.is-invalid]="transferForm.get('material_id')?.invalid && transferForm.get('material_id')?.touched"
+              >
+                <option [value]="null">Seleccionar material...</option>
+                @for (material of materials(); track material.id) {
+                  <option [value]="material.id">
+                    {{ material.material_code }} - {{ material.material_name }}
+                    (Stock: {{ material.current_stock }})
+                  </option>
+                }
+              </select>
+              @if (transferForm.get('material_id')?.invalid && transferForm.get('material_id')?.touched) {
+                <div class="invalid-feedback d-block">
+                  El material es requerido
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="from_location_id" class="form-label">Ubicación Origen <span class="text-danger">*</span></label>
+              <select
+                id="from_location_id"
+                class="form-select"
+                formControlName="from_location_id"
+                [class.is-invalid]="transferForm.get('from_location_id')?.invalid && transferForm.get('from_location_id')?.touched"
+              >
+                <option [value]="null">Seleccionar ubicación...</option>
+                @for (location of locations(); track location.id) {
+                  <option [value]="location.id">{{ location.name }}</option>
+                }
+              </select>
+              @if (transferForm.get('from_location_id')?.invalid && transferForm.get('from_location_id')?.touched) {
+                <div class="invalid-feedback d-block">
+                  La ubicación de origen es requerida
+                </div>
+              }
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="to_location_id" class="form-label">Ubicación Destino <span class="text-danger">*</span></label>
+              <select
+                id="to_location_id"
+                class="form-select"
+                formControlName="to_location_id"
+                [class.is-invalid]="transferForm.get('to_location_id')?.invalid && transferForm.get('to_location_id')?.touched"
+              >
+                <option [value]="null">Seleccionar ubicación...</option>
+                @for (location of locations(); track location.id) {
+                  <option [value]="location.id">{{ location.name }}</option>
+                }
+              </select>
+              @if (transferForm.get('to_location_id')?.invalid && transferForm.get('to_location_id')?.touched) {
+                <div class="invalid-feedback d-block">
+                  La ubicación de destino es requerida
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="quantity" class="form-label">Cantidad <span class="text-danger">*</span></label>
+              <input
+                type="number"
+                id="quantity"
+                class="form-control"
+                formControlName="quantity"
+                step="0.01"
+                min="0.01"
+                [class.is-invalid]="transferForm.get('quantity')?.invalid && transferForm.get('quantity')?.touched"
+              />
+              @if (transferForm.get('quantity')?.invalid && transferForm.get('quantity')?.touched) {
+                <div class="invalid-feedback d-block">
+                  La cantidad debe ser mayor a 0
+                </div>
+              }
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="transfer_date" class="form-label">Fecha de Transferencia</label>
+              <input
+                type="date"
+                id="transfer_date"
+                class="form-control"
+                formControlName="transfer_date"
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="reason" class="form-label">Motivo de Transferencia</label>
+              <textarea
+                id="reason"
+                class="form-control"
+                formControlName="reason"
+                rows="3"
+                placeholder="Ingrese el motivo de la transferencia (opcional)"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()" [disabled]="isSaving()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="isSaving()">
+            @if (isSaving()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Transfiriendo...
+            } @else {
+              <i class="bi bi-arrow-left-right me-2"></i>
+              Transferir Material
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

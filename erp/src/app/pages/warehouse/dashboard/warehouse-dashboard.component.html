@@ -1,0 +1,266 @@
+<div class="container-fluid">
+  <!-- Page Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2>Almacén</h2>
+          <p class="text-muted mb-0">Gestión de inventario y ubicaciones</p>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-success" routerLink="/warehouse/adjust">
+            <i class="bi bi-plus-minus me-2"></i>
+            Ajustar Inventario
+          </button>
+          <button class="btn btn-primary" routerLink="/warehouse/transfer">
+            <i class="bi bi-arrow-left-right me-2"></i>
+            Transferir Material
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  @if (isLoadingStats()) {
+    <div class="row mb-4">
+      <div class="col-md-3 mb-3">
+        <div class="card">
+          <div class="card-body text-center">
+            <app-loading-spinner size="sm"></app-loading-spinner>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else if (stats()) {
+    <div class="row mb-4">
+      <div class="col-md-3 mb-3">
+        <div class="card border-primary">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Ubicaciones</h6>
+                <h3 class="mb-0">{{ stats()!.total_locations }}</h3>
+                <small class="text-muted">Total de almacenes</small>
+              </div>
+              <div class="text-primary">
+                <i class="bi bi-geo-alt fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-info">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Materiales en Stock</h6>
+                <h3 class="mb-0">{{ stats()!.total_materials_in_stock }}</h3>
+                <small class="text-info">Materiales únicos</small>
+              </div>
+              <div class="text-info">
+                <i class="bi bi-box-seam fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-success">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Valor de Entradas</h6>
+                <h3 class="mb-0">{{ stats()!.total_entries_value || 0 | currency }}</h3>
+                <small class="text-success">{{ stats()!.total_entries }} entradas</small>
+              </div>
+              <div class="text-success">
+                <i class="bi bi-arrow-down-circle fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-danger">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Valor de Salidas</h6>
+                <h3 class="mb-0">{{ stats()!.total_exits_value || 0 | currency }}</h3>
+                <small class="text-danger">{{ stats()!.total_exits }} salidas</small>
+              </div>
+              <div class="text-danger">
+                <i class="bi bi-arrow-up-circle fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Warehouse Locations -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">
+            <i class="bi bi-building me-2"></i>
+            Ubicaciones de Almacén
+          </h5>
+        </div>
+        <div class="card-body">
+          @if (isLoading()) {
+            <div class="text-center py-5">
+              <app-loading-spinner></app-loading-spinner>
+            </div>
+          } @else if (locations().length === 0) {
+            <app-empty-state
+              icon="bi-geo-alt"
+              title="No hay ubicaciones"
+              message="No se encontraron ubicaciones de almacén"
+            ></app-empty-state>
+          } @else {
+            <div class="row">
+              @for (location of locations(); track location.id) {
+                <div class="col-md-4 mb-3">
+                  <div class="card location-card h-100" (click)="onViewLocation(location)" style="cursor: pointer;">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                          <h5 class="card-title mb-1">{{ location.name }}</h5>
+                          <small class="text-muted">
+                            <i class="bi bi-tag me-1"></i>{{ location.alias }}
+                          </small>
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                      </div>
+
+                      @if (location.address) {
+                        <p class="text-muted mb-3">
+                          <i class="bi bi-pin-map me-2"></i>{{ location.address }}
+                        </p>
+                      }
+
+                      <div class="row text-center mt-3 pt-3 border-top">
+                        <div class="col-6">
+                          <div class="text-primary">
+                            <h4 class="mb-0">{{ location.materials_count || 0 }}</h4>
+                            <small class="text-muted">Materiales</small>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="text-success">
+                            <h4 class="mb-0">{{ formatNumber(location.total_quantity || 0) }}</h4>
+                            <small class="text-muted">Cantidad Total</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stock by Location Summary -->
+  @if (stats() && stats()!.stock_by_location && stats()!.stock_by_location.length > 0) {
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-white">
+            <h5 class="mb-0">
+              <i class="bi bi-bar-chart me-2"></i>
+              Valor de Inventario por Ubicación
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Ubicación</th>
+                    <th class="text-center">Materiales</th>
+                    <th class="text-end">Cantidad Total</th>
+                    <th class="text-end">Valor de Stock</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (loc of stats()!.stock_by_location; track loc.id) {
+                    <tr>
+                      <td>
+                        <strong>{{ loc.location_name }}</strong>
+                      </td>
+                      <td class="text-center">
+                        <span class="badge bg-primary">{{ loc.materials_count }}</span>
+                      </td>
+                      <td class="text-end">{{ formatNumber(loc.total_quantity) }}</td>
+                      <td class="text-end">
+                        <strong>{{ formatCurrency(loc.stock_value) }}</strong>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+                <tfoot class="table-light">
+                  <tr>
+                    <th colspan="3" class="text-end">Total:</th>
+                    <th class="text-end">
+                      {{ formatCurrency(getTotalStockValue()) }}
+                    </th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Recent Transactions -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <i class="bi bi-list-ul me-2"></i>
+            Transacciones Recientes
+          </h5>
+          <a routerLink="/warehouse/transactions" class="btn btn-sm btn-outline-primary">
+            Ver Todas
+            <i class="bi bi-arrow-right ms-1"></i>
+          </a>
+        </div>
+        <div class="card-body">
+          @if (isLoadingTransactions()) {
+            <div class="text-center py-5">
+              <app-loading-spinner></app-loading-spinner>
+            </div>
+          } @else if (transactions().length === 0) {
+            <app-empty-state
+              icon="bi-list-ul"
+              title="No hay transacciones"
+              message="No se encontraron transacciones recientes"
+            ></app-empty-state>
+          } @else {
+            <app-data-table
+              [data]="transactions()"
+              [columns]="transactionColumns"
+              [pagination]="pagination()"
+              (pageChange)="onPageChange($event)"
+            ></app-data-table>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

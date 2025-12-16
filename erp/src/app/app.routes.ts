@@ -118,6 +118,25 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'warehouse',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./pages/warehouse/dashboard/warehouse-dashboard.component').then(
+                (m) => m.WarehouseDashboardComponent
+              ),
+          },
+          {
+            path: 'stock/:id',
+            loadComponent: () =>
+              import('./pages/warehouse/stock/stock-by-location.component').then(
+                (m) => m.StockByLocationComponent
+              ),
+          },
+        ],
+      },
+      {
         path: 'admin',
         children: [
           {
