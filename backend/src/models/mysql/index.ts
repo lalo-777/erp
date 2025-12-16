@@ -43,6 +43,7 @@ export { TransactionType } from './catalogs/TransactionType';
 export { SupplierCategory } from './catalogs/SupplierCategory';
 export { PurchaseOrderStatus } from './catalogs/PurchaseOrderStatus';
 export { FuelType } from './catalogs/FuelType';
+export { PreInventoryStatus } from './catalogs/PreInventoryStatus';
 
 // ML Catalogs
 export { MLModel } from './catalogs/MLModel';
@@ -56,6 +57,10 @@ export { Project } from './Project';
 
 // Operations Entity Models
 export { Material } from './Material';
+export { LaborTimesheet } from './LaborTimesheet';
+export { InventoryTransaction } from './InventoryTransaction';
+export { WarehouseReorganization } from './WarehouseReorganization';
+export { PreInventory } from './PreInventory';
 
 // Support Models
 export { File } from './File';

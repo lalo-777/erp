@@ -1,0 +1,30 @@
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &.border-primary {
+    border-left: 4px solid var(--bs-primary);
+  }
+
+  &.border-danger {
+    border-left: 4px solid var(--bs-danger);
+  }
+
+  &.border-warning {
+    border-left: 4px solid var(--bs-warning);
+  }
+
+  &.border-success {
+    border-left: 4px solid var(--bs-success);
+  }
+
+  &.bg-light {
+    background-color: #f8f9fa !important;
+    border: 1px solid #dee2e6;
+  }
+}
+
+.form-check-label {
+  user-select: none;
+}

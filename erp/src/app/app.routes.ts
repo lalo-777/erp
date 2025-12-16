@@ -137,6 +137,32 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'pre-inventory',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./pages/pre-inventory/dashboard/pre-inventory-dashboard.component').then(
+                (m) => m.PreInventoryDashboardComponent
+              ),
+          },
+          {
+            path: 'detail/:id',
+            loadComponent: () =>
+              import('./pages/pre-inventory/detail/pre-inventory-detail.component').then(
+                (m) => m.PreInventoryDetailComponent
+              ),
+          },
+          {
+            path: 'discrepancy-report',
+            loadComponent: () =>
+              import('./pages/pre-inventory/discrepancy-report/discrepancy-report.component').then(
+                (m) => m.DiscrepancyReportComponent
+              ),
+          },
+        ],
+      },
+      {
         path: 'admin',
         children: [
           {

@@ -13,7 +13,10 @@
       "Bash(npm start)",
       "Bash(mkdir:*)",
       "Bash(npm run:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(timeout 3 bash:*)",
+      "Bash(ts-node:*)",
+      "Bash(npx ts-node:*)"
     ]
   }
 }

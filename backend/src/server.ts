@@ -18,6 +18,7 @@ import filesRoutes from './routes/files.routes';
 import notesRoutes from './routes/notes.routes';
 import laborRoutes from './routes/labor.routes';
 import warehouseRoutes from './routes/warehouse.routes';
+import preInventoryRoutes from './routes/pre-inventory.routes';
 
 const app: Application = express();
 
@@ -53,6 +54,7 @@ app.use('/api/files', filesRoutes);
 app.use('/api/notes', notesRoutes);
 app.use('/api/labor', laborRoutes);
 app.use('/api/warehouse', warehouseRoutes);
+app.use('/api/pre-inventory', preInventoryRoutes);
 
 // Error handling
 app.use(notFound);
@@ -82,6 +84,7 @@ const startServer = async () => {
       console.log(`  ✓ Notes (/api/notes)`);
       console.log(`  ✓ Labor (/api/labor)`);
       console.log(`  ✓ Warehouse (/api/warehouse)`);
+      console.log(`  ✓ Pre-Inventory (/api/pre-inventory)`);
       console.log(`  ✓ ML Analysis (/api/ml-analysis)`);
       console.log(`========================================`);
     });

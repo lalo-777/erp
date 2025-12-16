@@ -1,0 +1,273 @@
+<div class="container-fluid">
+  <!-- Page Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2>Pre-Inventario</h2>
+          <p class="text-muted mb-0">Gestión de conteos físicos y discrepancias</p>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" (click)="onCreateNew()">
+            <i class="bi bi-plus-circle me-2"></i>
+            Nuevo Conteo
+          </button>
+          <button class="btn btn-info" (click)="onViewDiscrepancyReport()">
+            <i class="bi bi-file-earmark-text me-2"></i>
+            Reporte de Discrepancias
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  @if (isLoadingStats()) {
+    <div class="row mb-4">
+      <div class="col-md-3 mb-3">
+        <div class="card">
+          <div class="card-body text-center">
+            <app-loading-spinner size="sm"></app-loading-spinner>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else if (stats()) {
+    <div class="row mb-4">
+      <div class="col-md-3 mb-3">
+        <div class="card border-primary">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Total Conteos</h6>
+                <h3 class="mb-0">{{ stats()!.total_counts }}</h3>
+                <small class="text-muted">Registros creados</small>
+              </div>
+              <div class="text-primary">
+                <i class="bi bi-clipboard-check fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-warning">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Pendientes</h6>
+                <h3 class="mb-0">{{ stats()!.pending_counts }}</h3>
+                <small class="text-warning">Por contar</small>
+              </div>
+              <div class="text-warning">
+                <i class="bi bi-clock fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-danger">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Con Discrepancias</h6>
+                <h3 class="mb-0">{{ stats()!.with_discrepancies }}</h3>
+                <small class="text-danger">{{ getDiscrepancyPercentage() | number:'1.1-1' }}% del total</small>
+              </div>
+              <div class="text-danger">
+                <i class="bi bi-exclamation-triangle fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-success">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Ajustados</h6>
+                <h3 class="mb-0">{{ stats()!.adjusted_counts }}</h3>
+                <small class="text-success">Discrepancias procesadas</small>
+              </div>
+              <div class="text-success">
+                <i class="bi bi-check-circle fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Discrepancy Summary -->
+    <div class="row mb-4">
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-subtitle mb-3 text-muted">Sobrantes</h6>
+            <h4 class="text-primary mb-2">{{ stats()!.overages }}</h4>
+            <p class="mb-0">
+              <span class="text-success">{{ formatCurrency(stats()!.total_overage_value) }}</span>
+              <small class="text-muted ms-2">en valor</small>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-subtitle mb-3 text-muted">Faltantes</h6>
+            <h4 class="text-danger mb-2">{{ stats()!.shortages }}</h4>
+            <p class="mb-0">
+              <span class="text-danger">{{ formatCurrency(stats()!.total_shortage_value) }}</span>
+              <small class="text-muted ms-2">en valor</small>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-subtitle mb-3 text-muted">Discrepancia Total</h6>
+            <h4 class="text-warning mb-2">{{ formatCurrency(stats()!.total_discrepancy_value) }}</h4>
+            <p class="mb-0">
+              <small class="text-muted">Valor absoluto de todas las discrepancias</small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Status Filters -->
+  <div class="row mb-3">
+    <div class="col-12">
+      <div class="btn-group" role="group">
+        <button
+          type="button"
+          class="btn btn-sm"
+          [class.btn-primary]="selectedStatusFilter() === undefined"
+          [class.btn-outline-primary]="selectedStatusFilter() !== undefined"
+          (click)="onFilterByStatus(undefined)">
+          Todos
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm"
+          [class.btn-warning]="selectedStatusFilter() === 1"
+          [class.btn-outline-warning]="selectedStatusFilter() !== 1"
+          (click)="onFilterByStatus(1)">
+          Pendientes
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm"
+          [class.btn-info]="selectedStatusFilter() === 2"
+          [class.btn-outline-info]="selectedStatusFilter() !== 2"
+          (click)="onFilterByStatus(2)">
+          Contados
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm"
+          [class.btn-success]="selectedStatusFilter() === 3"
+          [class.btn-outline-success]="selectedStatusFilter() !== 3"
+          (click)="onFilterByStatus(3)">
+          Ajustados
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pre-Inventory Records Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Registros de Pre-Inventario</h5>
+        </div>
+        <div class="card-body">
+          @if (isLoading()) {
+            <div class="text-center py-5">
+              <app-loading-spinner></app-loading-spinner>
+            </div>
+          } @else if (records().length === 0) {
+            <app-empty-state
+              icon="clipboard-x"
+              title="No hay registros"
+              message="No se encontraron registros de pre-inventario"
+              actionText="Crear Nuevo"
+              actionIcon="plus-circle"
+              (action)="onCreateNew()">
+            </app-empty-state>
+          } @else {
+            <app-data-table
+              [columns]="recordColumns"
+              [data]="records()"
+              [pagination]="pagination()"
+              (pageChange)="onPageChange($event)"
+              (rowAction)="onRowAction($event)">
+            </app-data-table>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Counts with Discrepancies -->
+  @if (stats() && stats()!.recent_counts.length > 0) {
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Conteos Recientes con Discrepancias</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Número</th>
+                    <th>Material</th>
+                    <th>Ubicación</th>
+                    <th>Discrepancia</th>
+                    <th>Valor</th>
+                    <th>Fecha</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (count of stats()!.recent_counts; track count.id) {
+                    <tr>
+                      <td>{{ count.pre_inventory_number }}</td>
+                      <td>{{ count.material_name }}</td>
+                      <td>{{ count.location_name }}</td>
+                      <td>
+                        <app-badge
+                          [color]="getDiscrepancyColor(count.discrepancy)"
+                          [text]="formatNumber(count.discrepancy)">
+                        </app-badge>
+                      </td>
+                      <td>
+                        <span [class.text-success]="count.discrepancy_value > 0"
+                              [class.text-danger]="count.discrepancy_value < 0">
+                          {{ formatCurrency(count.discrepancy_value) }}
+                        </span>
+                      </td>
+                      <td>{{ count.count_date | date:'short' }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -1,6 +1,6 @@
 # Operations Modules
 
-## Phase Status: In Progress (11/15) - Labor & Warehouse Modules Complete
+## Phase Status: In Progress (14/15) - Labor, Warehouse & Pre-Inventory Modules Complete
 
 These modules handle day-to-day operations: labor tracking, warehouse management, purchase orders, and fuel requisitions.
 
@@ -125,25 +125,56 @@ Adjustment → Ajuste (correcciones)
 
 ---
 
-## 3. Pre-Inventory Module (0/3)
+## 3. Pre-Inventory Module (3/3) ✅ COMPLETE
 
 ### Backend
-- [ ] Create `PreInventory` model
-- [ ] Create `pre-inventory.controller.ts`
-- [ ] Create `pre-inventory.routes.ts`
+- [x] Create `PreInventory` model
+- [x] Create `PreInventoryStatus` catalog model
+- [x] Create `pre-inventory.controller.ts` (CRUD + reports)
+- [x] Create `pre-inventory.routes.ts`
+- [x] Add routes to server.ts
 
 ### Frontend
-- [ ] Create pre-inventory dashboard
-- [ ] Create physical count interface
-- [ ] Create discrepancy reports
-- [ ] Create adjustment processing
+- [x] Create pre-inventory models and service
+- [x] Create pre-inventory dashboard with statistics
+- [x] Create physical count interface (detail view)
+- [x] Create discrepancy reports
+- [x] Create adjustment processing
+
+### Implementation Details
+**Files Created:**
+- Backend: `backend/src/models/mysql/PreInventory.ts`, `backend/src/models/mysql/catalogs/PreInventoryStatus.ts`, `backend/src/controllers/pre-inventory.controller.ts`, `backend/src/routes/pre-inventory.routes.ts`, `backend/sql/pre_inventory.sql`
+- Frontend: `erp/src/app/models/pre-inventory.model.ts`, `erp/src/app/services/pre-inventory.service.ts`, `erp/src/app/pages/pre-inventory/dashboard/`, `erp/src/app/pages/pre-inventory/detail/`, `erp/src/app/pages/pre-inventory/discrepancy-report/`
+
+**Status Workflow:**
+```
+Pending → Counted → Adjusted
+         ↓
+      Cancelled
+```
+
+**Features Implemented:**
+- Auto-generated pre-inventory numbers (PINV-000001, PINV-000002, etc.)
+- Create pre-inventory records with expected quantity from system
+- Update physical count with actual counted quantity
+- Automatic discrepancy calculation (quantity and value)
+- Process adjustments to create inventory transactions
+- Discrepancy reports with filters (location, date range, only discrepancies)
+- Statistics dashboard (total counts, pending, completed, adjusted, discrepancies)
+- Visual indicators for overages and shortages
+- Integration with warehouse and materials modules
+- Prevent adjustments on already processed records
+
+**Date Completed:** 2025-12-16
 
 **Features:**
 - Physical inventory count preparation
 - Record expected vs actual counts
-- Identify discrepancies
-- Process adjustments
+- Identify discrepancies (quantity and value)
+- Process adjustments to inventory
 - Generate variance reports
+- Track overages and shortages
+- Financial impact analysis
 
 ---
 

@@ -13,7 +13,8 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "create-admin": "ts-node src/scripts/createAdminUser.ts",
     "seed-catalogs": "ts-node src/scripts/seedCatalogs.ts",
-    "seed-test-data": "ts-node src/scripts/seedTestData.ts"
+    "seed-test-data": "ts-node src/scripts/seedTestData.ts",
+    "setup-preinventory": "ts-node src/scripts/setupPreInventory.ts"
   },
   "keywords": [
     "erp",

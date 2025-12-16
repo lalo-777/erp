@@ -235,6 +235,17 @@
               <span [class.d-none]="!isExpanded()">Almacén</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a
+              class="nav-link d-flex align-items-center"
+              routerLink="/pre-inventory"
+              routerLinkActive="active"
+              (click)="onSidebarLinkClick()"
+            >
+              <mat-icon class="me-2">fact_check</mat-icon>
+              <span [class.d-none]="!isExpanded()">Pre-Inventario</span>
+            </a>
+          </li>
           <!-- Administrador Menu with Submenu -->
           <li class="nav-item">
             <div
