@@ -1,0 +1,300 @@
+<div class="container-fluid">
+  <!-- Breadcrumb -->
+  <div class="row mb-3">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/home">Inicio</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink="/projects">Proyectos</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ project()?.project_number || 'Detalle' }}
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="text-center py-5">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  }
+  <!-- Error State -->
+  @else if (error()) {
+    <app-error-alert [message]="error()!" (retry)="loadProject(projectId()!)"></app-error-alert>
+  }
+  <!-- Project Details -->
+  @else if (project()) {
+    <!-- Page Header -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h2>{{ project()!.project_number }} - {{ project()!.project_name }}</h2>
+            <p class="text-muted mb-2">
+              Cliente: {{ project()!.company_name || 'N/A' }}
+            </p>
+            @if (project()!.status_alias) {
+              <app-badge
+                [color]="getStatusBadgeVariant(project()!.status_alias!)"
+                [text]="getStatusBadgeText(project()!.status_alias!)"
+              ></app-badge>
+            }
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-outline-primary" (click)="onEdit()">
+              <i class="bi bi-pencil me-2"></i>
+              Editar
+            </button>
+            <button class="btn btn-outline-danger" (click)="onDelete()">
+              <i class="bi bi-trash me-2"></i>
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Information Cards -->
+    <div class="row mb-4">
+      <!-- Project Details Card -->
+      <div class="col-md-6 mb-3">
+        <div class="card h-100">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+              <i class="bi bi-folder me-2"></i>
+              Información del Proyecto
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="text-muted small">Código</label>
+              <p class="mb-0 fw-bold">{{ project()!.project_number }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="text-muted small">Tipo</label>
+              <p class="mb-0">{{ project()!.project_type_name || 'N/A' }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="text-muted small">Área</label>
+              <p class="mb-0">{{ project()!.area_name || 'N/A' }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="text-muted small">Responsable</label>
+              <p class="mb-0">{{ project()!.manager_name || 'N/A' }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="text-muted small">Fecha de Inicio</label>
+              <p class="mb-0">{{ formatDate(project()!.start_date) }}</p>
+            </div>
+            <div class="mb-0">
+              <label class="text-muted small">Fecha Estimada de Finalización</label>
+              <p class="mb-0">{{ formatDate(project()!.estimated_end_date) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Financial Summary Card -->
+      <div class="col-md-6 mb-3">
+        <div class="card h-100">
+          <div class="card-header bg-success text-white">
+            <h5 class="mb-0">
+              <i class="bi bi-currency-dollar me-2"></i>
+              Resumen Financiero
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-0">
+              <label class="text-muted small">Presupuesto Total</label>
+              <p class="mb-0 fs-4 fw-bold text-success">{{ formatCurrency(project()!.total_budget) }}</p>
+              <small class="text-muted">Asignado al proyecto</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Information -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-info text-white">
+            <h5 class="mb-0">
+              <i class="bi bi-person-circle me-2"></i>
+              Información del Cliente
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3 mb-3">
+                <label class="text-muted small">Empresa</label>
+                <p class="mb-0">{{ project()!.company_name || 'N/A' }}</p>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="text-muted small">RFC</label>
+                <p class="mb-0">{{ project()!.customer_rfc || 'N/A' }}</p>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="text-muted small">Email</label>
+                <p class="mb-0">
+                  @if (project()!.customer_email) {
+                    <a href="mailto:{{ project()!.customer_email }}">{{
+                      project()!.customer_email
+                    }}</a>
+                  } @else {
+                    N/A
+                  }
+                </p>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="text-muted small">Ver Cliente</label>
+                <p class="mb-0">
+                  @if (project()!.customer_id) {
+                    <a
+                      [routerLink]="['/customers', project()!.customer_id]"
+                      class="btn btn-sm btn-outline-primary"
+                    >
+                      <i class="bi bi-arrow-right-circle me-1"></i>
+                      Ver Detalles
+                    </a>
+                  }
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Location -->
+    @if (project()!.location_address || project()!.location_city) {
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">
+                <i class="bi bi-geo-alt me-2"></i>
+                Ubicación del Proyecto
+              </h5>
+            </div>
+            <div class="card-body">
+              @if (project()!.location_address) {
+                <p class="mb-0">{{ project()!.location_address }}</p>
+              }
+              @if (project()!.location_city) {
+                <p class="mb-0 text-muted">{{ project()!.location_city }}</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Project Description -->
+    @if (project()!.description) {
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">
+                <i class="bi bi-file-text me-2"></i>
+                Descripción del Proyecto
+              </h5>
+            </div>
+            <div class="card-body">
+              <p class="mb-0">{{ project()!.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Audit History -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="bi bi-clock-history me-2"></i>
+              Historial de Cambios
+            </h5>
+          </div>
+          <div class="card-body">
+            @if (isLoadingHistory()) {
+              <div class="text-center py-3">
+                <app-loading-spinner size="sm"></app-loading-spinner>
+              </div>
+            } @else if (history().length === 0) {
+              <div class="alert alert-info mb-0">
+                <i class="bi bi-info-circle me-2"></i>
+                No hay historial de cambios disponible.
+              </div>
+            } @else {
+              <div class="table-responsive">
+                <table class="table table-sm table-hover">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Campo</th>
+                      <th>Valor Anterior</th>
+                      <th>Valor Nuevo</th>
+                      <th>Usuario</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (entry of history(); track entry.id) {
+                      <tr>
+                        <td>{{ entry.change_date | date: 'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ entry.project_column_name }}</td>
+                        <td>{{ entry.old_value || 'N/A' }}</td>
+                        <td>{{ entry.new_value || 'N/A' }}</td>
+                        <td>{{ entry.changed_by_name || 'N/A' }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metadata -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row text-muted small">
+              <div class="col-md-4">
+                <strong>Creado por:</strong> {{ project()!.created_by_name || 'N/A' }}
+              </div>
+              <div class="col-md-4">
+                <strong>Fecha de creación:</strong> {{ project()!.created_date | date: 'short' }}
+              </div>
+              <div class="col-md-4">
+                <strong>Última modificación:</strong>
+                {{ project()!.modified_date | date: 'short' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Edit Project Modal -->
+<app-new-project-modal
+  [projectId]="projectId()"
+  (projectSaved)="onProjectSaved()"
+></app-new-project-modal>
+
+<!-- Confirm Dialog -->
+<app-confirm-dialog></app-confirm-dialog>

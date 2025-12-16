@@ -1,0 +1,59 @@
+{
+    "headers": {
+        "headers": {},
+        "normalizedNames": {},
+        "lazyUpdate": null
+    },
+    "status": 500,
+    "statusText": "Internal Server Error",
+    "url": "http://localhost:3001/api/projects?page=1&limit=10",
+    "ok": false,
+    "redirected": false,
+    "name": "HttpErrorResponse",
+    "message": "Http failure response for http://localhost:3001/api/projects?page=1&limit=10: 500 Internal Server Error",
+    "error": {
+        "success": false,
+        "message": "Failed to retrieve projects",
+        "error": "Unknown column 'p.state_id' in 'on clause'"
+    }
+},
+
+{
+    "headers": {
+        "headers": {},
+        "normalizedNames": {},
+        "lazyUpdate": null
+    },
+    "status": 500,
+    "statusText": "Internal Server Error",
+    "url": "http://localhost:3001/api/projects/stats",
+    "ok": false,
+    "redirected": false,
+    "name": "HttpErrorResponse",
+    "message": "Http failure response for http://localhost:3001/api/projects/stats: 500 Internal Server Error",
+    "error": {
+        "success": false,
+        "message": "Failed to retrieve project statistics",
+        "error": "Unknown column 'p.estimated_budget' in 'field list'"
+    }
+},
+
+{
+    "headers": {
+        "headers": {},
+        "normalizedNames": {},
+        "lazyUpdate": null
+    },
+    "status": 500,
+    "statusText": "Internal Server Error",
+    "url": "http://localhost:3001/api/projects",
+    "ok": false,
+    "redirected": false,
+    "name": "HttpErrorResponse",
+    "message": "Http failure response for http://localhost:3001/api/projects: 500 Internal Server Error",
+    "error": {
+        "success": false,
+        "message": "Failed to create project",
+        "error": "Unknown column 'project_code' in 'field list'"
+    }
+}

@@ -8,6 +8,7 @@ import { errorHandler, notFound } from './middleware/errorHandler';
 import authRoutes from './routes/auth.routes';
 import dashboardRoutes from './routes/dashboard.routes';
 import customersRoutes from './routes/customers.routes';
+import usersRoutes from './routes/users.routes';
 import mlAnalysisRoutes from './routes/ml-analysis.routes';
 import invoicesRoutes from './routes/invoices.routes';
 import projectsRoutes from './routes/projects.routes';
@@ -40,6 +41,7 @@ app.get('/health', (_req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/customers', customersRoutes);
+app.use('/api/users', usersRoutes);
 app.use('/api/ml-analysis', mlAnalysisRoutes);
 app.use('/api/invoices', invoicesRoutes);
 app.use('/api/projects', projectsRoutes);
@@ -67,6 +69,7 @@ const startServer = async () => {
       console.log(`  ✓ Authentication (/api/auth)`);
       console.log(`  ✓ Dashboard (/api/dashboard)`);
       console.log(`  ✓ Customers (/api/customers)`);
+      console.log(`  ✓ Users (/api/users)`);
       console.log(`  ✓ Invoices (/api/invoices)`);
       console.log(`  ✓ Projects (/api/projects)`);
       console.log(`  ✓ Materials (/api/materials)`);

@@ -45,4 +45,29 @@ export class CatalogService {
       .delete<{ success: boolean }>(`${this.apiUrl}/${catalogName}/${id}`)
       .pipe(map(() => undefined));
   }
+
+  // Convenience methods for specific catalogs
+  getInvoiceTypes(): Observable<{ success: boolean; data: any[] }> {
+    return this.http.get<{ success: boolean; data: any[] }>(`${this.apiUrl}/invoice-types`);
+  }
+
+  getInvoiceStatuses(): Observable<{ success: boolean; data: any[] }> {
+    return this.http.get<{ success: boolean; data: any[] }>(`${this.apiUrl}/invoice-statuses`);
+  }
+
+  getProjectTypes(): Observable<{ success: boolean; data: any[] }> {
+    return this.http.get<{ success: boolean; data: any[] }>(`${this.apiUrl}/project-types`);
+  }
+
+  getProjectAreas(): Observable<{ success: boolean; data: any[] }> {
+    return this.http.get<{ success: boolean; data: any[] }>(`${this.apiUrl}/project-areas`);
+  }
+
+  getProjectStatuses(): Observable<{ success: boolean; data: any[] }> {
+    return this.http.get<{ success: boolean; data: any[] }>(`${this.apiUrl}/project-statuses`);
+  }
+
+  getUsers(): Observable<{ success: boolean; data: any[] }> {
+    return this.http.get<{ success: boolean; data: any[] }>(`${environment.apiUrl}/users`);
+  }
 }

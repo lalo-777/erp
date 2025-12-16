@@ -1,0 +1,38 @@
+.breadcrumb {
+  background-color: transparent;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.card {
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  }
+}
+
+.card-header {
+  font-weight: 500;
+
+  h5 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+}
+
+.progress {
+  background-color: #e9ecef;
+}
+
+label.small {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table-responsive {
+  max-height: 400px;
+  overflow-y: auto;
+}

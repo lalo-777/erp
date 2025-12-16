@@ -1,0 +1,260 @@
+<div
+  class="modal fade"
+  id="newProjectModal"
+  tabindex="-1"
+  aria-labelledby="newProjectModalLabel"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newProjectModalLabel">{{ modalTitle() }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          [disabled]="isSaving()"
+          (click)="closeModal()"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          @if (isLoading()) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else {
+            @if (error()) {
+              <div class="alert alert-danger" role="alert">
+                {{ error() }}
+              </div>
+            }
+
+            <!-- Basic Information Section -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="customer_id" class="form-label">
+                  Cliente <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select"
+                  id="customer_id"
+                  formControlName="customer_id"
+                  [class.is-invalid]="isFieldInvalid('customer_id')"
+                >
+                  <option [ngValue]="null">Seleccione un cliente...</option>
+                  @for (customer of customers(); track customer.id) {
+                    <option [ngValue]="customer.id">{{ customer.company_name }}</option>
+                  }
+                </select>
+                @if (isFieldInvalid('customer_id')) {
+                  <div class="invalid-feedback">{{ getFieldError('customer_id') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label for="project_name" class="form-label">
+                  Nombre del Proyecto <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="project_name"
+                  formControlName="project_name"
+                  placeholder="Ej: Construcción Edificio Central"
+                  [class.is-invalid]="isFieldInvalid('project_name')"
+                />
+                @if (isFieldInvalid('project_name')) {
+                  <div class="invalid-feedback">{{ getFieldError('project_name') }}</div>
+                }
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="project_type_id" class="form-label">
+                  Tipo de Proyecto <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select"
+                  id="project_type_id"
+                  formControlName="project_type_id"
+                  [class.is-invalid]="isFieldInvalid('project_type_id')"
+                >
+                  <option [ngValue]="null">Seleccione un tipo...</option>
+                  @for (type of projectTypes(); track type.id) {
+                    <option [ngValue]="type.id">{{ type.name }}</option>
+                  }
+                </select>
+                @if (isFieldInvalid('project_type_id')) {
+                  <div class="invalid-feedback">{{ getFieldError('project_type_id') }}</div>
+                }
+              </div>
+
+              <div class="col-md-4">
+                <label for="project_area_id" class="form-label">Área <span class="text-danger">*</span></label>
+                <select class="form-select" id="project_area_id" formControlName="project_area_id" [class.is-invalid]="isFieldInvalid('project_area_id')">
+                  <option [ngValue]="null">Seleccione un área...</option>
+                  @for (area of projectAreas(); track area.id) {
+                    <option [ngValue]="area.id">{{ area.name }}</option>
+                  }
+                </select>
+                @if (isFieldInvalid('project_area_id')) {
+                  <div class="invalid-feedback">{{ getFieldError('project_area_id') }}</div>
+                }
+              </div>
+
+              <div class="col-md-4">
+                <label for="project_status_id" class="form-label">
+                  Estado <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select"
+                  id="project_status_id"
+                  formControlName="project_status_id"
+                  [class.is-invalid]="isFieldInvalid('project_status_id')"
+                >
+                  <option [ngValue]="null">Seleccione un estado...</option>
+                  @for (status of projectStatuses(); track status.id) {
+                    <option [ngValue]="status.id">{{ status.name }}</option>
+                  }
+                </select>
+                @if (isFieldInvalid('project_status_id')) {
+                  <div class="invalid-feedback">{{ getFieldError('project_status_id') }}</div>
+                }
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="project_manager_id" class="form-label">Responsable <span class="text-danger">*</span></label>
+                <select class="form-select" id="project_manager_id" formControlName="project_manager_id" [class.is-invalid]="isFieldInvalid('project_manager_id')">
+                  <option [ngValue]="null">Seleccione un responsable...</option>
+                  @for (user of users(); track user.id) {
+                    <option [ngValue]="user.id">{{ user.username }}</option>
+                  }
+                </select>
+                @if (isFieldInvalid('project_manager_id')) {
+                  <div class="invalid-feedback">{{ getFieldError('project_manager_id') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label for="total_budget" class="form-label">Presupuesto Total</label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="total_budget"
+                    formControlName="total_budget"
+                    step="0.01"
+                    min="0"
+                    [class.is-invalid]="isFieldInvalid('total_budget')"
+                  />
+                </div>
+                @if (isFieldInvalid('total_budget')) {
+                  <div class="invalid-feedback d-block">{{ getFieldError('total_budget') }}</div>
+                }
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="start_date" class="form-label">
+                  Fecha de Inicio <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="start_date"
+                  formControlName="start_date"
+                  [class.is-invalid]="isFieldInvalid('start_date')"
+                />
+                @if (isFieldInvalid('start_date')) {
+                  <div class="invalid-feedback">{{ getFieldError('start_date') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label for="estimated_end_date" class="form-label">Fecha Estimada de Finalización <span class="text-danger">*</span></label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="estimated_end_date"
+                  formControlName="estimated_end_date"
+                  [class.is-invalid]="isFieldInvalid('estimated_end_date')"
+                />
+                @if (isFieldInvalid('estimated_end_date')) {
+                  <div class="invalid-feedback">{{ getFieldError('estimated_end_date') }}</div>
+                }
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-8">
+                <label for="location_address" class="form-label">Dirección del Proyecto</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="location_address"
+                  formControlName="location_address"
+                  placeholder="Dirección completa del proyecto"
+                  [class.is-invalid]="isFieldInvalid('location_address')"
+                />
+                @if (isFieldInvalid('location_address')) {
+                  <div class="invalid-feedback">{{ getFieldError('location_address') }}</div>
+                }
+              </div>
+
+              <div class="col-md-4">
+                <label for="location_city" class="form-label">Ciudad</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="location_city"
+                  formControlName="location_city"
+                  placeholder="Ciudad"
+                  [class.is-invalid]="isFieldInvalid('location_city')"
+                />
+                @if (isFieldInvalid('location_city')) {
+                  <div class="invalid-feedback">{{ getFieldError('location_city') }}</div>
+                }
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Descripción del Proyecto</label>
+              <textarea
+                class="form-control"
+                id="description"
+                formControlName="description"
+                rows="3"
+                placeholder="Descripción detallada del proyecto, objetivos, alcance, etc."
+              ></textarea>
+            </div>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" [disabled]="isSaving()" (click)="closeModal()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="isSaving() || isLoading()">
+            @if (isSaving()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Guardando...
+            } @else {
+              <i class="bi bi-save me-2"></i>
+              {{ isEditMode() ? 'Actualizar' : 'Crear' }} Proyecto
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

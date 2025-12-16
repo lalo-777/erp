@@ -9,6 +9,7 @@ import {
   PaginatedProjects,
   CreateProjectRequest,
   UpdateProjectRequest,
+  ProjectHistoryEntry,
 } from '../models/project.model';
 
 @Injectable({
@@ -40,17 +41,17 @@ export class ProjectService {
     return this.http.get<{ success: boolean; data: ProjectStats }>(`${this.apiUrl}/stats`);
   }
 
-  getProjectHistory(
-    id: number,
-    params: { page?: string; limit?: string; dateFrom?: string; dateTo?: string }
-  ): Observable<any> {
-    let httpParams = new HttpParams();
-    if (params.page) httpParams = httpParams.set('page', params.page);
-    if (params.limit) httpParams = httpParams.set('limit', params.limit);
-    if (params.dateFrom) httpParams = httpParams.set('dateFrom', params.dateFrom);
-    if (params.dateTo) httpParams = httpParams.set('dateTo', params.dateTo);
+  getProjectHistory(id: number): Observable<{ success: boolean; data: ProjectHistoryEntry[] }> {
+    return this.http.get<{ success: boolean; data: ProjectHistoryEntry[] }>(`${this.apiUrl}/${id}/history`);
+  }
 
-    return this.http.get(`${this.apiUrl}/${id}/history`, { params: httpParams });
+  getProjectsByCustomer(customerId: number, page: number = 1, limit: number = 10): Observable<PaginatedProjects> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString())
+      .set('customer_id', customerId.toString());
+
+    return this.http.get<PaginatedProjects>(this.apiUrl, { params });
   }
 
   createProject(data: CreateProjectRequest): Observable<{ success: boolean; data: Project }> {

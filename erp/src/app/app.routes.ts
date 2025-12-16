@@ -73,8 +73,8 @@ export const routes: Routes = [
           {
             path: ':id',
             loadComponent: () =>
-              import('./pages/projects/tracking/projects-tracking.component').then(
-                (m) => m.ProjectsTrackingComponent
+              import('./pages/projects/tracking/project-tracking.component').then(
+                (m) => m.ProjectTrackingComponent
               ),
           },
         ],

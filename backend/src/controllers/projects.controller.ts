@@ -17,7 +17,7 @@ export const getAllProjects = async (req: Request, res: Response): Promise<void>
     const replacements: any = { limit, offset };
 
     if (search) {
-      whereClause += ' AND (p.project_name LIKE :search OR p.project_code LIKE :search OR c.company_name LIKE :search)';
+      whereClause += ' AND (p.project_name LIKE :search OR p.project_number LIKE :search OR c.company_name LIKE :search)';
       replacements.search = `%${search}%`;
     }
 
@@ -37,7 +37,7 @@ export const getAllProjects = async (req: Request, res: Response): Promise<void>
       LEFT JOIN cat_project_types pt ON p.project_type_id = pt.id
       LEFT JOIN cat_project_statuses ps ON p.project_status_id = ps.id
       LEFT JOIN cat_project_areas pa ON p.project_area_id = pa.id
-      LEFT JOIN cat_states s ON p.state_id = s.id
+      LEFT JOIN cat_states s ON p.location_state_id = s.id
       LEFT JOIN users u ON p.project_manager_id = u.id
       LEFT JOIN users uc ON p.created_by = uc.id
       ${whereClause}
@@ -95,8 +95,8 @@ export const getProjectById = async (req: Request, res: Response): Promise<void>
         p.*,
         c.company_name,
         c.rfc as customer_rfc,
-        c.email as customer_email,
-        c.phone as customer_phone,
+        c.contact_email as customer_email,
+        c.contact_phone as customer_phone,
         pt.name as project_type_name,
         ps.name as status_name,
         ps.alias as status_alias,
@@ -111,7 +111,7 @@ export const getProjectById = async (req: Request, res: Response): Promise<void>
       LEFT JOIN cat_project_types pt ON p.project_type_id = pt.id
       LEFT JOIN cat_project_statuses ps ON p.project_status_id = ps.id
       LEFT JOIN cat_project_areas pa ON p.project_area_id = pa.id
-      LEFT JOIN cat_states s ON p.state_id = s.id
+      LEFT JOIN cat_states s ON p.location_state_id = s.id
       LEFT JOIN users u ON p.project_manager_id = u.id
       LEFT JOIN users uc ON p.created_by = uc.id
       LEFT JOIN users um ON p.modified_by = um.id
@@ -156,9 +156,8 @@ export const getProjectStats = async (req: Request, res: Response): Promise<void
         SUM(CASE WHEN ps.alias = 'completed' THEN 1 ELSE 0 END) as completed_projects,
         SUM(CASE WHEN ps.alias = 'cancelled' THEN 1 ELSE 0 END) as cancelled_projects,
         SUM(CASE WHEN ps.alias = 'on_hold' THEN 1 ELSE 0 END) as on_hold_projects,
-        SUM(p.estimated_budget) as total_estimated_budget,
-        SUM(p.actual_cost) as total_actual_cost,
-        AVG(p.estimated_budget) as average_budget,
+        SUM(p.total_budget) as total_estimated_budget,
+        AVG(p.total_budget) as average_budget,
         AVG(DATEDIFF(p.estimated_end_date, p.start_date)) as average_duration_days
       FROM projects p
       LEFT JOIN cat_project_statuses ps ON p.project_status_id = ps.id
@@ -174,7 +173,7 @@ export const getProjectStats = async (req: Request, res: Response): Promise<void
       SELECT
         pt.name as project_type,
         COUNT(*) as count,
-        SUM(p.estimated_budget) as total_budget
+        SUM(p.total_budget) as total_budget
       FROM projects p
       LEFT JOIN cat_project_types pt ON p.project_type_id = pt.id
       WHERE p.is_active = TRUE
@@ -190,6 +189,7 @@ export const getProjectStats = async (req: Request, res: Response): Promise<void
       success: true,
       data: {
         ...stats,
+        total_actual_cost: 0, // Will be calculated from work orders/expenses later
         projects_by_type: projectsByType,
       },
     });
@@ -212,13 +212,13 @@ export const createProject = async (req: Request, res: Response): Promise<void> 
     const userId = (req as any).userId;
     const projectData = req.body;
 
-    // Generate project code if not provided
-    if (!projectData.project_code) {
+    // Generate project number if not provided
+    if (!projectData.project_number) {
       const [result] = await sequelize.query(
-        "SELECT CONCAT('PRJ-', LPAD(IFNULL(MAX(CAST(SUBSTRING(project_code, 5) AS UNSIGNED)), 0) + 1, 6, '0')) as next_code FROM projects WHERE project_code LIKE 'PRJ-%'",
+        "SELECT CONCAT('PRJ-', LPAD(IFNULL(MAX(CAST(SUBSTRING(project_number, 5) AS UNSIGNED)), 0) + 1, 6, '0')) as next_code FROM projects WHERE project_number LIKE 'PRJ-%'",
         { type: QueryTypes.SELECT, transaction }
       ) as any;
-      projectData.project_code = result.next_code;
+      projectData.project_number = result.next_code;
     }
 
     const project = await Project.create({

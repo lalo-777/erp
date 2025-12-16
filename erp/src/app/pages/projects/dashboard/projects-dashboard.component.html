@@ -1,0 +1,161 @@
+<div class="container-fluid">
+  <!-- Page Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2>Proyectos</h2>
+          <p class="text-muted mb-0">Gestión de proyectos de construcción</p>
+        </div>
+        <button class="btn btn-primary" (click)="onNewProject()">
+          <i class="bi bi-plus-circle me-2"></i>
+          Nuevo Proyecto
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  @if (isLoadingStats()) {
+    <div class="row mb-4">
+      <div class="col-md-3 mb-3">
+        <div class="card">
+          <div class="card-body text-center">
+            <app-loading-spinner size="sm"></app-loading-spinner>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else if (stats()) {
+    <div class="row mb-4">
+      <div class="col-md-3 mb-3">
+        <div class="card border-primary">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Total Proyectos</h6>
+                <h3 class="mb-0">{{ stats()!.total_projects }}</h3>
+                <small class="text-muted">{{ stats()!.total_estimated_budget | currency }}</small>
+              </div>
+              <div class="text-primary">
+                <i class="bi bi-folder fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-success">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Activos</h6>
+                <h3 class="mb-0">{{ stats()!.active_projects }}</h3>
+                <small class="text-success">En progreso</small>
+              </div>
+              <div class="text-success">
+                <i class="bi bi-play-circle fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-info">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Completados</h6>
+                <h3 class="mb-0">{{ stats()!.completed_projects }}</h3>
+                <small class="text-info">Finalizados</small>
+              </div>
+              <div class="text-info">
+                <i class="bi bi-check-circle fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-{{ getBudgetUtilizationClass() }}">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Utilización Presupuesto</h6>
+                <h3 class="mb-0">{{ getBudgetUtilization() | number:'1.0-0' }}%</h3>
+                <small class="text-muted">{{ stats()!.total_actual_cost | currency }}</small>
+              </div>
+              <div class="text-{{ getBudgetUtilizationClass() }}">
+                <i class="bi bi-cash-stack fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Search Bar -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-text">
+          <i class="bi bi-search"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar por código, nombre o cliente..."
+          [(ngModel)]="searchTerm"
+          (keyup.enter)="onSearch()"
+        />
+        <button class="btn btn-outline-secondary" type="button" (click)="onSearch()">Buscar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Projects Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          @if (isLoading()) {
+            <div class="text-center py-5">
+              <app-loading-spinner></app-loading-spinner>
+            </div>
+          } @else if (projects().length === 0) {
+            <app-empty-state
+              message="No se encontraron proyectos"
+              icon="folder"
+              actionText="Crear Primer Proyecto"
+              (action)="onNewProject()"
+            ></app-empty-state>
+          } @else {
+            <app-data-table
+              [columns]="columns"
+              [data]="projects()"
+              [loading]="isLoading()"
+              [pagination]="pagination()"
+              [showActions]="true"
+              emptyMessage="No se encontraron proyectos"
+              (pageChange)="onPageChange($event)"
+              (rowAction)="onRowAction($event)"
+            ></app-data-table>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New Project Modal -->
+<app-new-project-modal
+  [projectId]="selectedProjectId()"
+  (projectSaved)="onProjectSaved()"
+></app-new-project-modal>
+
+<!-- Confirm Dialog -->
+<app-confirm-dialog></app-confirm-dialog>
