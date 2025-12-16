@@ -70,4 +70,12 @@ export class CatalogService {
   getUsers(): Observable<{ success: boolean; data: any[] }> {
     return this.http.get<{ success: boolean; data: any[] }>(`${environment.apiUrl}/users`);
   }
+
+  getMaterialCategories(): Observable<{ success: boolean; data: any[] }> {
+    return this.http.get<{ success: boolean; data: any[] }>(`${this.apiUrl}/material-categories`);
+  }
+
+  getUnitsOfMeasure(): Observable<{ success: boolean; data: any[] }> {
+    return this.http.get<{ success: boolean; data: any[] }>(`${this.apiUrl}/units-of-measure`);
+  }
 }

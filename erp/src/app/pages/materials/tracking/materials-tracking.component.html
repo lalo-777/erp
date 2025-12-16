@@ -1,0 +1,209 @@
+<div class="container-fluid">
+  <!-- Page Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <a routerLink="/materials" class="btn btn-link p-0 mb-2">
+        <i class="bi bi-arrow-left me-2"></i>
+        Volver a Materiales
+      </a>
+      @if (material()) {
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="mb-1">{{ material()!.material_name }}</h2>
+            <p class="text-muted mb-0">
+              <strong>Código:</strong> {{ material()!.material_code }}
+            </p>
+          </div>
+          <div>
+            <app-badge [color]="getStockStatusBadgeClass()" [text]="getStockStatusLabel()"></app-badge>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="text-center py-5">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error() && !isLoading()) {
+    <div class="alert alert-danger" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      {{ error() }}
+    </div>
+  }
+
+  <!-- Material Details -->
+  @if (material() && !isLoading()) {
+    <!-- Reorder Alert -->
+    @if (shouldShowReorderAlert()) {
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+            <div>
+              <strong>Alerta de Reorden:</strong>
+              El stock actual está por debajo del mínimo.
+              Se recomienda ordenar {{ getReorderQuantity() }} {{ material()!.unit_name || 'unidades' }}.
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Stock Information Cards -->
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Stock Actual</h6>
+            <h3 class="mb-0">{{ material()!.current_stock }}</h3>
+            <small class="text-muted">{{ material()!.unit_name || 'unidades' }}</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Stock Mínimo</h6>
+            <h3 class="mb-0">{{ material()!.minimum_stock }}</h3>
+            <small class="text-muted">{{ material()!.unit_name || 'unidades' }}</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Costo Unitario</h6>
+            <h3 class="mb-0">{{ material()!.unit_cost | currency }}</h3>
+            <small class="text-muted">por {{ material()!.unit_alias || material()!.unit_name || 'unidad' }}</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Valor Total</h6>
+            <h3 class="mb-0">{{ getTotalValue() | currency }}</h3>
+            <small class="text-muted">Inventario</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stock Level Gauge -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Nivel de Stock</h5>
+            <div class="progress mb-2" style="height: 30px;">
+              <div
+                class="progress-bar bg-{{ getStockStatusBadgeClass() }}"
+                role="progressbar"
+                [style.width.%]="getStockPercentage()"
+                [attr.aria-valuenow]="getStockPercentage()"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                {{ getStockPercentage() | number:'1.0-0' }}%
+              </div>
+            </div>
+            <small class="text-muted">
+              {{ material()!.current_stock }} de {{ material()!.minimum_stock }} {{ material()!.unit_name || 'unidades' }} mínimas
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Material Details Card -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Información General</h5>
+          </div>
+          <div class="card-body">
+            <dl class="row mb-0">
+              <dt class="col-sm-4">Categoría:</dt>
+              <dd class="col-sm-8">{{ material()!.category_name || 'N/A' }}</dd>
+
+              <dt class="col-sm-4">Unidad de Medida:</dt>
+              <dd class="col-sm-8">{{ material()!.unit_name || 'N/A' }} ({{ material()!.unit_alias || 'N/A' }})</dd>
+
+              <dt class="col-sm-4">Punto de Reorden:</dt>
+              <dd class="col-sm-8">{{ material()!.reorder_point }} {{ material()!.unit_name || 'unidades' }}</dd>
+
+              <dt class="col-sm-4">Descripción:</dt>
+              <dd class="col-sm-8">{{ material()!.description || 'Sin descripción' }}</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Información de Auditoría</h5>
+          </div>
+          <div class="card-body">
+            <dl class="row mb-0">
+              <dt class="col-sm-4">Creado por:</dt>
+              <dd class="col-sm-8">{{ material()!.created_by_name || 'N/A' }}</dd>
+
+              <dt class="col-sm-4">Fecha de creación:</dt>
+              <dd class="col-sm-8">{{ material()!.created_date | date:'medium' }}</dd>
+
+              <dt class="col-sm-4">Modificado por:</dt>
+              <dd class="col-sm-8">{{ material()!.modified_by_name || 'N/A' }}</dd>
+
+              <dt class="col-sm-4">Última modificación:</dt>
+              <dd class="col-sm-8">{{ material()!.modified_date | date:'medium' }}</dd>
+
+              <dt class="col-sm-4">Estado:</dt>
+              <dd class="col-sm-8">
+                @if (material()!.is_active) {
+                  <span class="badge bg-success">Activo</span>
+                } @else {
+                  <span class="badge bg-secondary">Inactivo</span>
+                }
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Future Features Placeholder -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Funcionalidades Futuras</h5>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-info mb-0">
+              <strong>Próximamente:</strong>
+              <ul class="mb-0 mt-2">
+                <li>Historial de transacciones de inventario</li>
+                <li>Uso por proyecto</li>
+                <li>Información de proveedores</li>
+                <li>Ajuste de stock</li>
+                <li>Gestión de archivos y documentos</li>
+                <li>Notas y comentarios</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

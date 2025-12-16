@@ -12,7 +12,8 @@
       "Bash(taskkill:*)",
       "Bash(npm start)",
       "Bash(mkdir:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(curl:*)"
     ]
   }
 }

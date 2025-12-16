@@ -1,0 +1,228 @@
+<div
+  class="modal fade"
+  id="newMaterialModal"
+  tabindex="-1"
+  aria-labelledby="newMaterialModalLabel"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newMaterialModalLabel">{{ modalTitle() }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          [disabled]="isSaving()"
+          (click)="closeModal()"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <form [formGroup]="materialForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          @if (isLoading()) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else {
+            @if (error()) {
+              <div class="alert alert-danger" role="alert">
+                {{ error() }}
+              </div>
+            }
+
+            <!-- Material Code (Display Only) -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="alert alert-info d-flex align-items-center">
+                  <i class="bi bi-info-circle me-2"></i>
+                  <div>
+                    <strong>Código del Material:</strong> {{ materialCode() }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Basic Information Section -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="material_name" class="form-label">
+                  Nombre del Material <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="material_name"
+                  formControlName="material_name"
+                  placeholder="Ej: Cemento Portland Gris"
+                  [class.is-invalid]="isFieldInvalid('material_name')"
+                />
+                @if (isFieldInvalid('material_name')) {
+                  <div class="invalid-feedback">{{ getFieldError('material_name') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label for="category_id" class="form-label">
+                  Categoría <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select"
+                  id="category_id"
+                  formControlName="category_id"
+                  [class.is-invalid]="isFieldInvalid('category_id')"
+                >
+                  <option [ngValue]="null">Seleccione una categoría...</option>
+                  @for (category of categories(); track category.id) {
+                    <option [ngValue]="category.id">{{ category.name }}</option>
+                  }
+                </select>
+                @if (isFieldInvalid('category_id')) {
+                  <div class="invalid-feedback">{{ getFieldError('category_id') }}</div>
+                }
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-12">
+                <label for="description" class="form-label">Descripción</label>
+                <textarea
+                  class="form-control"
+                  id="description"
+                  formControlName="description"
+                  rows="2"
+                  placeholder="Descripción detallada del material"
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- Measurement and Cost Section -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="unit_of_measure_id" class="form-label">
+                  Unidad de Medida <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select"
+                  id="unit_of_measure_id"
+                  formControlName="unit_of_measure_id"
+                  [class.is-invalid]="isFieldInvalid('unit_of_measure_id')"
+                >
+                  <option [ngValue]="null">Seleccione una unidad...</option>
+                  @for (unit of unitsOfMeasure(); track unit.id) {
+                    <option [ngValue]="unit.id">{{ unit.name }} ({{ unit.alias }})</option>
+                  }
+                </select>
+                @if (isFieldInvalid('unit_of_measure_id')) {
+                  <div class="invalid-feedback">{{ getFieldError('unit_of_measure_id') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label for="unit_cost" class="form-label">
+                  Costo Unitario <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="unit_cost"
+                    formControlName="unit_cost"
+                    step="0.01"
+                    min="0"
+                    placeholder="0.00"
+                    [class.is-invalid]="isFieldInvalid('unit_cost')"
+                  />
+                </div>
+                @if (isFieldInvalid('unit_cost')) {
+                  <div class="invalid-feedback d-block">{{ getFieldError('unit_cost') }}</div>
+                }
+              </div>
+            </div>
+
+            <!-- Stock Information Section -->
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="current_stock" class="form-label">
+                  Stock Actual <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="current_stock"
+                  formControlName="current_stock"
+                  step="0.01"
+                  min="0"
+                  placeholder="0"
+                  [class.is-invalid]="isFieldInvalid('current_stock')"
+                />
+                @if (isFieldInvalid('current_stock')) {
+                  <div class="invalid-feedback">{{ getFieldError('current_stock') }}</div>
+                }
+              </div>
+
+              <div class="col-md-4">
+                <label for="minimum_stock" class="form-label">
+                  Stock Mínimo <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="minimum_stock"
+                  formControlName="minimum_stock"
+                  step="0.01"
+                  min="0"
+                  placeholder="0"
+                  [class.is-invalid]="isFieldInvalid('minimum_stock')"
+                />
+                @if (isFieldInvalid('minimum_stock')) {
+                  <div class="invalid-feedback">{{ getFieldError('minimum_stock') }}</div>
+                }
+                <small class="form-text text-muted">Alerta cuando el stock esté por debajo</small>
+              </div>
+
+              <div class="col-md-4">
+                <label for="reorder_point" class="form-label">
+                  Punto de Reorden <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="reorder_point"
+                  formControlName="reorder_point"
+                  step="0.01"
+                  min="0"
+                  placeholder="0"
+                  [class.is-invalid]="isFieldInvalid('reorder_point')"
+                />
+                @if (isFieldInvalid('reorder_point')) {
+                  <div class="invalid-feedback">{{ getFieldError('reorder_point') }}</div>
+                }
+                <small class="form-text text-muted">Cantidad sugerida para reordenar</small>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" [disabled]="isSaving()" (click)="closeModal()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="isSaving() || isLoading()">
+            @if (isSaving()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Guardando...
+            } @else {
+              <i class="bi bi-save me-2"></i>
+              {{ isEditMode() ? 'Actualizar' : 'Crear' }} Material
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

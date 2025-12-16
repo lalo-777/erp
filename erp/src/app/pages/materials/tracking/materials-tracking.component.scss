@@ -1,0 +1,27 @@
+.card {
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  }
+}
+
+.progress {
+  background-color: #e9ecef;
+}
+
+dl {
+  dt {
+    font-weight: 600;
+    color: #6c757d;
+  }
+
+  dd {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.badge {
+  font-size: 0.875rem;
+  padding: 0.35rem 0.65rem;
+}

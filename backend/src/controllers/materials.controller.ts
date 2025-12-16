@@ -29,7 +29,7 @@ export const getAllMaterials = async (req: Request, res: Response): Promise<void
         uom.alias as unit_alias,
         u.username as created_by_name
       FROM materials m
-      LEFT JOIN cat_material_categories mc ON m.material_category_id = mc.id
+      LEFT JOIN cat_material_categories mc ON m.category_id = mc.id
       LEFT JOIN cat_unit_of_measure uom ON m.unit_of_measure_id = uom.id
       LEFT JOIN users u ON m.created_by = u.id
       ${whereClause}
@@ -90,7 +90,7 @@ export const getMaterialById = async (req: Request, res: Response): Promise<void
         uc.username as created_by_name,
         um.username as modified_by_name
       FROM materials m
-      LEFT JOIN cat_material_categories mc ON m.material_category_id = mc.id
+      LEFT JOIN cat_material_categories mc ON m.category_id = mc.id
       LEFT JOIN cat_unit_of_measure uom ON m.unit_of_measure_id = uom.id
       LEFT JOIN users uc ON m.created_by = uc.id
       LEFT JOIN users um ON m.modified_by = um.id
@@ -135,7 +135,7 @@ export const getLowStockMaterials = async (req: Request, res: Response): Promise
         uom.name as unit_name,
         (m.minimum_stock - m.current_stock) as stock_deficit
       FROM materials m
-      LEFT JOIN cat_material_categories mc ON m.material_category_id = mc.id
+      LEFT JOIN cat_material_categories mc ON m.category_id = mc.id
       LEFT JOIN cat_unit_of_measure uom ON m.unit_of_measure_id = uom.id
       WHERE m.is_active = TRUE
         AND m.current_stock < m.minimum_stock
@@ -186,7 +186,7 @@ export const getMaterialStats = async (req: Request, res: Response): Promise<voi
         COUNT(*) as count,
         SUM(m.current_stock * m.unit_cost) as category_value
       FROM materials m
-      LEFT JOIN cat_material_categories mc ON m.material_category_id = mc.id
+      LEFT JOIN cat_material_categories mc ON m.category_id = mc.id
       WHERE m.is_active = TRUE
       GROUP BY mc.id, mc.name
       ORDER BY category_value DESC
