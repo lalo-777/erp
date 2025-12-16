@@ -1,0 +1,274 @@
+<div class="container-fluid">
+  <!-- Breadcrumb -->
+  <div class="row mb-3">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/home">Inicio</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink="/invoices">Facturas</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ invoice()?.invoice_number || 'Detalle' }}
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="text-center py-5">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  }
+  <!-- Error State -->
+  @else if (error()) {
+    <app-error-alert [message]="error()!" (retry)="loadInvoice(invoiceId()!)"></app-error-alert>
+  }
+  <!-- Invoice Details -->
+  @else if (invoice()) {
+    <!-- Page Header -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h2>Factura {{ invoice()!.invoice_number }}</h2>
+            <p class="text-muted mb-2">
+              Cliente: {{ invoice()!.customer?.name || 'N/A' }}
+            </p>
+            @if (invoice()!.invoice_status?.name) {
+              <app-badge
+                [color]="getStatusBadgeVariant(invoice()!.invoice_status!.name)"
+                [text]="getStatusBadgeText(invoice()!.invoice_status!.name)"
+              ></app-badge>
+            }
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-outline-primary" (click)="onEdit()">
+              <i class="bi bi-pencil me-2"></i>
+              Editar
+            </button>
+            <button class="btn btn-outline-danger" (click)="onDelete()">
+              <i class="bi bi-trash me-2"></i>
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Invoice Information Cards -->
+    <div class="row mb-4">
+      <!-- Invoice Details Card -->
+      <div class="col-md-6 mb-3">
+        <div class="card h-100">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+              <i class="bi bi-file-earmark-text me-2"></i>
+              Información de Factura
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="text-muted small">Número de Factura</label>
+              <p class="mb-0 fw-bold">{{ invoice()!.invoice_number }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="text-muted small">Tipo</label>
+              <p class="mb-0">{{ invoice()!.invoice_type?.name || 'N/A' }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="text-muted small">Fecha de Emisión</label>
+              <p class="mb-0">{{ invoice()!.issue_date | date: 'dd/MM/yyyy' }}</p>
+            </div>
+            <div class="mb-0">
+              <label class="text-muted small">Fecha de Vencimiento</label>
+              <p class="mb-0">{{ invoice()!.due_date | date: 'dd/MM/yyyy' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Financial Information Card -->
+      <div class="col-md-6 mb-3">
+        <div class="card h-100">
+          <div class="card-header bg-success text-white">
+            <h5 class="mb-0">
+              <i class="bi bi-currency-dollar me-2"></i>
+              Información Financiera
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="text-muted small">Subtotal</label>
+              <p class="mb-0">{{ invoice()!.subtotal | currency }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="text-muted small">IVA</label>
+              <p class="mb-0">{{ invoice()!.tax | currency }}</p>
+            </div>
+            @if (invoice()!.discount > 0) {
+              <div class="mb-3">
+                <label class="text-muted small">Descuento</label>
+                <p class="mb-0 text-danger">-{{ invoice()!.discount | currency }}</p>
+              </div>
+            }
+            <div class="mb-0 pt-3 border-top">
+              <label class="text-muted small">Total</label>
+              <p class="mb-0 fs-4 fw-bold text-success">{{ invoice()!.total | currency }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Information -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-info text-white">
+            <h5 class="mb-0">
+              <i class="bi bi-person-circle me-2"></i>
+              Información del Cliente
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="text-muted small">Empresa</label>
+                <p class="mb-0">{{ invoice()!.customer?.name || 'N/A' }}</p>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="text-muted small">Email</label>
+                <p class="mb-0">
+                  @if (invoice()!.customer?.email) {
+                    <a href="mailto:{{ invoice()!.customer?.email }}">{{
+                      invoice()!.customer?.email
+                    }}</a>
+                  } @else {
+                    N/A
+                  }
+                </p>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="text-muted small">Ver Cliente</label>
+                <p class="mb-0">
+                  @if (invoice()!.customer_id) {
+                    <a [routerLink]="['/customers', invoice()!.customer_id]" class="btn btn-sm btn-outline-primary">
+                      <i class="bi bi-arrow-right-circle me-1"></i>
+                      Ver Detalles
+                    </a>
+                  }
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    @if (invoice()!.notes) {
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">
+                <i class="bi bi-sticky me-2"></i>
+                Notas
+              </h5>
+            </div>
+            <div class="card-body">
+              <p class="mb-0">{{ invoice()!.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Audit History -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="bi bi-clock-history me-2"></i>
+              Historial de Cambios
+            </h5>
+          </div>
+          <div class="card-body">
+            @if (isLoadingHistory()) {
+              <div class="text-center py-3">
+                <app-loading-spinner size="sm"></app-loading-spinner>
+              </div>
+            } @else if (history().length === 0) {
+              <div class="alert alert-info mb-0">
+                <i class="bi bi-info-circle me-2"></i>
+                No hay historial de cambios disponible.
+              </div>
+            } @else {
+              <div class="table-responsive">
+                <table class="table table-sm table-hover">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Campo</th>
+                      <th>Valor Anterior</th>
+                      <th>Valor Nuevo</th>
+                      <th>Usuario</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (entry of history(); track entry.id) {
+                      <tr>
+                        <td>{{ entry.change_date | date: 'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ entry.invoice_column_name }}</td>
+                        <td>{{ entry.old_value || 'N/A' }}</td>
+                        <td>{{ entry.new_value || 'N/A' }}</td>
+                        <td>{{ entry.changed_by_name || 'N/A' }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metadata -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row text-muted small">
+              <div class="col-md-4">
+                <strong>Creado por:</strong> {{ invoice()!.created_by || 'N/A' }}
+              </div>
+              <div class="col-md-4">
+                <strong>Fecha de creación:</strong> {{ invoice()!.created_date | date: 'short' }}
+              </div>
+              <div class="col-md-4">
+                <strong>Última modificación:</strong>
+                {{ invoice()!.modified_date | date: 'short' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Edit Invoice Modal -->
+<app-new-invoice-modal
+  [invoiceId]="invoiceId()"
+  (invoiceSaved)="onInvoiceSaved()"
+></app-new-invoice-modal>
+
+<!-- Confirm Dialog -->
+<app-confirm-dialog></app-confirm-dialog>

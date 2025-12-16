@@ -1,0 +1,161 @@
+<div class="container-fluid">
+  <!-- Page Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2>Facturas</h2>
+          <p class="text-muted mb-0">Gestión de facturas y pagos</p>
+        </div>
+        <button class="btn btn-primary" (click)="onNewInvoice()">
+          <i class="bi bi-plus-circle me-2"></i>
+          Nueva Factura
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  @if (isLoadingStats()) {
+    <div class="row mb-4">
+      <div class="col-md-3 mb-3">
+        <div class="card">
+          <div class="card-body text-center">
+            <app-loading-spinner size="sm"></app-loading-spinner>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else if (stats()) {
+    <div class="row mb-4">
+      <div class="col-md-3 mb-3">
+        <div class="card border-primary">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Total Facturas</h6>
+                <h3 class="mb-0">{{ stats()!.total_invoices }}</h3>
+                <small class="text-muted">{{ stats()!.total_amount | currency }}</small>
+              </div>
+              <div class="text-primary">
+                <i class="bi bi-file-earmark-text fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-success">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Pagadas</h6>
+                <h3 class="mb-0">{{ stats()!.paid_invoices }}</h3>
+                <small class="text-muted">{{ stats()!.paid_amount | currency }}</small>
+              </div>
+              <div class="text-success">
+                <i class="bi bi-check-circle fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-warning">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Pendientes</h6>
+                <h3 class="mb-0">{{ stats()!.pending_invoices }}</h3>
+                <small class="text-muted">{{ stats()!.pending_amount | currency }}</small>
+              </div>
+              <div class="text-warning">
+                <i class="bi bi-clock fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-danger">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Vencidas</h6>
+                <h3 class="mb-0">{{ stats()!.overdue_invoices }}</h3>
+                <small class="text-muted">{{ stats()!.overdue_amount | currency }}</small>
+              </div>
+              <div class="text-danger">
+                <i class="bi bi-exclamation-triangle fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Search Bar -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-text">
+          <i class="bi bi-search"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar por número de factura o cliente..."
+          [(ngModel)]="searchTerm"
+          (keyup.enter)="onSearch()"
+        />
+        <button class="btn btn-outline-secondary" type="button" (click)="onSearch()">Buscar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Invoices Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          @if (isLoading()) {
+            <div class="text-center py-5">
+              <app-loading-spinner></app-loading-spinner>
+            </div>
+          } @else if (invoices().length === 0) {
+            <app-empty-state
+              message="No se encontraron facturas"
+              icon="file-earmark-text"
+              actionText="Crear Primera Factura"
+              (action)="onNewInvoice()"
+            ></app-empty-state>
+          } @else {
+            <app-data-table
+              [columns]="columns"
+              [data]="invoices()"
+              [loading]="isLoading()"
+              [pagination]="pagination()"
+              [showActions]="true"
+              emptyMessage="No se encontraron facturas"
+              (pageChange)="onPageChange($event)"
+              (rowAction)="onRowAction($event)"
+            ></app-data-table>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New Invoice Modal -->
+<app-new-invoice-modal
+  [invoiceId]="selectedInvoiceId()"
+  (invoiceSaved)="onInvoiceSaved()"
+></app-new-invoice-modal>
+
+<!-- Confirm Dialog -->
+<app-confirm-dialog></app-confirm-dialog>

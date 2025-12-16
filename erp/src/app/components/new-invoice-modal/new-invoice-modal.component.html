@@ -1,0 +1,210 @@
+<div class="modal fade" id="newInvoiceModal" tabindex="-1" aria-labelledby="newInvoiceModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newInvoiceModalLabel">{{ modalTitle() }}</h5>
+        <button type="button" class="btn-close" [disabled]="isSaving()" (click)="closeModal()" aria-label="Close"></button>
+      </div>
+
+      <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          @if (isLoading()) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else {
+            @if (error()) {
+              <div class="alert alert-danger" role="alert">
+                {{ error() }}
+              </div>
+            }
+
+            <!-- Invoice Header Section -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="customer_id" class="form-label">Cliente <span class="text-danger">*</span></label>
+                <select class="form-select" id="customer_id" formControlName="customer_id" [class.is-invalid]="hasError('customer_id')">
+                  <option [ngValue]="null">Seleccione un cliente...</option>
+                  @for (customer of customers(); track customer.id) {
+                    <option [ngValue]="customer.id">{{ customer.company_name }}</option>
+                  }
+                </select>
+                @if (hasError('customer_id')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('customer_id') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label for="invoice_type_id" class="form-label">Tipo de Factura <span class="text-danger">*</span></label>
+                <select class="form-select" id="invoice_type_id" formControlName="invoice_type_id" [class.is-invalid]="hasError('invoice_type_id')">
+                  <option [ngValue]="null">Seleccione un tipo...</option>
+                  @for (type of invoiceTypes(); track type.id) {
+                    <option [ngValue]="type.id">{{ type.name }}</option>
+                  }
+                </select>
+                @if (hasError('invoice_type_id')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('invoice_type_id') }}</div>
+                }
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="invoice_status_id" class="form-label">Estado <span class="text-danger">*</span></label>
+                <select class="form-select" id="invoice_status_id" formControlName="invoice_status_id" [class.is-invalid]="hasError('invoice_status_id')">
+                  <option [ngValue]="null">Seleccione un estado...</option>
+                  @for (status of invoiceStatuses(); track status.id) {
+                    <option [ngValue]="status.id">{{ status.name }}</option>
+                  }
+                </select>
+                @if (hasError('invoice_status_id')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('invoice_status_id') }}</div>
+                }
+              </div>
+
+              <div class="col-md-4">
+                <label for="issue_date" class="form-label">Fecha de Emisión <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="issue_date" formControlName="issue_date" [class.is-invalid]="hasError('issue_date')">
+                @if (hasError('issue_date')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('issue_date') }}</div>
+                }
+              </div>
+
+              <div class="col-md-4">
+                <label for="due_date" class="form-label">Fecha de Vencimiento <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="due_date" formControlName="due_date" [class.is-invalid]="hasError('due_date')">
+                @if (hasError('due_date')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('due_date') }}</div>
+                }
+              </div>
+            </div>
+
+            <!-- Items Section -->
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="form-label mb-0">Conceptos <span class="text-danger">*</span></label>
+                <button type="button" class="btn btn-sm btn-outline-primary" (click)="addItem()">
+                  <i class="bi bi-plus-circle me-1"></i> Agregar Concepto
+                </button>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead class="table-light">
+                    <tr>
+                      <th style="width: 40%">Descripción</th>
+                      <th style="width: 15%">Cantidad</th>
+                      <th style="width: 20%">Precio Unitario</th>
+                      <th style="width: 20%">Importe</th>
+                      <th style="width: 5%"></th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="items">
+                    @for (item of items.controls; track $index; let i = $index) {
+                      <tr [formGroupName]="i">
+                        <td>
+                          <input
+                            type="text"
+                            class="form-control form-control-sm"
+                            formControlName="description"
+                            placeholder="Descripción del concepto"
+                            [class.is-invalid]="hasItemError(i, 'description')"
+                          >
+                          @if (hasItemError(i, 'description')) {
+                            <div class="invalid-feedback">{{ getItemErrorMessage(i, 'description') }}</div>
+                          }
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            class="form-control form-control-sm"
+                            formControlName="quantity"
+                            min="1"
+                            step="1"
+                            [class.is-invalid]="hasItemError(i, 'quantity')"
+                          >
+                          @if (hasItemError(i, 'quantity')) {
+                            <div class="invalid-feedback">{{ getItemErrorMessage(i, 'quantity') }}</div>
+                          }
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            class="form-control form-control-sm"
+                            formControlName="unit_price"
+                            min="0"
+                            step="0.01"
+                            [class.is-invalid]="hasItemError(i, 'unit_price')"
+                          >
+                          @if (hasItemError(i, 'unit_price')) {
+                            <div class="invalid-feedback">{{ getItemErrorMessage(i, 'unit_price') }}</div>
+                          }
+                        </td>
+                        <td class="text-end">
+                          <strong>{{ calculateItemAmount(item) | currency }}</strong>
+                        </td>
+                        <td class="text-center">
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-outline-danger"
+                            (click)="removeItem(i)"
+                            [disabled]="items.length === 1"
+                            title="Eliminar concepto"
+                          >
+                            <i class="bi bi-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="3" class="text-end"><strong>Subtotal:</strong></td>
+                      <td class="text-end"><strong>{{ calculateSubtotal() | currency }}</strong></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="text-end"><strong>IVA ({{ defaultTaxRate }}%):</strong></td>
+                      <td class="text-end"><strong>{{ calculateTax() | currency }}</strong></td>
+                      <td></td>
+                    </tr>
+                    <tr class="table-active">
+                      <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                      <td class="text-end"><strong>{{ calculateTotal() | currency }}</strong></td>
+                      <td></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="row">
+              <div class="col-12">
+                <label for="notes" class="form-label">Notas</label>
+                <textarea class="form-control" id="notes" formControlName="notes" rows="3" placeholder="Notas adicionales..."></textarea>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" [disabled]="isSaving()" (click)="closeModal()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="isSaving() || isLoading()">
+            @if (isSaving()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Guardando...
+            } @else {
+              <i class="bi bi-save me-2"></i>
+              {{ isEditMode() ? 'Actualizar' : 'Crear' }} Factura
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

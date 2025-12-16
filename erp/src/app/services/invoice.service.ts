@@ -9,6 +9,8 @@ import {
   PaginatedInvoices,
   CreateInvoiceRequest,
   UpdateInvoiceRequest,
+  InvoiceFilters,
+  InvoiceHistoryEntry,
 } from '../models/invoice.model';
 
 @Injectable({
@@ -66,5 +68,10 @@ export class InvoiceService {
 
   deleteInvoice(id: number): Observable<{ success: boolean; message: string }> {
     return this.http.delete<{ success: boolean; message: string }>(`${this.apiUrl}/${id}`);
+  }
+
+  getInvoicesByCustomer(customerId: number): Observable<PaginatedInvoices> {
+    const params = new HttpParams().set('customer_id', customerId.toString());
+    return this.http.get<PaginatedInvoices>(this.apiUrl, { params });
   }
 }

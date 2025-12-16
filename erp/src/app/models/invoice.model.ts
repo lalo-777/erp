@@ -78,6 +78,42 @@ export interface CreateInvoiceRequest {
   discount: number;
   total: number;
   notes?: string;
+  items?: InvoiceItem[];
 }
 
 export interface UpdateInvoiceRequest extends Partial<CreateInvoiceRequest> {}
+
+export interface InvoiceItem {
+  id?: number;
+  invoice_id?: number;
+  description: string;
+  quantity: number;
+  unit_price: number;
+  amount: number;
+  order_index?: number;
+}
+
+export interface InvoiceFilters {
+  search?: string;
+  customer_id?: number;
+  invoice_type_id?: number;
+  invoice_status_id?: number;
+  issue_date_from?: string;
+  issue_date_to?: string;
+  due_date_from?: string;
+  due_date_to?: string;
+  min_amount?: number;
+  max_amount?: number;
+}
+
+export interface InvoiceHistoryEntry {
+  id: number;
+  invoice_table_name: string;
+  invoice_id: number;
+  invoice_column_name: string;
+  old_value: string | null;
+  new_value: string | null;
+  user_id: number;
+  change_date: string;
+  changed_by_name?: string;
+}
