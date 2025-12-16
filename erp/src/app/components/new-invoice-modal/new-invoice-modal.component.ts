@@ -85,7 +85,7 @@ export class NewInvoiceModalComponent {
       customer_id: [null, [Validators.required]],
       invoice_type_id: [null, [Validators.required]],
       invoice_status_id: [null, [Validators.required]],
-      issue_date: [today, [Validators.required]],
+      invoice_date: [today, [Validators.required]],
       due_date: [dueDateStr, [Validators.required]],
       notes: [''],
       items: this.fb.array([]),
@@ -159,7 +159,7 @@ export class NewInvoiceModalComponent {
     });
 
     // Load invoice types
-    this.catalogService.getCatalog('cat_invoice_types').subscribe({
+    this.catalogService.getCatalog('invoice-types').subscribe({
       next: (items: any[]) => {
         const typeItems: InvoiceTypeItem[] = items.map((item) => ({
           id: item.id,
@@ -174,7 +174,7 @@ export class NewInvoiceModalComponent {
     });
 
     // Load invoice statuses
-    this.catalogService.getCatalog('cat_invoice_statuses').subscribe({
+    this.catalogService.getCatalog('invoice-statuses').subscribe({
       next: (items: any[]) => {
         const statusItems: InvoiceStatusItem[] = items.map((item) => ({
           id: item.id,
@@ -200,7 +200,7 @@ export class NewInvoiceModalComponent {
             customer_id: invoice.customer_id,
             invoice_type_id: invoice.invoice_type_id,
             invoice_status_id: invoice.invoice_status_id,
-            issue_date: invoice.issue_date,
+            invoice_date: invoice.invoice_date,
             due_date: invoice.due_date,
             notes: invoice.notes,
           });
@@ -265,7 +265,7 @@ export class NewInvoiceModalComponent {
       customer_id: formValue.customer_id,
       invoice_type_id: formValue.invoice_type_id,
       invoice_status_id: formValue.invoice_status_id,
-      issue_date: formValue.issue_date,
+      invoice_date: formValue.invoice_date,
       due_date: formValue.due_date,
       subtotal: subtotal,
       tax: tax,
@@ -328,7 +328,7 @@ export class NewInvoiceModalComponent {
     const dueDateStr = dueDate.toISOString().split('T')[0];
 
     this.invoiceForm.patchValue({
-      issue_date: today,
+      invoice_date: today,
       due_date: dueDateStr,
     });
   }

@@ -92,13 +92,13 @@ export const getInvoiceById = async (req: Request, res: Response): Promise<void>
         i.*,
         c.company_name,
         c.rfc as customer_rfc,
-        c.email as customer_email,
-        c.phone as customer_phone,
+        c.contact_email as customer_email,
+        c.contact_phone as customer_phone,
         it.name as invoice_type_name,
         ist.name as status_name,
         ist.alias as status_alias,
         p.project_name,
-        p.project_code,
+        p.project_number,
         u.username as created_by_name,
         um.username as modified_by_name
       FROM invoices i

@@ -4,7 +4,7 @@ export interface Invoice {
   customer_id: number;
   invoice_type_id: number;
   invoice_status_id: number;
-  issue_date: string;
+  invoice_date: string;
   due_date: string;
   subtotal: number;
   tax: number;
@@ -39,7 +39,7 @@ export interface InvoiceListItem {
   customer_name: string;
   invoice_type: string;
   invoice_status: string;
-  issue_date: string;
+  invoice_date: string;
   due_date: string;
   total: number;
   is_active: boolean;
@@ -71,7 +71,7 @@ export interface CreateInvoiceRequest {
   customer_id: number;
   invoice_type_id: number;
   invoice_status_id: number;
-  issue_date: string;
+  invoice_date: string;
   due_date: string;
   subtotal: number;
   tax: number;
@@ -98,8 +98,8 @@ export interface InvoiceFilters {
   customer_id?: number;
   invoice_type_id?: number;
   invoice_status_id?: number;
-  issue_date_from?: string;
-  issue_date_to?: string;
+  invoice_date_from?: string;
+  invoice_date_to?: string;
   due_date_from?: string;
   due_date_to?: string;
   min_amount?: number;

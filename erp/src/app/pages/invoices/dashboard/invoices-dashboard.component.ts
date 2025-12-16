@@ -54,7 +54,7 @@ export class InvoicesDashboardComponent implements OnInit {
     { field: 'invoice_number', header: 'Número', sortable: true },
     { field: 'customer_name', header: 'Cliente', sortable: true },
     { field: 'invoice_type', header: 'Tipo', sortable: true },
-    { field: 'issue_date', header: 'Fecha Emisión', sortable: true, type: 'date' },
+    { field: 'invoice_date', header: 'Fecha Emisión', sortable: true, type: 'date' },
     { field: 'due_date', header: 'Fecha Vencimiento', sortable: true, type: 'date' },
     { field: 'total', header: 'Total', sortable: true, type: 'currency' },
     {
@@ -69,7 +69,7 @@ export class InvoicesDashboardComponent implements OnInit {
           overdue: 'Vencida',
           cancelled: 'Cancelada',
         };
-        return statusMap[value.toLowerCase()] || value;
+        return value ? (statusMap[value.toLowerCase()] || value) : '';
       },
     },
   ];

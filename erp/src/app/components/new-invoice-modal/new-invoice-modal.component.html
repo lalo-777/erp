@@ -65,10 +65,10 @@
               </div>
 
               <div class="col-md-4">
-                <label for="issue_date" class="form-label">Fecha de Emisión <span class="text-danger">*</span></label>
-                <input type="date" class="form-control" id="issue_date" formControlName="issue_date" [class.is-invalid]="hasError('issue_date')">
-                @if (hasError('issue_date')) {
-                  <div class="invalid-feedback">{{ getErrorMessage('issue_date') }}</div>
+                <label for="invoice_date" class="form-label">Fecha de Emisión <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="invoice_date" formControlName="invoice_date" [class.is-invalid]="hasError('invoice_date')">
+                @if (hasError('invoice_date')) {
+                  <div class="invalid-feedback">{{ getErrorMessage('invoice_date') }}</div>
                 }
               </div>
 

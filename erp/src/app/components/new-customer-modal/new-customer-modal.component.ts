@@ -72,7 +72,7 @@ export class NewCustomerModalComponent {
   }
 
   private loadCatalogs(): void {
-    this.catalogService.getCatalog('cat_states').subscribe({
+    this.catalogService.getCatalog('states').subscribe({
       next: (items: any[]) => {
         const stateItems: StateItem[] = items.map((item) => ({
           id: item.id,
