@@ -213,6 +213,17 @@
               <span [class.d-none]="!isExpanded()">Materiales</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a
+              class="nav-link d-flex align-items-center"
+              routerLink="/labor"
+              routerLinkActive="active"
+              (click)="onSidebarLinkClick()"
+            >
+              <mat-icon class="me-2">engineering</mat-icon>
+              <span [class.d-none]="!isExpanded()">Mano de Obra</span>
+            </a>
+          </li>
           <!-- Administrador Menu with Submenu -->
           <li class="nav-item">
             <div

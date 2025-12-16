@@ -99,6 +99,25 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'labor',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./pages/labor/dashboard/labor-dashboard.component').then(
+                (m) => m.LaborDashboardComponent
+              ),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./pages/labor/tracking/labor-tracking.component').then(
+                (m) => m.LaborTrackingComponent
+              ),
+          },
+        ],
+      },
+      {
         path: 'admin',
         children: [
           {

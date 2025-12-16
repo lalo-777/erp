@@ -1,0 +1,187 @@
+<div class="container-fluid">
+  <!-- Page Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2>Mano de Obra</h2>
+          <p class="text-muted mb-0">Gestión de hojas de tiempo y nómina</p>
+        </div>
+        <button class="btn btn-primary" (click)="onNewTimesheet()">
+          <i class="bi bi-plus-circle me-2"></i>
+          Nueva Hoja de Tiempo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pending Payments Alert Banner -->
+  @if (stats() && stats()!.pending_payments > 0) {
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+          <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+          <div>
+            <strong>Pagos Pendientes:</strong> Hay {{ formatCurrency(stats()!.pending_payments) }} en pagos pendientes de aprobación.
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Stats Cards -->
+  @if (isLoadingStats()) {
+    <div class="row mb-4">
+      <div class="col-md-3 mb-3">
+        <div class="card">
+          <div class="card-body text-center">
+            <app-loading-spinner size="sm"></app-loading-spinner>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else if (stats()) {
+    <div class="row mb-4">
+      <div class="col-md-3 mb-3">
+        <div class="card border-primary">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Total Trabajadores</h6>
+                <h3 class="mb-0">{{ stats()!.total_workers }}</h3>
+                <small class="text-muted">Trabajadores registrados</small>
+              </div>
+              <div class="text-primary">
+                <i class="bi bi-people fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-info">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Horas Trabajadas</h6>
+                <h3 class="mb-0">{{ stats()!.total_hours || 0 | number: '1.0-0' }}</h3>
+                <small class="text-info">Total de horas</small>
+              </div>
+              <div class="text-info">
+                <i class="bi bi-clock-history fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-success">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Total Nómina</h6>
+                <h3 class="mb-0">{{ stats()!.total_payroll || 0 | currency }}</h3>
+                <small class="text-success">Total acumulado</small>
+              </div>
+              <div class="text-success">
+                <i class="bi bi-cash-stack fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <div class="card border-warning">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="text-muted mb-2">Pagos Pendientes</h6>
+                <h3 class="mb-0">{{ stats()!.pending_payments || 0 | currency }}</h3>
+                <small class="text-warning">Por aprobar/pagar</small>
+              </div>
+              <div class="text-warning">
+                <i class="bi bi-hourglass-split fs-1"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Search and Filter Bar -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-text">
+          <i class="bi bi-search"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar por código o nombre de trabajador..."
+          [(ngModel)]="searchTerm"
+          (keyup.enter)="onSearch()"
+        />
+        <button class="btn btn-outline-secondary" type="button" (click)="onSearch()">Buscar</button>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <select
+        class="form-select"
+        [(ngModel)]="selectedPaymentStatus"
+        (change)="onFilterChange()"
+      >
+        <option value="all">Todos los estados</option>
+        <option value="pending">Pendientes</option>
+        <option value="approved">Aprobados</option>
+        <option value="paid">Pagados</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Timesheets Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          @if (isLoading()) {
+            <div class="text-center py-5">
+              <app-loading-spinner></app-loading-spinner>
+            </div>
+          } @else if (timesheets().length === 0) {
+            <app-empty-state
+              message="No se encontraron hojas de tiempo"
+              icon="calendar-check"
+              actionText="Crear Primera Hoja de Tiempo"
+              (action)="onNewTimesheet()"
+            ></app-empty-state>
+          } @else {
+            <app-data-table
+              [columns]="columns"
+              [data]="timesheets()"
+              [loading]="isLoading()"
+              [pagination]="pagination()"
+              [showActions]="true"
+              emptyMessage="No se encontraron hojas de tiempo"
+              (pageChange)="onPageChange($event)"
+              (rowAction)="onRowAction($event)"
+            ></app-data-table>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New Timesheet Modal -->
+<app-new-labor-timesheet-modal
+  [timesheetId]="selectedTimesheetId()"
+  (timesheetSaved)="onTimesheetSaved()"
+></app-new-labor-timesheet-modal>
+
+<!-- Confirm Dialog -->
+<app-confirm-dialog></app-confirm-dialog>

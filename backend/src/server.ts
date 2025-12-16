@@ -16,6 +16,7 @@ import materialsRoutes from './routes/materials.routes';
 import catalogRoutes from './routes/catalog.routes';
 import filesRoutes from './routes/files.routes';
 import notesRoutes from './routes/notes.routes';
+import laborRoutes from './routes/labor.routes';
 
 const app: Application = express();
 
@@ -49,6 +50,7 @@ app.use('/api/materials', materialsRoutes);
 app.use('/api/catalogs', catalogRoutes);
 app.use('/api/files', filesRoutes);
 app.use('/api/notes', notesRoutes);
+app.use('/api/labor', laborRoutes);
 
 // Error handling
 app.use(notFound);
@@ -76,6 +78,7 @@ const startServer = async () => {
       console.log(`  ✓ Catalogs (/api/catalogs)`);
       console.log(`  ✓ Files (/api/files)`);
       console.log(`  ✓ Notes (/api/notes)`);
+      console.log(`  ✓ Labor (/api/labor)`);
       console.log(`  ✓ ML Analysis (/api/ml-analysis)`);
       console.log(`========================================`);
     });

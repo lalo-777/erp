@@ -1,0 +1,218 @@
+<div
+  class="modal fade"
+  id="newLaborTimesheetModal"
+  tabindex="-1"
+  aria-labelledby="newLaborTimesheetModalLabel"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newLaborTimesheetModalLabel">{{ modalTitle() }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          [disabled]="isSaving()"
+          (click)="closeModal()"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <form [formGroup]="timesheetForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          @if (isLoading()) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else {
+            @if (error()) {
+              <div class="alert alert-danger" role="alert">
+                {{ error() }}
+              </div>
+            }
+
+            <!-- Timesheet Code (Display Only) -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="alert alert-info d-flex align-items-center">
+                  <i class="bi bi-info-circle me-2"></i>
+                  <div>
+                    <strong>Código de Hoja de Tiempo:</strong> {{ timesheetCode() }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Worker and Project Information -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="worker_name" class="form-label">
+                  Nombre del Trabajador <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="worker_name"
+                  formControlName="worker_name"
+                  placeholder="Ej: Juan Pérez García"
+                  [class.is-invalid]="isFieldInvalid('worker_name')"
+                />
+                @if (isFieldInvalid('worker_name')) {
+                  <div class="invalid-feedback">{{ getFieldError('worker_name') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label for="project_id" class="form-label">
+                  Proyecto (Opcional)
+                </label>
+                <select
+                  class="form-select"
+                  id="project_id"
+                  formControlName="project_id"
+                  [class.is-invalid]="isFieldInvalid('project_id')"
+                >
+                  <option [ngValue]="null">Sin proyecto asignado</option>
+                  @for (project of projects(); track project.id) {
+                    <option [ngValue]="project.id">
+                      {{ project.project_code }} - {{ project.project_name }}
+                    </option>
+                  }
+                </select>
+                <small class="form-text text-muted">Asigna el trabajo a un proyecto específico</small>
+              </div>
+            </div>
+
+            <!-- Date and Work Information -->
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="work_date" class="form-label">
+                  Fecha de Trabajo <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="work_date"
+                  formControlName="work_date"
+                  [class.is-invalid]="isFieldInvalid('work_date')"
+                />
+                @if (isFieldInvalid('work_date')) {
+                  <div class="invalid-feedback">{{ getFieldError('work_date') }}</div>
+                }
+              </div>
+
+              <div class="col-md-4">
+                <label for="hours_worked" class="form-label">
+                  Horas Trabajadas <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="hours_worked"
+                  formControlName="hours_worked"
+                  step="0.5"
+                  min="0.01"
+                  max="24"
+                  placeholder="0.0"
+                  [class.is-invalid]="isFieldInvalid('hours_worked')"
+                />
+                @if (isFieldInvalid('hours_worked')) {
+                  <div class="invalid-feedback">{{ getFieldError('hours_worked') }}</div>
+                }
+                <small class="form-text text-muted">Máximo 24 horas por día</small>
+              </div>
+
+              <div class="col-md-4">
+                <label for="performance_score" class="form-label">
+                  Calificación de Desempeño
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="performance_score"
+                  formControlName="performance_score"
+                  step="0.1"
+                  min="0"
+                  max="10"
+                  placeholder="0.0 - 10.0"
+                  [class.is-invalid]="isFieldInvalid('performance_score')"
+                />
+                @if (isFieldInvalid('performance_score')) {
+                  <div class="invalid-feedback">{{ getFieldError('performance_score') }}</div>
+                }
+                <small class="form-text text-muted">Escala del 0 al 10</small>
+              </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="hourly_rate" class="form-label">
+                  Tarifa por Hora <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="hourly_rate"
+                    formControlName="hourly_rate"
+                    step="0.01"
+                    min="0.01"
+                    placeholder="0.00"
+                    [class.is-invalid]="isFieldInvalid('hourly_rate')"
+                  />
+                </div>
+                @if (isFieldInvalid('hourly_rate')) {
+                  <div class="invalid-feedback d-block">{{ getFieldError('hourly_rate') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Pago Total Calculado</label>
+                <div class="alert alert-success mb-0">
+                  <strong class="fs-5">{{ formatCurrency(calculatedPayment()) }}</strong>
+                  <br>
+                  <small>{{ timesheetForm.get('hours_worked')?.value || 0 }} hrs ×
+                    {{ formatCurrency(timesheetForm.get('hourly_rate')?.value || 0) }} /hr</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <label for="notes" class="form-label">Notas Adicionales</label>
+                <textarea
+                  class="form-control"
+                  id="notes"
+                  formControlName="notes"
+                  rows="3"
+                  placeholder="Detalles adicionales sobre el trabajo realizado, tareas específicas, etc."
+                ></textarea>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" [disabled]="isSaving()" (click)="closeModal()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="isSaving() || isLoading()">
+            @if (isSaving()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Guardando...
+            } @else {
+              <i class="bi bi-save me-2"></i>
+              {{ isEditMode() ? 'Actualizar' : 'Crear' }} Hoja de Tiempo
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

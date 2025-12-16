@@ -1,0 +1,243 @@
+<div class="container-fluid">
+  <!-- Page Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <a routerLink="/labor" class="btn btn-link p-0 mb-2">
+        <i class="bi bi-arrow-left me-2"></i>
+        Volver a Mano de Obra
+      </a>
+      @if (timesheet()) {
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="mb-1">Hoja de Tiempo: {{ timesheet()!.timesheet_code }}</h2>
+            <p class="text-muted mb-0">
+              <strong>Trabajador:</strong> {{ timesheet()!.worker_name }}
+            </p>
+          </div>
+          <div>
+            <app-badge [color]="getPaymentStatusBadgeClass()" [text]="getPaymentStatusLabel()"></app-badge>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="text-center py-5">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error() && !isLoading()) {
+    <div class="alert alert-danger" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      {{ error() }}
+    </div>
+  }
+
+  <!-- Timesheet Details -->
+  @if (timesheet() && !isLoading()) {
+    <!-- Action Buttons -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="d-flex gap-2">
+          @if (canApprove()) {
+            <button
+              class="btn btn-success"
+              [disabled]="isUpdatingStatus()"
+              (click)="onApprove()"
+            >
+              <i class="bi bi-check-circle me-2"></i>
+              Aprobar Pago
+            </button>
+          }
+          @if (canMarkAsPaid()) {
+            <button
+              class="btn btn-primary"
+              [disabled]="isUpdatingStatus()"
+              (click)="onMarkAsPaid()"
+            >
+              <i class="bi bi-cash-coin me-2"></i>
+              Marcar como Pagado
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Work Information Cards -->
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Fecha de Trabajo</h6>
+            <h5 class="mb-0">{{ formatDate(timesheet()!.work_date) }}</h5>
+            <small class="text-muted">Día laborado</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card border-info">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Horas Trabajadas</h6>
+            <h3 class="mb-0 text-info">{{ timesheet()!.hours_worked }}</h3>
+            <small class="text-muted">horas</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card border-primary">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Tarifa por Hora</h6>
+            <h3 class="mb-0 text-primary">{{ formatCurrency(timesheet()!.hourly_rate) }}</h3>
+            <small class="text-muted">por hora</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card border-success">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Monto Total</h6>
+            <h3 class="mb-0 text-success">{{ formatCurrency(timesheet()!.payment_amount) }}</h3>
+            <small class="text-muted">Pago total</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Details Section -->
+    <div class="row mb-4">
+      <!-- Work Details -->
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Detalles del Trabajo</h5>
+            <hr>
+            <div class="mb-3">
+              <strong>Código de Hoja:</strong>
+              <p class="mb-0">{{ timesheet()!.timesheet_code }}</p>
+            </div>
+            <div class="mb-3">
+              <strong>Trabajador:</strong>
+              <p class="mb-0">{{ timesheet()!.worker_name }}</p>
+            </div>
+            <div class="mb-3">
+              <strong>Proyecto Asignado:</strong>
+              <p class="mb-0">
+                @if (timesheet()!.project_name) {
+                  {{ timesheet()!.project_code }} - {{ timesheet()!.project_name }}
+                } @else {
+                  <span class="text-muted">Sin proyecto asignado</span>
+                }
+              </p>
+            </div>
+            <div class="mb-3">
+              <strong>Fecha de Trabajo:</strong>
+              <p class="mb-0">{{ formatDate(timesheet()!.work_date) }}</p>
+            </div>
+            <div class="mb-3">
+              <strong>Horas Trabajadas:</strong>
+              <p class="mb-0">{{ formatHours(timesheet()!.hours_worked) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment and Performance Details -->
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Pago y Desempeño</h5>
+            <hr>
+            <div class="mb-3">
+              <strong>Estado de Pago:</strong>
+              <p class="mb-0">
+                <app-badge [color]="getPaymentStatusBadgeClass()" [text]="getPaymentStatusLabel()"></app-badge>
+              </p>
+            </div>
+            <div class="mb-3">
+              <strong>Tarifa por Hora:</strong>
+              <p class="mb-0">{{ formatCurrency(timesheet()!.hourly_rate) }}</p>
+            </div>
+            <div class="mb-3">
+              <strong>Monto Total a Pagar:</strong>
+              <p class="mb-0 fs-4 text-success">{{ formatCurrency(timesheet()!.payment_amount) }}</p>
+              <small class="text-muted">
+                {{ timesheet()!.hours_worked }} hrs × {{ formatCurrency(timesheet()!.hourly_rate) }} /hr
+              </small>
+            </div>
+            @if (timesheet()!.performance_score) {
+              <div class="mb-3">
+                <strong>Desempeño:</strong>
+                <p class="mb-0">
+                  <span class="badge bg-{{ getPerformanceColor() }} fs-6">
+                    {{ timesheet()!.performance_score }}/10 - {{ getPerformanceLabel() }}
+                  </span>
+                </p>
+                <div class="progress mt-2" style="height: 20px;">
+                  <div
+                    class="progress-bar bg-{{ getPerformanceColor() }}"
+                    role="progressbar"
+                    [style.width.%]="(timesheet()!.performance_score! / 10) * 100"
+                  >
+                    {{ timesheet()!.performance_score }}/10
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes Section -->
+    @if (timesheet()!.notes) {
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Notas Adicionales</h5>
+              <hr>
+              <p class="mb-0">{{ timesheet()!.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Audit Information -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Información de Auditoría</h5>
+            <hr>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="mb-2">
+                  <strong>Creado por:</strong> {{ timesheet()!.created_by_name || 'N/A' }}
+                </p>
+                <p class="mb-0">
+                  <strong>Fecha de creación:</strong> {{ formatDate(timesheet()!.created_date) }}
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p class="mb-2">
+                  <strong>Modificado por:</strong> {{ timesheet()!.modified_by_name || 'N/A' }}
+                </p>
+                <p class="mb-0">
+                  <strong>Última modificación:</strong> {{ formatDate(timesheet()!.modified_date) }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

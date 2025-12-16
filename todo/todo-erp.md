@@ -9,7 +9,7 @@
 - [x] Phase 5: Invoices Module (7/7)
 - [x] Phase 6: Projects Module (7/7)
 - [x] Phase 7: Materials Module (6/6)
-- [ ] Phase 8: Operations Modules (0/15)
+- [ ] Phase 8: Operations Modules (5/15) - Labor Module Complete
 - [ ] Phase 9: Admin Module (0/5)
 
 ## Quick Links
@@ -24,18 +24,24 @@
 **Focus:** Phase 8 - Operations Modules Implementation
 
 **Completed in Last Sprint:**
-- [x] Phase 7: Materials Module (6/6 tasks)
-  - Verified backend integration (all endpoints working: CRUD, stats, low-stock)
-  - Fixed backend controller column names (category_id instead of material_category_id)
-  - Created Material models with complete interfaces (Material, MaterialListItem, MaterialStats, MaterialFilters, LowStockMaterial)
-  - Implemented Material Service with all methods (CRUD, stats, low-stock)
-  - Built Materials Dashboard with stats cards (total, inventory value, low stock, out of stock), search, pagination, low stock alert banner
-  - Built New Material Modal with category, unit of measure, costs, stock levels (current, minimum, reorder point)
-  - Built Material Tracking page with stock gauge, reorder alerts, material details, audit history
-  - Added helper functions for stock status (getStockStatus, getStockStatusColor, getStockStatusLabel)
+- [x] Phase 8.1: Labor/Mano de Obra Module (5/5 tasks)
+  - Created LaborTimesheet model with full schema (timesheet_code, worker_name, project_id, work_date, hours_worked, hourly_rate, performance_score, payment_amount, payment_status)
+  - Implemented labor controller with CRUD operations (getAllTimesheets, getTimesheetById, createTimesheet, updateTimesheet, deleteTimesheet)
+  - Added specialized endpoints (getLaborStats, getPayrollReport, updatePaymentStatus)
+  - Created labor routes and integrated in server.ts (/api/labor)
+  - Built Labor models and interfaces (LaborTimesheet, LaborStats, PayrollReport, CreateTimesheetRequest, UpdateTimesheetRequest, TimesheetFilters)
+  - Implemented Labor Service with all methods (CRUD, stats, payroll reports)
+  - Built Labor Dashboard with stats cards (total workers, total hours, total payroll, pending payments), search, pagination, payment status filters
+  - Built New Labor Timesheet Modal with worker selection, project assignment, hours tracking, hourly rate, performance score, automatic payment calculation
+  - Built Labor Tracking page with work details, payment information, performance indicators, approval workflow buttons
+  - Integrated labor routes in app.routes.ts and added to navigation menu
+  - Added helper functions (getPaymentStatusLabel, getPaymentStatusColor, calculatePaymentAmount, formatCurrency, formatHours)
 
 **Next Up:**
-- [ ] Start Phase 8: Operations Modules
+- [ ] Phase 8.2: Warehouse/Almacén Module (0/3)
+- [ ] Phase 8.3: Pre-Inventory Module (0/3)
+- [ ] Phase 8.4: Purchase Orders Module (0/3)
+- [ ] Phase 8.5: Fuel Requisitions Module (0/1)
 
 ## Detailed Task Files
 
@@ -58,4 +64,4 @@
 
 ---
 
-**Last Updated:** 2025-12-15 (Phase 7 Complete - Materials Module)
+**Last Updated:** 2025-12-16 (Phase 8.1 Complete - Labor/Mano de Obra Module)
