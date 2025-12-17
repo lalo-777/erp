@@ -210,6 +210,27 @@ export const routes: Routes = [
                 (m) => m.AdminDashboardComponent
               ),
           },
+          {
+            path: 'users',
+            loadComponent: () =>
+              import('./pages/admin/users-dashboard/users-dashboard.component').then(
+                (m) => m.UsersDashboardComponent
+              ),
+          },
+          {
+            path: 'catalogs',
+            loadComponent: () =>
+              import('./pages/admin/catalogs-dashboard/catalogs-dashboard.component').then(
+                (m) => m.CatalogsDashboardComponent
+              ),
+          },
+          {
+            path: 'catalogs/:catalogName',
+            loadComponent: () =>
+              import('./pages/admin/catalog-detail/catalog-detail.component').then(
+                (m) => m.CatalogDetailComponent
+              ),
+          },
         ],
       },
       {

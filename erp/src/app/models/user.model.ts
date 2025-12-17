@@ -49,3 +49,89 @@ export interface UpdateProfileRequest {
   first_name: string;
   last_name: string;
 }
+
+// User Management Interfaces
+export interface UserListItem {
+  id: number;
+  person_id: number;
+  role_id: number;
+  email: string;
+  username: string;
+  lastname: string;
+  usr_active: number;
+  expiration_date?: string;
+  created: string;
+  role_name?: string;
+  person_names?: string;
+  last_name1?: string;
+  last_name2?: string;
+}
+
+export interface UserDetail {
+  id: number;
+  person_id: number;
+  role_id: number;
+  email: string;
+  username: string;
+  lastname: string;
+  usr_active: number;
+  expiration_date?: string;
+  is_generic: number;
+  created: string;
+  modified: string;
+  role_name?: string;
+  person_names?: string;
+  last_name1?: string;
+  last_name2?: string;
+  phone1?: string;
+  phone2?: string;
+}
+
+export interface UserStats {
+  total_users: number;
+  active_users: number;
+  inactive_users: number;
+  generic_users: number;
+  new_this_month: number;
+  by_role: RoleStats[];
+}
+
+export interface RoleStats {
+  role_name: string;
+  user_count: number;
+}
+
+export interface PaginatedUsers {
+  success: boolean;
+  data: UserListItem[];
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    itemsPerPage: number;
+  };
+}
+
+export interface CreateUserRequest {
+  person_id: number;
+  role_id: number;
+  email: string;
+  usr_password: string;
+  username: string;
+  lastname: string;
+  usr_active?: number;
+  expiration_date?: string;
+  is_generic?: number;
+}
+
+export interface UpdateUserRequest {
+  person_id?: number;
+  role_id?: number;
+  email?: string;
+  usr_password?: string;
+  username?: string;
+  lastname?: string;
+  usr_active?: number;
+  expiration_date?: string;
+  is_generic?: number;
+}

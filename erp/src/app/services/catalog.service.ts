@@ -12,6 +12,12 @@ export class CatalogService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}/catalogs`;
 
+  getAllCatalogs(): Observable<{ success: boolean; data: { name: string; table: string }[] }> {
+    return this.http.get<{ success: boolean; data: { name: string; table: string }[] }>(
+      this.apiUrl
+    );
+  }
+
   getCatalog(catalogName: string): Observable<CatalogItem[]> {
     return this.http
       .get<CatalogResponse>(`${this.apiUrl}/${catalogName}`)

@@ -300,6 +300,28 @@
                   <span>Dashboard</span>
                 </a>
               </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center submenu-link"
+                  routerLink="/admin/users"
+                  routerLinkActive="active"
+                  (click)="onSidebarLinkClick()"
+                >
+                  <mat-icon class="me-2">people</mat-icon>
+                  <span>Usuarios</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center submenu-link"
+                  routerLink="/admin/catalogs"
+                  routerLinkActive="active"
+                  (click)="onSidebarLinkClick()"
+                >
+                  <mat-icon class="me-2">list</mat-icon>
+                  <span>Catálogos</span>
+                </a>
+              </li>
             </ul>
             }
           </li>
