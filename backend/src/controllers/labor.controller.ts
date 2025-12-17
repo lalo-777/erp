@@ -49,7 +49,7 @@ export const getAllTimesheets = async (req: Request, res: Response): Promise<voi
       SELECT
         lt.*,
         p.project_name,
-        p.project_code,
+        p.project_number,
         u.username as created_by_name
       FROM labor_timesheets lt
       LEFT JOIN projects p ON lt.project_id = p.id
@@ -113,7 +113,7 @@ export const getTimesheetById = async (req: Request, res: Response): Promise<voi
       SELECT
         lt.*,
         p.project_name,
-        p.project_code,
+        p.project_number,
         uc.username as created_by_name,
         um.username as modified_by_name
       FROM labor_timesheets lt
@@ -196,14 +196,14 @@ export const getLaborStats = async (req: Request, res: Response): Promise<void> 
     const projectQuery = `
       SELECT
         p.project_name,
-        p.project_code,
+        p.project_number,
         COUNT(*) as timesheet_count,
         SUM(lt.hours_worked) as total_hours,
         SUM(lt.payment_amount) as labor_cost
       FROM labor_timesheets lt
       LEFT JOIN projects p ON lt.project_id = p.id
       WHERE lt.is_active = TRUE AND lt.project_id IS NOT NULL
-      GROUP BY p.id, p.project_name, p.project_code
+      GROUP BY p.id, p.project_name, p.project_number
       ORDER BY labor_cost DESC
       LIMIT 10
     `;

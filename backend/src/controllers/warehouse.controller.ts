@@ -262,7 +262,6 @@ export const adjustInventory = async (req: Request, res: Response): Promise<void
       warehouse_location_id,
       quantity,
       transaction_type, // 'entry' or 'exit' or 'adjustment'
-      reference_number,
       notes,
       transaction_date
     } = req.body;
@@ -328,7 +327,6 @@ export const adjustInventory = async (req: Request, res: Response): Promise<void
       quantity: actualQuantity,
       unit_cost: material.unit_cost,
       total_value: actualQuantity * material.unit_cost,
-      reference_number,
       notes,
       transaction_date: transaction_date || new Date(),
       created_by: userId,
@@ -425,7 +423,6 @@ export const getTransactionHistory = async (req: Request, res: Response): Promis
         it.quantity,
         it.unit_cost,
         it.total_value,
-        it.reference_number,
         it.notes,
         it.transaction_date,
         it.created_by,

@@ -168,3 +168,38 @@ export const changePassword = async (req: Request, res: Response): Promise<void>
     });
   }
 };
+
+export const getCurrentUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = (req as any).userId;
+
+    const user = await UserMySQL.findByPk(userId);
+
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        lastname: user.lastname,
+        role_id: user.role_id,
+        person_id: user.person_id,
+        is_active: user.usr_active === 1,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to get current user',
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+};

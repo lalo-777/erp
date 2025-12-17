@@ -55,7 +55,7 @@ export const getAllRequisitions = async (req: Request, res: Response): Promise<v
       SELECT
         fr.*,
         p.project_name,
-        p.project_code,
+        p.project_number,
         u.username as created_by_name,
         ua.username as approved_by_name
       FROM fuel_requisitions fr
@@ -122,7 +122,7 @@ export const getRequisitionById = async (req: Request, res: Response): Promise<v
       SELECT
         fr.*,
         p.project_name,
-        p.project_code,
+        p.project_number,
         uc.username as created_by_name,
         um.username as modified_by_name,
         ua.username as approved_by_name
@@ -211,14 +211,14 @@ export const getFuelStats = async (req: Request, res: Response): Promise<void> =
     const projectQuery = `
       SELECT
         p.project_name,
-        p.project_code,
+        p.project_number,
         COUNT(*) as requisition_count,
         SUM(fr.quantity_liters) as total_liters,
         SUM(fr.total_amount) as fuel_cost
       FROM fuel_requisitions fr
       LEFT JOIN projects p ON fr.project_id = p.id
       WHERE fr.is_active = TRUE AND fr.project_id IS NOT NULL
-      GROUP BY p.id, p.project_name, p.project_code
+      GROUP BY p.id, p.project_name, p.project_number
       ORDER BY fuel_cost DESC
       LIMIT 10
     `;
@@ -284,11 +284,11 @@ export const getConsumptionReport = async (req: Request, res: Response): Promise
         AVG(fr.unit_price) as avg_unit_price,
         SUM(fr.total_amount) as total_cost,
         p.project_name,
-        p.project_code
+        p.project_number
       FROM fuel_requisitions fr
       LEFT JOIN projects p ON fr.project_id = p.id
       ${whereClause}
-      GROUP BY fr.vehicle_equipment_name, fr.fuel_type, p.project_name, p.project_code
+      GROUP BY fr.vehicle_equipment_name, fr.fuel_type, p.project_name, p.project_number
       ORDER BY total_cost DESC
     `;
 
