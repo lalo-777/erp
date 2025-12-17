@@ -179,7 +179,7 @@ export class Layout {
    * Logout user
    */
   protected logout(): void {
-    this.authService.logout();
+    this.authService.logout().subscribe();
   }
 
   /**

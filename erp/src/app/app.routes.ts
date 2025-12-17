@@ -163,6 +163,25 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'purchase-orders',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./pages/purchase-orders/dashboard/purchase-orders-dashboard.component').then(
+                (m) => m.PurchaseOrdersDashboardComponent
+              ),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./pages/purchase-orders/detail/purchase-order-detail.component').then(
+                (m) => m.PurchaseOrderDetailComponent
+              ),
+          },
+        ],
+      },
+      {
         path: 'admin',
         children: [
           {

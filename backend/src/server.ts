@@ -19,6 +19,7 @@ import notesRoutes from './routes/notes.routes';
 import laborRoutes from './routes/labor.routes';
 import warehouseRoutes from './routes/warehouse.routes';
 import preInventoryRoutes from './routes/pre-inventory.routes';
+import purchaseOrdersRoutes from './routes/purchase-orders.routes';
 
 const app: Application = express();
 
@@ -55,6 +56,7 @@ app.use('/api/notes', notesRoutes);
 app.use('/api/labor', laborRoutes);
 app.use('/api/warehouse', warehouseRoutes);
 app.use('/api/pre-inventory', preInventoryRoutes);
+app.use('/api/purchase-orders', purchaseOrdersRoutes);
 
 // Error handling
 app.use(notFound);
@@ -85,6 +87,7 @@ const startServer = async () => {
       console.log(`  ✓ Labor (/api/labor)`);
       console.log(`  ✓ Warehouse (/api/warehouse)`);
       console.log(`  ✓ Pre-Inventory (/api/pre-inventory)`);
+      console.log(`  ✓ Purchase Orders (/api/purchase-orders)`);
       console.log(`  ✓ ML Analysis (/api/ml-analysis)`);
       console.log(`========================================`);
     });

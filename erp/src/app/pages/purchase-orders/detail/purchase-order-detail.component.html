@@ -1,0 +1,303 @@
+<div class="container-fluid">
+  <!-- Page Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <a routerLink="/purchase-orders" class="btn btn-link p-0 mb-2">
+        <i class="bi bi-arrow-left me-2"></i>
+        Volver a Órdenes de Compra
+      </a>
+      @if (purchaseOrder()) {
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="mb-1">Orden de Compra: {{ purchaseOrder()!.po_number }}</h2>
+            <p class="text-muted mb-0">
+              <strong>Proveedor:</strong> {{ purchaseOrder()!.supplier_name }}
+            </p>
+          </div>
+          <div>
+            <app-badge [color]="getStatusBadgeClass()" [text]="getStatusLabel()"></app-badge>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="text-center py-5">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error() && !isLoading()) {
+    <div class="alert alert-danger" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      {{ error() }}
+    </div>
+  }
+
+  <!-- Purchase Order Details -->
+  @if (purchaseOrder() && !isLoading()) {
+    <!-- Action Buttons -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="d-flex gap-2">
+          @if (canEdit()) {
+            <button
+              class="btn btn-secondary"
+              (click)="onEdit()"
+            >
+              <i class="bi bi-pencil me-2"></i>
+              Editar
+            </button>
+          }
+          @if (canApprove()) {
+            <button
+              class="btn btn-success"
+              [disabled]="isUpdatingStatus()"
+              (click)="onApprove()"
+            >
+              <i class="bi bi-check-circle me-2"></i>
+              Aprobar Orden
+            </button>
+          }
+          @if (canCancel()) {
+            <button
+              class="btn btn-danger"
+              [disabled]="isUpdatingStatus()"
+              (click)="onCancel()"
+            >
+              <i class="bi bi-x-circle me-2"></i>
+              Cancelar Orden
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Information Cards -->
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Fecha de Orden</h6>
+            <h5 class="mb-0">{{ formatDate(purchaseOrder()!.order_date) }}</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Entrega Esperada</h6>
+            <h5 class="mb-0">{{ formatDate(purchaseOrder()!.expected_delivery_date) }}</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card border-info">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Subtotal</h6>
+            <h4 class="mb-0 text-info">{{ formatCurrency(purchaseOrder()!.subtotal) }}</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card border-success">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Total</h6>
+            <h3 class="mb-0 text-success">{{ formatCurrency(purchaseOrder()!.total_amount) }}</h3>
+            <small class="text-muted">IVA: {{ formatCurrency(purchaseOrder()!.tax_amount) }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Supplier Information -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="bi bi-building me-2"></i>
+              Información del Proveedor
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="mb-2">
+                  <strong>Nombre:</strong> {{ purchaseOrder()!.supplier_name }}
+                </p>
+                @if (purchaseOrder()!.supplier_contact) {
+                  <p class="mb-2">
+                    <strong>Contacto:</strong> {{ purchaseOrder()!.supplier_contact }}
+                  </p>
+                }
+              </div>
+              <div class="col-md-6">
+                @if (purchaseOrder()!.supplier_phone) {
+                  <p class="mb-2">
+                    <strong>Teléfono:</strong> {{ purchaseOrder()!.supplier_phone }}
+                  </p>
+                }
+                @if (purchaseOrder()!.supplier_email) {
+                  <p class="mb-2">
+                    <strong>Email:</strong> {{ purchaseOrder()!.supplier_email }}
+                  </p>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Items -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="bi bi-cart3 me-2"></i>
+              Artículos de la Orden
+            </h5>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Código</th>
+                    <th>Material</th>
+                    <th>Categoría</th>
+                    <th>Unidad</th>
+                    <th class="text-end">Cantidad</th>
+                    <th class="text-end">Precio Unit.</th>
+                    <th class="text-end">Importe</th>
+                    <th class="text-end">Recibido</th>
+                    @if (canReceive()) {
+                      <th class="text-end">A Recibir</th>
+                    }
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of purchaseOrder()!.items; track item.id) {
+                    <tr [class.table-success]="isItemFullyReceived(item)">
+                      <td>{{ item.material_code }}</td>
+                      <td>{{ item.material_name }}</td>
+                      <td>{{ item.category_name }}</td>
+                      <td>{{ item.unit_of_measure }}</td>
+                      <td class="text-end">{{ item.quantity }}</td>
+                      <td class="text-end">{{ formatCurrency(item.unit_price) }}</td>
+                      <td class="text-end">{{ formatCurrency(item.amount) }}</td>
+                      <td class="text-end">
+                        {{ item.received_quantity }}
+                        @if (isItemFullyReceived(item)) {
+                          <i class="bi bi-check-circle-fill text-success ms-1"></i>
+                        }
+                        @else {
+                          <div class="progress mt-1" style="height: 5px;">
+                            <div
+                              class="progress-bar"
+                              [style.width.%]="getReceivedPercentage(item)"
+                            ></div>
+                          </div>
+                        }
+                      </td>
+                      @if (canReceive()) {
+                        <td class="text-end">
+                          @if (!isItemFullyReceived(item)) {
+                            <input
+                              type="number"
+                              class="form-control form-control-sm text-end"
+                              style="width: 100px; display: inline-block;"
+                              [value]="getReceivingQuantity(item.id)"
+                              (input)="setReceivingQuantity(item.id, +$any($event.target).value)"
+                              [max]="getRemainingQuantity(item)"
+                              min="0"
+                              step="0.01"
+                            />
+                          }
+                          @else {
+                            <span class="text-muted">Completo</span>
+                          }
+                        </td>
+                      }
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Receive Materials Button -->
+    @if (canReceive()) {
+      <div class="row mb-4">
+        <div class="col-12">
+          <button
+            class="btn btn-primary btn-lg"
+            [disabled]="isReceiving()"
+            (click)="onReceiveMaterials()"
+          >
+            <i class="bi bi-box-arrow-in-down me-2"></i>
+            Recibir Materiales
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Notes -->
+    @if (purchaseOrder()!.notes) {
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h6 class="mb-0">
+                <i class="bi bi-sticky me-2"></i>
+                Notas
+              </h6>
+            </div>
+            <div class="card-body">
+              <p class="mb-0">{{ purchaseOrder()!.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Metadata -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row text-muted small">
+              <div class="col-md-6">
+                <p class="mb-1">
+                  <strong>Creado por:</strong> {{ purchaseOrder()!.created_by_name }}
+                </p>
+                <p class="mb-0">
+                  <strong>Fecha creación:</strong> {{ formatDate(purchaseOrder()!.created_date) }}
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p class="mb-1">
+                  <strong>Modificado por:</strong> {{ purchaseOrder()!.modified_by_name }}
+                </p>
+                <p class="mb-0">
+                  <strong>Última modificación:</strong> {{ formatDate(purchaseOrder()!.modified_date) }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

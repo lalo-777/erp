@@ -246,6 +246,17 @@
               <span [class.d-none]="!isExpanded()">Pre-Inventario</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a
+              class="nav-link d-flex align-items-center"
+              routerLink="/purchase-orders"
+              routerLinkActive="active"
+              (click)="onSidebarLinkClick()"
+            >
+              <mat-icon class="me-2">shopping_cart</mat-icon>
+              <span [class.d-none]="!isExpanded()">Órdenes de Compra</span>
+            </a>
+          </li>
           <!-- Administrador Menu with Submenu -->
           <li class="nav-item">
             <div

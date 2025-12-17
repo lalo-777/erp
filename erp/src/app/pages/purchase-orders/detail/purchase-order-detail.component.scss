@@ -1,0 +1,142 @@
+.container-fluid {
+  padding: 2rem;
+  max-width: 1400px;
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  &.border-primary {
+    border-left: 4px solid var(--bs-primary);
+  }
+
+  &.border-success {
+    border-left: 4px solid var(--bs-success);
+  }
+
+  &.border-warning {
+    border-left: 4px solid var(--bs-warning);
+  }
+
+  &.border-info {
+    border-left: 4px solid var(--bs-info);
+  }
+
+  &.border-danger {
+    border-left: 4px solid var(--bs-danger);
+  }
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  border-radius: 12px 12px 0 0 !important;
+  padding: 1rem 1.5rem;
+}
+
+.btn {
+  border-radius: 8px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.btn-link {
+  color: #6c757d;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    color: #495057;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.table {
+  th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+  }
+
+  tbody tr {
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #f8f9fa;
+    }
+
+    &.table-success {
+      background-color: #d1e7dd;
+
+      &:hover {
+        background-color: #c0dace;
+      }
+    }
+  }
+}
+
+.progress {
+  background-color: #e9ecef;
+  border-radius: 4px;
+}
+
+.progress-bar {
+  background-color: #0d6efd;
+  transition: width 0.3s ease;
+}
+
+h2 {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+h3,
+h4,
+h5 {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+h6 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6c757d;
+}
+
+.alert {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+.form-control-sm {
+  border-radius: 6px;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}

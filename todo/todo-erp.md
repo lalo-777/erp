@@ -9,7 +9,7 @@
 - [x] Phase 5: Invoices Module (7/7)
 - [x] Phase 6: Projects Module (7/7)
 - [x] Phase 7: Materials Module (6/6)
-- [ ] Phase 8: Operations Modules (11/15) - Labor & Warehouse Modules Complete
+- [ ] Phase 8: Operations Modules (14/15) - Labor, Warehouse, Pre-Inventory & Purchase Orders Complete
 - [ ] Phase 9: Admin Module (0/5)
 
 ## Quick Links
@@ -52,8 +52,6 @@
   - Implemented auto-generated transaction numbers (TRX-000001, TRX-000002, etc.)
 
 **Next Up:**
-- [ ] Phase 8.3: Pre-Inventory Module (0/3)
-- [ ] Phase 8.4: Purchase Orders Module (0/3)
 - [ ] Phase 8.5: Fuel Requisitions Module (0/1)
 
 ## Detailed Task Files
@@ -77,4 +75,4 @@
 
 ---
 
-**Last Updated:** 2025-12-16 (Phase 8.1 & 8.2 Complete - Labor & Warehouse Modules)
+**Last Updated:** 2025-12-16 (Phase 8.1-8.4 Complete - Labor, Warehouse, Pre-Inventory & Purchase Orders Modules)

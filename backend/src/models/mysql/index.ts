@@ -61,6 +61,9 @@ export { LaborTimesheet } from './LaborTimesheet';
 export { InventoryTransaction } from './InventoryTransaction';
 export { WarehouseReorganization } from './WarehouseReorganization';
 export { PreInventory } from './PreInventory';
+export { Supplier } from './Supplier';
+export { PurchaseOrder } from './PurchaseOrder';
+export { PurchaseOrderItem } from './PurchaseOrderItem';
 
 // Support Models
 export { File } from './File';

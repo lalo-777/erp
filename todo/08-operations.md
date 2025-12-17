@@ -178,36 +178,66 @@ Pending → Counted → Adjusted
 
 ---
 
-## 4. Purchase Orders/Pedidos Module (0/3)
+## 4. Purchase Orders/Pedidos Module (3/3) ✅ COMPLETE
 
 ### Backend
-- [ ] Create `purchase-orders.controller.ts`
-- [ ] Implement PO CRUD
-- [ ] Implement approval workflow
-- [ ] Create PO routes
+- [x] Create `PurchaseOrder` model
+- [x] Create `PurchaseOrderItem` model
+- [x] Create `purchase-orders.controller.ts` (CRUD + approval workflow)
+- [x] Create `purchase-orders.routes.ts`
+- [x] Add routes to server.ts
 
 ### Frontend
-- [ ] Create PO dashboard
-- [ ] Create new PO modal with items
-- [ ] Create supplier autocomplete
-- [ ] Create PO tracking with status workflow
-- [ ] Create receiving interface
-- [ ] Implement approval buttons
+- [x] Create purchase-order models and service
+- [x] Create purchase orders dashboard with statistics
+- [x] Create purchase order detail/tracking page
+- [x] Implement approval workflow buttons
+- [x] Implement receiving interface with quantity inputs
+- [x] Integrate routes in app.routes.ts and navigation
 
-**Features:**
-- Create purchase orders to suppliers
-- Add multiple items per PO
-- Track PO status (draft, pending, approved, received, cancelled)
-- Approval workflow
-- Receiving functionality
-- Update material stock on receive
+### Implementation Details
+**Files Created:**
+- Backend: `backend/src/models/mysql/PurchaseOrder.ts`, `backend/src/models/mysql/PurchaseOrderItem.ts`, `backend/src/models/mysql/Supplier.ts`, `backend/src/controllers/purchase-orders.controller.ts`, `backend/src/routes/purchase-orders.routes.ts`, `backend/sql/purchase_orders.sql` (ALTER TABLE para agregar campos faltantes)
+- Frontend: `erp/src/app/models/purchase-order.model.ts`, `erp/src/app/services/purchase-order.service.ts`, `erp/src/app/pages/purchase-orders/dashboard/`, `erp/src/app/pages/purchase-orders/detail/`
 
-**PO Status Flow:**
+**IMPORTANTE:** Se ajustó para usar la estructura de base de datos existente:
+- Usa tabla `purchase_orders` existente (con campos `po_number`, `supplier_id`, `po_status_id`)
+- Usa tabla `purchase_order_items` existente (con campo `amount` en lugar de `subtotal`)
+- Usa tabla `suppliers` existente
+- SQL script solo agrega campos: `is_active`, `received_quantity`, `created_date`
+- Ver `backend/sql/PURCHASE_ORDERS_MIGRATION_NOTES.md` para detalles
+
+**Status Workflow:**
 ```
 Draft → Pending Approval → Approved → Partially Received → Received
                 ↓
             Cancelled
 ```
+
+**Features Implemented:**
+- Auto-generated purchase order numbers (PO-000001, PO-000002, etc.)
+- Create purchase orders with supplier information
+- Add multiple material items per order
+- Track quantities ordered vs received
+- Approval workflow (draft → pending → approved)
+- Receiving interface with quantity validation
+- Automatic stock updates on material receipt
+- Partial receiving support
+- Status tracking (draft, pending, approved, partially received, received, cancelled)
+- Statistics dashboard (total orders, pending, approved, amounts)
+- Integration with materials module
+- Progress indicators for received items
+
+**Date Completed:** 2025-12-16
+
+**Features:**
+- Create purchase orders to suppliers
+- Add multiple items per PO
+- Track PO status (draft, pending, approved, partially received, received, cancelled)
+- Approval workflow
+- Receiving functionality with partial support
+- Automatic material stock updates on receive
+- Order statistics and reporting
 
 ---
 
