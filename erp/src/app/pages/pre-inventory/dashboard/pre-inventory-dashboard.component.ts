@@ -1,6 +1,6 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { PreInventoryService } from '../../../services/pre-inventory.service';
@@ -24,7 +24,7 @@ import { TableColumn, PaginationInfo } from '../../../shared/models/table.model'
   imports: [
     MatIconModule,
     CommonModule,
-    RouterLink,
+
     FormsModule,
     DataTableComponent,
     LoadingSpinnerComponent,

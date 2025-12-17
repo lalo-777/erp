@@ -27,7 +27,8 @@
       "Bash(python replace_icons.py:*)",
       "Bash(python add_maticon_simple.py:*)",
       "Bash(npx tsc:*)",
-      "Bash(npx ng build --configuration=development)"
+      "Bash(npx ng build --configuration=development)",
+      "Bash(cat:*)"
     ]
   }
 }

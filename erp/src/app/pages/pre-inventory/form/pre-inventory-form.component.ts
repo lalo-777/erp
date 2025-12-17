@@ -1,6 +1,6 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { PreInventoryService } from '../../../services/pre-inventory.service';
@@ -9,7 +9,6 @@ import { WarehouseService } from '../../../services/warehouse.service';
 import { ToastService } from '../../../services/toast.service';
 import { Material } from '../../../models/material.model';
 import { WarehouseLocation } from '../../../models/warehouse.model';
-import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { debounceTime, Subject } from 'rxjs';
 
 @Component({
@@ -17,10 +16,10 @@ import { debounceTime, Subject } from 'rxjs';
   imports: [
     MatIconModule,
     CommonModule,
-    RouterLink,
+
     FormsModule,
     ReactiveFormsModule,
-    LoadingSpinnerComponent,
+
   ],
   templateUrl: './pre-inventory-form.component.html',
   styleUrl: './pre-inventory-form.component.scss',

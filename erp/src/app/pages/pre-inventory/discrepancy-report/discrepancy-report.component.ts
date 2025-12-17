@@ -16,7 +16,6 @@ import { WarehouseLocation } from '../../../models/warehouse.model';
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
-import { BadgeComponent } from '../../../shared/components/badge/badge.component';
 import { TableColumn } from '../../../shared/models/table.model';
 
 @Component({
@@ -29,7 +28,7 @@ import { TableColumn } from '../../../shared/models/table.model';
     DataTableComponent,
     LoadingSpinnerComponent,
     EmptyStateComponent,
-    BadgeComponent,
+
   ],
   templateUrl: './discrepancy-report.component.html',
   styleUrl: './discrepancy-report.component.scss',

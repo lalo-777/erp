@@ -1,6 +1,6 @@
 import { Component, signal, inject, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../../services/user.service';
@@ -10,7 +10,6 @@ import { DataTableComponent } from '../../../shared/components/data-table/data-t
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { BadgeComponent } from '../../../shared/components/badge/badge.component';
 import { UserModalComponent } from '../../../components/user-modal/user-modal.component';
 import { TableColumn, PaginationInfo, RowAction } from '../../../shared/models/table.model';
 
@@ -19,13 +18,13 @@ import { TableColumn, PaginationInfo, RowAction } from '../../../shared/models/t
   imports: [
     MatIconModule,
     CommonModule,
-    RouterLink,
+
     FormsModule,
     DataTableComponent,
     LoadingSpinnerComponent,
     EmptyStateComponent,
     ConfirmDialogComponent,
-    BadgeComponent,
+
     UserModalComponent,
   ],
   templateUrl: './users-dashboard.component.html',

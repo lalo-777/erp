@@ -9,7 +9,6 @@ import {
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AppHeader } from '../components/app-header/app-header';
 import { SearchModal } from '../components/search-modal/search-modal';
 import { AuthService } from '../services/auth.service';
 
@@ -24,7 +23,7 @@ type SidebarMode = 'collapsed' | 'expanded' | 'pinned' | 'modal';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, AppHeader, RouterLink, RouterLinkActive, SearchModal, MatIconModule, MatTooltipModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, SearchModal, MatIconModule, MatTooltipModule],
   templateUrl: './layout.html',
   styleUrl: './layout.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

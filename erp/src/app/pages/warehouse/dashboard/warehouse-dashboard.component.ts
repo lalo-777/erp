@@ -16,7 +16,6 @@ import {
 import { DataTableComponent } from '../../../shared/components/data-table/data-table.component';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
-import { BadgeComponent } from '../../../shared/components/badge/badge.component';
 import { TableColumn, PaginationInfo } from '../../../shared/models/table.model';
 import { AdjustInventoryModalComponent } from '../../../components/adjust-inventory-modal/adjust-inventory-modal.component';
 import { TransferMaterialModalComponent } from '../../../components/transfer-material-modal/transfer-material-modal.component';
@@ -31,7 +30,7 @@ import { TransferMaterialModalComponent } from '../../../components/transfer-mat
     DataTableComponent,
     LoadingSpinnerComponent,
     EmptyStateComponent,
-    BadgeComponent,
+
     AdjustInventoryModalComponent,
     TransferMaterialModalComponent,
   ],

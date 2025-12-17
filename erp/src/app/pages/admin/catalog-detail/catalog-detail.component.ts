@@ -1,6 +1,6 @@
 import { Component, signal, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { CatalogService } from '../../../services/catalog.service';
@@ -10,7 +10,6 @@ import { DataTableComponent } from '../../../shared/components/data-table/data-t
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { BadgeComponent } from '../../../shared/components/badge/badge.component';
 import { CatalogEntryModalComponent } from '../../../components/catalog-entry-modal/catalog-entry-modal.component';
 import { TableColumn, RowAction } from '../../../shared/models/table.model';
 
@@ -19,13 +18,13 @@ import { TableColumn, RowAction } from '../../../shared/models/table.model';
   imports: [
     MatIconModule,
     CommonModule,
-    RouterLink,
+
     FormsModule,
     DataTableComponent,
     LoadingSpinnerComponent,
     EmptyStateComponent,
     ConfirmDialogComponent,
-    BadgeComponent,
+
     CatalogEntryModalComponent,
   ],
   templateUrl: './catalog-detail.component.html',

@@ -1,6 +1,6 @@
 import { Component, signal, inject, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { PurchaseOrderService } from '../../../services/purchase-order.service';
@@ -16,7 +16,6 @@ import { DataTableComponent } from '../../../shared/components/data-table/data-t
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { BadgeComponent } from '../../../shared/components/badge/badge.component';
 import { TableColumn, PaginationInfo, RowAction } from '../../../shared/models/table.model';
 import { NewPurchaseOrderModalComponent } from '../../../components/new-purchase-order-modal/new-purchase-order-modal.component';
 
@@ -25,13 +24,13 @@ import { NewPurchaseOrderModalComponent } from '../../../components/new-purchase
   imports: [
     MatIconModule,
     CommonModule,
-    RouterLink,
+
     FormsModule,
     DataTableComponent,
     LoadingSpinnerComponent,
     EmptyStateComponent,
     ConfirmDialogComponent,
-    BadgeComponent,
+
     NewPurchaseOrderModalComponent,
   ],
   templateUrl: './purchase-orders-dashboard.component.html',
