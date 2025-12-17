@@ -2,6 +2,7 @@ import { Component, signal, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { CatalogService } from '../../../services/catalog.service';
 import { ToastService } from '../../../services/toast.service';
 import { CatalogItem } from '../../../models/catalog.model';
@@ -16,6 +17,7 @@ import { TableColumn, RowAction } from '../../../shared/models/table.model';
 @Component({
   selector: 'app-catalog-detail',
   imports: [
+    MatIconModule,
     CommonModule,
     RouterLink,
     FormsModule,

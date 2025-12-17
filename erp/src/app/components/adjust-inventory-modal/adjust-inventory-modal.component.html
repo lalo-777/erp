@@ -9,7 +9,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="adjustInventoryModalLabel">
-          <i class="bi bi-plus-minus me-2"></i>
+          <mat-icon class="me-2">swap_vert</mat-icon>
           Ajustar Inventario
         </h5>
         <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
@@ -19,7 +19,7 @@
         <div class="modal-body">
           @if (error()) {
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <i class="bi bi-exclamation-triangle me-2"></i>
+              <mat-icon class="me-2">warning</mat-icon>
               {{ error() }}
               <button type="button" class="btn-close" (click)="error.set(null)"></button>
             </div>
@@ -145,7 +145,7 @@
           </div>
 
           <div class="alert alert-info" role="alert">
-            <i class="bi bi-info-circle me-2"></i>
+            <mat-icon class="me-2">info</mat-icon>
             <strong>Nota:</strong>
             @if (adjustForm.get('transaction_type')?.value === 'entry') {
               Este ajuste <strong>agregará</strong> la cantidad especificada al inventario.
@@ -166,7 +166,7 @@
               <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
               Procesando...
             } @else {
-              <i class="bi bi-check-circle me-2"></i>
+              <mat-icon class="me-2">check_circle</mat-icon>
               Ajustar Inventario
             }
           </button>

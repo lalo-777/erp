@@ -1,6 +1,7 @@
 import { Component, signal, output, inject, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { LaborService } from '../../services/labor.service';
 import { ProjectService } from '../../services/project.service';
 import { CreateTimesheetRequest, UpdateTimesheetRequest, calculatePaymentAmount } from '../../models/labor.model';
@@ -15,7 +16,8 @@ interface ProjectItem {
 
 @Component({
   selector: 'app-new-labor-timesheet-modal',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    MatIconModule,CommonModule, ReactiveFormsModule],
   templateUrl: './new-labor-timesheet-modal.component.html',
   styleUrl: './new-labor-timesheet-modal.component.scss',
 })

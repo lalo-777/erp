@@ -36,7 +36,7 @@
 
             @if (catalogError()) {
               <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>
+                <mat-icon class="me-2">warning</mat-icon>
                 {{ catalogError() }}
                 <button type="button" class="btn-close" (click)="catalogError.set(null)" aria-label="Close"></button>
               </div>
@@ -266,7 +266,7 @@
               <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
               Guardando...
             } @else {
-              <i class="bi bi-save me-2"></i>
+              <mat-icon class="me-2">save</mat-icon>
               {{ isEditMode() ? 'Actualizar' : 'Crear' }} Proyecto
             }
           </button>

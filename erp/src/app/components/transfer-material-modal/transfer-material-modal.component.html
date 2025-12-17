@@ -9,7 +9,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="transferMaterialModalLabel">
-          <i class="bi bi-arrow-left-right me-2"></i>
+          <mat-icon class="me-2">swap_horiz</mat-icon>
           Transferir Material
         </h5>
         <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
@@ -19,7 +19,7 @@
         <div class="modal-body">
           @if (error()) {
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <i class="bi bi-exclamation-triangle me-2"></i>
+              <mat-icon class="me-2">warning</mat-icon>
               {{ error() }}
               <button type="button" class="btn-close" (click)="error.set(null)"></button>
             </div>
@@ -145,7 +145,7 @@
               <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
               Transfiriendo...
             } @else {
-              <i class="bi bi-arrow-left-right me-2"></i>
+              <mat-icon class="me-2">swap_horiz</mat-icon>
               Transferir Material
             }
           </button>

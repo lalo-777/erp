@@ -2,6 +2,7 @@ import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { PreInventoryService } from '../../../services/pre-inventory.service';
 import { ToastService } from '../../../services/toast.service';
 import {
@@ -17,6 +18,7 @@ import { BadgeComponent } from '../../../shared/components/badge/badge.component
 @Component({
   selector: 'app-pre-inventory-detail',
   imports: [
+    MatIconModule,
     CommonModule,
     RouterLink,
     FormsModule,

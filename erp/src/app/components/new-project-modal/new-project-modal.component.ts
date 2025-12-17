@@ -1,6 +1,7 @@
 import { Component, signal, output, inject, input, effect, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { ProjectService } from '../../services/project.service';
 import { CustomerService } from '../../services/customer.service';
 import { CatalogService } from '../../services/catalog.service';
@@ -37,7 +38,8 @@ interface UserItem {
 
 @Component({
   selector: 'app-new-project-modal',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    MatIconModule,CommonModule, ReactiveFormsModule],
   templateUrl: './new-project-modal.component.html',
   styleUrl: './new-project-modal.component.scss',
 })

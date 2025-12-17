@@ -3,7 +3,7 @@
   <div class="row mb-4">
     <div class="col-12">
       <a routerLink="/purchase-orders" class="btn btn-link p-0 mb-2">
-        <i class="bi bi-arrow-left me-2"></i>
+        <mat-icon class="me-2">arrow_back</mat-icon>
         Volver a Órdenes de Compra
       </a>
       @if (purchaseOrder()) {
@@ -32,7 +32,7 @@
   <!-- Error State -->
   @if (error() && !isLoading()) {
     <div class="alert alert-danger" role="alert">
-      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      <mat-icon class="me-2">warning</mat-icon>
       {{ error() }}
     </div>
   }
@@ -48,7 +48,7 @@
               class="btn btn-secondary"
               (click)="onEdit()"
             >
-              <i class="bi bi-pencil me-2"></i>
+              <mat-icon class="me-2">edit</mat-icon>
               Editar
             </button>
           }
@@ -58,7 +58,7 @@
               [disabled]="isUpdatingStatus()"
               (click)="onApprove()"
             >
-              <i class="bi bi-check-circle me-2"></i>
+              <mat-icon class="me-2">check_circle</mat-icon>
               Aprobar Orden
             </button>
           }
@@ -68,7 +68,7 @@
               [disabled]="isUpdatingStatus()"
               (click)="onCancel()"
             >
-              <i class="bi bi-x-circle me-2"></i>
+              <mat-icon class="me-2">cancel</mat-icon>
               Cancelar Orden
             </button>
           }
@@ -122,7 +122,7 @@
         <div class="card">
           <div class="card-header">
             <h5 class="mb-0">
-              <i class="bi bi-building me-2"></i>
+              <mat-icon class="me-2">business</mat-icon>
               Información del Proveedor
             </h5>
           </div>
@@ -162,7 +162,7 @@
         <div class="card">
           <div class="card-header">
             <h5 class="mb-0">
-              <i class="bi bi-cart3 me-2"></i>
+              <mat-icon class="me-2">cart3</mat-icon>
               Artículos de la Orden
             </h5>
           </div>
@@ -197,7 +197,7 @@
                       <td class="text-end">
                         {{ item.received_quantity }}
                         @if (isItemFullyReceived(item)) {
-                          <i class="bi bi-check-circle-fill text-success ms-1"></i>
+                          <mat-icon class="text-success ms-1">check_circle</mat-icon>
                         }
                         @else {
                           <div class="progress mt-1" style="height: 5px;">
@@ -246,7 +246,7 @@
             [disabled]="isReceiving()"
             (click)="onReceiveMaterials()"
           >
-            <i class="bi bi-box-arrow-in-down me-2"></i>
+            <mat-icon class="me-2">box_arrow_in_down</mat-icon>
             Recibir Materiales
           </button>
         </div>
@@ -260,7 +260,7 @@
           <div class="card">
             <div class="card-header">
               <h6 class="mb-0">
-                <i class="bi bi-sticky me-2"></i>
+                <mat-icon class="me-2">note</mat-icon>
                 Notas
               </h6>
             </div>

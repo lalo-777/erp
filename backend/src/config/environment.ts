@@ -35,7 +35,7 @@ export const config: Config = {
   mysqlDatabase: getEnvVariable('MYSQL_DATABASE', 'erp_development'),
   jwtSecret: getEnvVariable('JWT_SECRET'),
   jwtExpiresIn: getEnvVariable('JWT_EXPIRES_IN', '7d'),
-  corsOrigin: getEnvVariable('CORS_ORIGIN', 'http://localhost:4200'),
+  corsOrigin: getEnvVariable('CORS_ORIGIN', 'http://localhost:4201'),
 };
 
 // Validate critical configuration

@@ -1,6 +1,7 @@
 import { Component, signal, output, inject, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { InvoiceService } from '../../services/invoice.service';
 import { CustomerService } from '../../services/customer.service';
 import { CatalogService } from '../../services/catalog.service';
@@ -26,7 +27,8 @@ interface InvoiceStatusItem {
 
 @Component({
   selector: 'app-new-invoice-modal',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    MatIconModule,CommonModule, ReactiveFormsModule],
   templateUrl: './new-invoice-modal.component.html',
   styleUrl: './new-invoice-modal.component.scss',
 })

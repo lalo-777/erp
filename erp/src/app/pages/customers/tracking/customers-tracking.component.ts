@@ -1,6 +1,7 @@
 import { Component, signal, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 import { CustomerService } from '../../../services/customer.service';
 import { ToastService } from '../../../services/toast.service';
 import { Customer } from '../../../models/customer.model';
@@ -13,6 +14,7 @@ import { NewCustomerModalComponent } from '../../../components/new-customer-moda
 @Component({
   selector: 'app-customers-tracking',
   imports: [
+    MatIconModule,
     CommonModule,
     RouterLink,
     LoadingSpinnerComponent,

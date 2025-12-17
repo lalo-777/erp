@@ -2,6 +2,7 @@ import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { WarehouseService } from '../../../services/warehouse.service';
 import { ToastService } from '../../../services/toast.service';
 import { StockByLocation, WarehouseLocation } from '../../../models/warehouse.model';
@@ -12,6 +13,7 @@ import { getStockStatusColor, getStockStatusLabel } from '../../../models/materi
 @Component({
   selector: 'app-stock-by-location',
   imports: [
+    MatIconModule,
     CommonModule,
     RouterLink,
     FormsModule,

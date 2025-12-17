@@ -38,7 +38,7 @@
             <div class="row mb-3">
               <div class="col-12">
                 <div class="alert alert-info d-flex align-items-center">
-                  <i class="bi bi-info-circle me-2"></i>
+                  <mat-icon class="me-2">info</mat-icon>
                   <div>
                     <strong>Código de Hoja de Tiempo:</strong> {{ timesheetCode() }}
                   </div>
@@ -207,7 +207,7 @@
               <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
               Guardando...
             } @else {
-              <i class="bi bi-save me-2"></i>
+              <mat-icon class="me-2">save</mat-icon>
               {{ isEditMode() ? 'Actualizar' : 'Crear' }} Hoja de Tiempo
             }
           </button>

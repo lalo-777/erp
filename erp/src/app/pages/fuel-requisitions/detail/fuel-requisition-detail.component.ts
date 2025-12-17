@@ -1,6 +1,7 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 import { FuelRequisitionService } from '../../../services/fuel-requisition.service';
 import { ToastService } from '../../../services/toast.service';
 import {
@@ -16,7 +17,8 @@ import { BadgeComponent } from '../../../shared/components/badge/badge.component
 
 @Component({
   selector: 'app-fuel-requisition-detail',
-  imports: [CommonModule, RouterLink, LoadingSpinnerComponent, BadgeComponent],
+  imports: [
+    MatIconModule,CommonModule, RouterLink, LoadingSpinnerComponent, BadgeComponent],
   templateUrl: './fuel-requisition-detail.component.html',
   styleUrl: './fuel-requisition-detail.component.scss',
 })

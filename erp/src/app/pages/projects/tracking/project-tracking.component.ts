@@ -1,6 +1,7 @@
 import { Component, signal, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 import { ProjectService } from '../../../services/project.service';
 import { ToastService } from '../../../services/toast.service';
 import { Project, ProjectHistoryEntry } from '../../../models/project.model';
@@ -13,6 +14,7 @@ import { NewProjectModalComponent } from '../../../components/new-project-modal/
 @Component({
   selector: 'app-project-tracking',
   imports: [
+    MatIconModule,
     CommonModule,
     RouterLink,
     LoadingSpinnerComponent,

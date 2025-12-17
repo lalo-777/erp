@@ -9,11 +9,11 @@
         </div>
         <div class="btn-group">
           <button class="btn btn-success" routerLink="/warehouse/adjust">
-            <i class="bi bi-plus-minus me-2"></i>
+            <mat-icon class="me-2">swap_vert</mat-icon>
             Ajustar Inventario
           </button>
           <button class="btn btn-primary" routerLink="/warehouse/transfer">
-            <i class="bi bi-arrow-left-right me-2"></i>
+            <mat-icon class="me-2">swap_horiz</mat-icon>
             Transferir Material
           </button>
         </div>
@@ -44,7 +44,7 @@
                 <small class="text-muted">Total de almacenes</small>
               </div>
               <div class="text-primary">
-                <i class="bi bi-geo-alt fs-1"></i>
+                <mat-icon class="fs-1">place</mat-icon>
               </div>
             </div>
           </div>
@@ -61,7 +61,7 @@
                 <small class="text-info">Materiales únicos</small>
               </div>
               <div class="text-info">
-                <i class="bi bi-box-seam fs-1"></i>
+                <mat-icon class="fs-1">inventory_2</mat-icon>
               </div>
             </div>
           </div>
@@ -78,7 +78,7 @@
                 <small class="text-success">{{ stats()!.total_entries }} entradas</small>
               </div>
               <div class="text-success">
-                <i class="bi bi-arrow-down-circle fs-1"></i>
+                <mat-icon class="fs-1">arrow_downward</mat-icon>
               </div>
             </div>
           </div>
@@ -95,7 +95,7 @@
                 <small class="text-danger">{{ stats()!.total_exits }} salidas</small>
               </div>
               <div class="text-danger">
-                <i class="bi bi-arrow-up-circle fs-1"></i>
+                <mat-icon class="fs-1">arrow_upward</mat-icon>
               </div>
             </div>
           </div>
@@ -110,7 +110,7 @@
       <div class="card">
         <div class="card-header bg-white">
           <h5 class="mb-0">
-            <i class="bi bi-building me-2"></i>
+            <mat-icon class="me-2">business</mat-icon>
             Ubicaciones de Almacén
           </h5>
         </div>
@@ -135,15 +135,15 @@
                         <div>
                           <h5 class="card-title mb-1">{{ location.name }}</h5>
                           <small class="text-muted">
-                            <i class="bi bi-tag me-1"></i>{{ location.alias }}
+                            <mat-icon class="me-1">local_offer</mat-icon>{{ location.alias }}
                           </small>
                         </div>
-                        <i class="bi bi-chevron-right text-muted"></i>
+                        <mat-icon class="text-muted">chevron_right</mat-icon>
                       </div>
 
                       @if (location.address) {
                         <p class="text-muted mb-3">
-                          <i class="bi bi-pin-map me-2"></i>{{ location.address }}
+                          <mat-icon class="me-2">location_on</mat-icon>{{ location.address }}
                         </p>
                       }
 
@@ -179,7 +179,7 @@
         <div class="card">
           <div class="card-header bg-white">
             <h5 class="mb-0">
-              <i class="bi bi-bar-chart me-2"></i>
+              <mat-icon class="me-2">bar_chart</mat-icon>
               Valor de Inventario por Ubicación
             </h5>
           </div>
@@ -232,12 +232,12 @@
       <div class="card">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
           <h5 class="mb-0">
-            <i class="bi bi-list-ul me-2"></i>
+            <mat-icon class="me-2">list</mat-icon>
             Transacciones Recientes
           </h5>
           <a routerLink="/warehouse/transactions" class="btn btn-sm btn-outline-primary">
             Ver Todas
-            <i class="bi bi-arrow-right ms-1"></i>
+            <mat-icon class="ms-1">arrow_forward</mat-icon>
           </a>
         </div>
         <div class="card-body">

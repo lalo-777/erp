@@ -1,6 +1,7 @@
 import { Component, signal, output, inject, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { FuelRequisitionService } from '../../services/fuel-requisition.service';
 import { ProjectService } from '../../services/project.service';
 import { CreateFuelRequisitionRequest, UpdateFuelRequisitionRequest, calculateTotalAmount } from '../../models/fuel-requisition.model';
@@ -15,7 +16,8 @@ interface ProjectItem {
 
 @Component({
   selector: 'app-new-fuel-requisition-modal',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    MatIconModule,CommonModule, ReactiveFormsModule],
   templateUrl: './new-fuel-requisition-modal.component.html',
   styleUrl: './new-fuel-requisition-modal.component.scss',
 })

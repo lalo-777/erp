@@ -48,11 +48,11 @@
           </div>
           <div class="btn-group">
             <button class="btn btn-outline-primary" (click)="onEdit()">
-              <i class="bi bi-pencil me-2"></i>
+              <mat-icon class="me-2">edit</mat-icon>
               Editar
             </button>
             <button class="btn btn-outline-danger" (click)="onDelete()">
-              <i class="bi bi-trash me-2"></i>
+              <mat-icon class="me-2">delete</mat-icon>
               Eliminar
             </button>
           </div>
@@ -67,7 +67,7 @@
         <div class="card h-100">
           <div class="card-header bg-primary text-white">
             <h5 class="mb-0">
-              <i class="bi bi-folder me-2"></i>
+              <mat-icon class="me-2">folder</mat-icon>
               Información del Proyecto
             </h5>
           </div>
@@ -105,7 +105,7 @@
         <div class="card h-100">
           <div class="card-header bg-success text-white">
             <h5 class="mb-0">
-              <i class="bi bi-currency-dollar me-2"></i>
+              <mat-icon class="me-2">attach_money</mat-icon>
               Resumen Financiero
             </h5>
           </div>
@@ -126,7 +126,7 @@
         <div class="card">
           <div class="card-header bg-info text-white">
             <h5 class="mb-0">
-              <i class="bi bi-person-circle me-2"></i>
+              <mat-icon class="me-2">account_circle</mat-icon>
               Información del Cliente
             </h5>
           </div>
@@ -160,7 +160,7 @@
                       [routerLink]="['/customers', project()!.customer_id]"
                       class="btn btn-sm btn-outline-primary"
                     >
-                      <i class="bi bi-arrow-right-circle me-1"></i>
+                      <mat-icon class="me-1">arrow_circle_right</mat-icon>
                       Ver Detalles
                     </a>
                   }
@@ -179,7 +179,7 @@
           <div class="card">
             <div class="card-header">
               <h5 class="mb-0">
-                <i class="bi bi-geo-alt me-2"></i>
+                <mat-icon class="me-2">place</mat-icon>
                 Ubicación del Proyecto
               </h5>
             </div>
@@ -203,7 +203,7 @@
           <div class="card">
             <div class="card-header">
               <h5 class="mb-0">
-                <i class="bi bi-file-text me-2"></i>
+                <mat-icon class="me-2">article</mat-icon>
                 Descripción del Proyecto
               </h5>
             </div>
@@ -221,7 +221,7 @@
         <div class="card">
           <div class="card-header">
             <h5 class="mb-0">
-              <i class="bi bi-clock-history me-2"></i>
+              <mat-icon class="me-2">history</mat-icon>
               Historial de Cambios
             </h5>
           </div>
@@ -232,7 +232,7 @@
               </div>
             } @else if (history().length === 0) {
               <div class="alert alert-info mb-0">
-                <i class="bi bi-info-circle me-2"></i>
+                <mat-icon class="me-2">info</mat-icon>
                 No hay historial de cambios disponible.
               </div>
             } @else {

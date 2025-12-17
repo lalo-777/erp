@@ -9,11 +9,11 @@
         </div>
         <div class="btn-group">
           <button class="btn btn-primary" (click)="onCreateNew()">
-            <i class="bi bi-plus-circle me-2"></i>
+            <mat-icon class="me-2">add_circle</mat-icon>
             Nuevo Conteo
           </button>
           <button class="btn btn-info" (click)="onViewDiscrepancyReport()">
-            <i class="bi bi-file-earmark-text me-2"></i>
+            <mat-icon class="me-2">description</mat-icon>
             Reporte de Discrepancias
           </button>
         </div>
@@ -44,7 +44,7 @@
                 <small class="text-muted">Registros creados</small>
               </div>
               <div class="text-primary">
-                <i class="bi bi-clipboard-check fs-1"></i>
+                <mat-icon class="fs-1">task</mat-icon>
               </div>
             </div>
           </div>
@@ -61,7 +61,7 @@
                 <small class="text-warning">Por contar</small>
               </div>
               <div class="text-warning">
-                <i class="bi bi-clock fs-1"></i>
+                <mat-icon class="fs-1">schedule</mat-icon>
               </div>
             </div>
           </div>
@@ -78,7 +78,7 @@
                 <small class="text-danger">{{ getDiscrepancyPercentage() | number:'1.1-1' }}% del total</small>
               </div>
               <div class="text-danger">
-                <i class="bi bi-exclamation-triangle fs-1"></i>
+                <mat-icon class="fs-1">warning</mat-icon>
               </div>
             </div>
           </div>
@@ -95,7 +95,7 @@
                 <small class="text-success">Discrepancias procesadas</small>
               </div>
               <div class="text-success">
-                <i class="bi bi-check-circle fs-1"></i>
+                <mat-icon class="fs-1">check_circle</mat-icon>
               </div>
             </div>
           </div>

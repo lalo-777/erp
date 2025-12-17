@@ -2,6 +2,7 @@ import { Component, signal, inject, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { CustomerService } from '../../../services/customer.service';
 import { ToastService } from '../../../services/toast.service';
 import { CustomerListItem, CustomerStats } from '../../../models/customer.model';
@@ -19,6 +20,7 @@ import { TableColumn, PaginationInfo, RowAction } from '../../../shared/models/t
     CommonModule,
     RouterLink,
     FormsModule,
+    MatIconModule,
     DataTableComponent,
     LoadingSpinnerComponent,
     EmptyStateComponent,

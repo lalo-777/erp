@@ -1,6 +1,7 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 import { LaborService } from '../../../services/labor.service';
 import { ToastService } from '../../../services/toast.service';
 import {
@@ -15,7 +16,8 @@ import { BadgeComponent } from '../../../shared/components/badge/badge.component
 
 @Component({
   selector: 'app-labor-tracking',
-  imports: [CommonModule, RouterLink, LoadingSpinnerComponent, BadgeComponent],
+  imports: [
+    MatIconModule,CommonModule, RouterLink, LoadingSpinnerComponent, BadgeComponent],
   templateUrl: './labor-tracking.component.html',
   styleUrl: './labor-tracking.component.scss',
 })

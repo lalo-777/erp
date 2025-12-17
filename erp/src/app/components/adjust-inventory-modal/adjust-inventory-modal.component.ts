@@ -1,6 +1,7 @@
 import { Component, signal, output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { WarehouseService } from '../../services/warehouse.service';
 import { MaterialService } from '../../services/material.service';
 import { WarehouseLocation } from '../../models/warehouse.model';
@@ -10,7 +11,8 @@ declare const bootstrap: any;
 
 @Component({
   selector: 'app-adjust-inventory-modal',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    MatIconModule,CommonModule, ReactiveFormsModule],
   templateUrl: './adjust-inventory-modal.component.html',
   styleUrl: './adjust-inventory-modal.component.scss',
 })

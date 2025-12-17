@@ -1,6 +1,7 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 import { MaterialService } from '../../../services/material.service';
 import { ToastService } from '../../../services/toast.service';
 import { Material, getStockStatus, getStockStatusLabel, getStockStatusColor } from '../../../models/material.model';
@@ -9,7 +10,8 @@ import { BadgeComponent } from '../../../shared/components/badge/badge.component
 
 @Component({
   selector: 'app-materials-tracking',
-  imports: [CommonModule, RouterLink, LoadingSpinnerComponent, BadgeComponent],
+  imports: [
+    MatIconModule,CommonModule, RouterLink, LoadingSpinnerComponent, BadgeComponent],
   templateUrl: './materials-tracking.component.html',
   styleUrl: './materials-tracking.component.scss',
 })

@@ -1,6 +1,7 @@
 import { Component, signal, output, inject, input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { MaterialService } from '../../services/material.service';
 import { CatalogService } from '../../services/catalog.service';
 import { CreateMaterialRequest, UpdateMaterialRequest } from '../../models/material.model';
@@ -20,7 +21,8 @@ interface UnitOfMeasureItem {
 
 @Component({
   selector: 'app-new-material-modal',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    MatIconModule,CommonModule, ReactiveFormsModule],
   templateUrl: './new-material-modal.component.html',
   styleUrl: './new-material-modal.component.scss',
 })

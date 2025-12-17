@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, MatIconModule],
   template: `
     <div class="container-fluid">
       <div class="row mb-4">
@@ -22,7 +23,7 @@ import { RouterLink } from '@angular/router';
             <div class="card-body">
               <div class="d-flex align-items-center mb-3">
                 <div class="admin-icon me-3 bg-primary bg-opacity-10">
-                  <i class="bi bi-people fs-2 text-primary"></i>
+                  <mat-icon class="fs-2 text-primary">people</mat-icon>
                 </div>
                 <div>
                   <h5 class="card-title mb-0">Gestión de Usuarios</h5>
@@ -33,7 +34,7 @@ import { RouterLink } from '@angular/router';
                 Crear, editar y gestionar usuarios del sistema. Asignar roles y controlar accesos.
               </p>
               <div class="d-flex justify-content-end">
-                <i class="bi bi-chevron-right text-primary"></i>
+                <mat-icon class="text-primary">chevron_right</mat-icon>
               </div>
             </div>
           </div>
@@ -45,7 +46,7 @@ import { RouterLink } from '@angular/router';
             <div class="card-body">
               <div class="d-flex align-items-center mb-3">
                 <div class="admin-icon me-3 bg-success bg-opacity-10">
-                  <i class="bi bi-list-ul fs-2 text-success"></i>
+                  <mat-icon class="fs-2 text-success">list</mat-icon>
                 </div>
                 <div>
                   <h5 class="card-title mb-0">Catálogos del Sistema</h5>
@@ -56,7 +57,7 @@ import { RouterLink } from '@angular/router';
                 Administrar catálogos del sistema como roles, estados, tipos de proyecto, etc.
               </p>
               <div class="d-flex justify-content-end">
-                <i class="bi bi-chevron-right text-success"></i>
+                <mat-icon class="text-success">chevron_right</mat-icon>
               </div>
             </div>
           </div>
@@ -68,7 +69,7 @@ import { RouterLink } from '@angular/router';
             <div class="card-body">
               <div class="d-flex align-items-center mb-3">
                 <div class="admin-icon me-3 bg-warning bg-opacity-10">
-                  <i class="bi bi-gear fs-2 text-warning"></i>
+                  <mat-icon class="fs-2 text-warning">settings</mat-icon>
                 </div>
                 <div>
                   <h5 class="card-title mb-0">Configuración</h5>
@@ -89,7 +90,7 @@ import { RouterLink } from '@angular/router';
             <div class="card-body">
               <div class="d-flex align-items-center mb-3">
                 <div class="admin-icon me-3 bg-info bg-opacity-10">
-                  <i class="bi bi-clock-history fs-2 text-info"></i>
+                  <mat-icon class="fs-2 text-info">history</mat-icon>
                 </div>
                 <div>
                   <h5 class="card-title mb-0">Auditoría</h5>
@@ -110,7 +111,7 @@ import { RouterLink } from '@angular/router';
             <div class="card-body">
               <div class="d-flex align-items-center mb-3">
                 <div class="admin-icon me-3 bg-danger bg-opacity-10">
-                  <i class="bi bi-file-earmark-bar-graph fs-2 text-danger"></i>
+                  <mat-icon class="fs-2 text-danger">assessment</mat-icon>
                 </div>
                 <div>
                   <h5 class="card-title mb-0">Reportes</h5>

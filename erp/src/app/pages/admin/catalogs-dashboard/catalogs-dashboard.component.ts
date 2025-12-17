@@ -2,6 +2,7 @@ import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { CatalogService } from '../../../services/catalog.service';
 import { ToastService } from '../../../services/toast.service';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
@@ -20,6 +21,7 @@ interface CatalogInfo {
     CommonModule,
     RouterLink,
     FormsModule,
+    MatIconModule,
     LoadingSpinnerComponent,
     EmptyStateComponent,
   ],
@@ -93,34 +95,34 @@ export class CatalogsDashboardComponent implements OnInit {
 
   getCatalogIcon(name: string): string {
     const iconMap: Record<string, string> = {
-      roles: 'shield-check',
-      genders: 'gender-ambiguous',
-      'marital-statuses': 'heart',
-      'person-titles': 'award',
-      nationalities: 'globe',
+      roles: 'shield',
+      genders: 'wc',
+      'marital-statuses': 'favorite',
+      'person-titles': 'military_tech',
+      nationalities: 'public',
       states: 'map',
-      'invoice-types': 'file-earmark-text',
-      'invoice-statuses': 'check-circle',
-      'payment-methods': 'credit-card',
-      'payment-statuses': 'cash-stack',
-      'expense-categories': 'tag',
-      'expense-statuses': 'clipboard-check',
-      'project-statuses': 'kanban',
+      'invoice-types': 'description',
+      'invoice-statuses': 'check_circle',
+      'payment-methods': 'credit_card',
+      'payment-statuses': 'payments',
+      'expense-categories': 'local_offer',
+      'expense-statuses': 'task',
+      'project-statuses': 'view_kanban',
       'project-types': 'folder',
-      'project-areas': 'geo-alt',
-      'contract-types': 'file-earmark-ruled',
-      'contract-statuses': 'file-earmark-check',
-      'work-order-types': 'list-task',
-      'work-order-statuses': 'check2-square',
+      'project-areas': 'place',
+      'contract-types': 'article',
+      'contract-statuses': 'verified',
+      'work-order-types': 'assignment',
+      'work-order-statuses': 'check_box',
       'labor-types': 'people',
-      'units-of-measure': 'rulers',
-      'material-categories': 'box',
-      'warehouse-locations': 'building',
-      'transaction-types': 'arrow-left-right',
-      'supplier-categories': 'truck',
-      'purchase-order-statuses': 'cart-check',
-      'fuel-types': 'fuel-pump',
-      'ml-models': 'cpu',
+      'units-of-measure': 'straighten',
+      'material-categories': 'inventory_2',
+      'warehouse-locations': 'business',
+      'transaction-types': 'swap_horiz',
+      'supplier-categories': 'local_shipping',
+      'purchase-order-statuses': 'shopping_cart_checkout',
+      'fuel-types': 'local_gas_station',
+      'ml-models': 'memory',
     };
 
     return iconMap[name] || 'list';

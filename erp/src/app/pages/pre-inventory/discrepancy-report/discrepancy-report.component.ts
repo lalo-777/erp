@@ -2,6 +2,7 @@ import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { PreInventoryService } from '../../../services/pre-inventory.service';
 import { ToastService } from '../../../services/toast.service';
 import { WarehouseService } from '../../../services/warehouse.service';
@@ -21,6 +22,7 @@ import { TableColumn } from '../../../shared/models/table.model';
 @Component({
   selector: 'app-discrepancy-report',
   imports: [
+    MatIconModule,
     CommonModule,
     RouterLink,
     FormsModule,

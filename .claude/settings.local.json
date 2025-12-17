@@ -22,7 +22,10 @@
       "Bash(timeout 10 bash:*)",
       "Bash(TOKEN=\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwiZW1haWwiOiJhZG1pbkBlcnAuY29tIiwicm9sZUlkIjoiMSIsInBlcnNvbklkIjoiMSIsImlhdCI6MTc2NTk1MzQ3MCwiZXhwIjoxNzY2NTU4MjcwfQ.h1VykjTTB90NhU3m4LRi8RI6hp6pUm_MUj3PjL39VRo\")",
       "Bash(TOKEN=\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwiZW1haWwiOiJhZG1pbkBlcnAuY29tIiwicm9sZUlkIjoiMSIsInBlcnNvbklkIjoiMSIsImlhdCI6MTc2NTk4NjE2NywiZXhwIjoxNzY2NTkwOTY3fQ.JM_2kob5QrhJ9sIL3B_VPtNHP2CcIB-gEsqJ4YUq7m0\")",
-      "Bash(timeout 30 bash:*)"
+      "Bash(timeout 30 bash:*)",
+      "Bash(python convert_icons.py:*)",
+      "Bash(python replace_icons.py:*)",
+      "Bash(python add_maticon_simple.py:*)"
     ]
   }
 }

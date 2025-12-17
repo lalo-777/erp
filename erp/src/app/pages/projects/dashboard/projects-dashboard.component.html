@@ -8,7 +8,7 @@
           <p class="text-muted mb-0">Gestión de proyectos de construcción</p>
         </div>
         <button class="btn btn-primary" (click)="onNewProject()">
-          <i class="bi bi-plus-circle me-2"></i>
+          <mat-icon class="me-2">add_circle</mat-icon>
           Nuevo Proyecto
         </button>
       </div>
@@ -38,7 +38,7 @@
                 <small class="text-muted">{{ stats()!.total_estimated_budget | currency }}</small>
               </div>
               <div class="text-primary">
-                <i class="bi bi-folder fs-1"></i>
+                <mat-icon class="fs-1">folder</mat-icon>
               </div>
             </div>
           </div>
@@ -55,7 +55,7 @@
                 <small class="text-success">En progreso</small>
               </div>
               <div class="text-success">
-                <i class="bi bi-play-circle fs-1"></i>
+                <mat-icon class="fs-1">play_circle</mat-icon>
               </div>
             </div>
           </div>
@@ -72,7 +72,7 @@
                 <small class="text-info">Finalizados</small>
               </div>
               <div class="text-info">
-                <i class="bi bi-check-circle fs-1"></i>
+                <mat-icon class="fs-1">check_circle</mat-icon>
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@
                 <small class="text-muted">{{ stats()!.total_actual_cost | currency }}</small>
               </div>
               <div class="text-{{ getBudgetUtilizationClass() }}">
-                <i class="bi bi-cash-stack fs-1"></i>
+                <mat-icon class="fs-1">payments</mat-icon>
               </div>
             </div>
           </div>
@@ -103,7 +103,7 @@
     <div class="col-md-6">
       <div class="input-group">
         <span class="input-group-text">
-          <i class="bi bi-search"></i>
+          <mat-icon>search</mat-icon>
         </span>
         <input
           type="text"

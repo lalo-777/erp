@@ -2,6 +2,7 @@ import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { PurchaseOrderService } from '../../../services/purchase-order.service';
 import { ToastService } from '../../../services/toast.service';
 import {
@@ -20,7 +21,8 @@ import { BadgeComponent } from '../../../shared/components/badge/badge.component
 
 @Component({
   selector: 'app-purchase-order-detail',
-  imports: [CommonModule, RouterLink, FormsModule, LoadingSpinnerComponent, BadgeComponent],
+  imports: [
+    MatIconModule,CommonModule, RouterLink, FormsModule, LoadingSpinnerComponent, BadgeComponent],
   templateUrl: './purchase-order-detail.component.html',
   styleUrl: './purchase-order-detail.component.scss',
 })

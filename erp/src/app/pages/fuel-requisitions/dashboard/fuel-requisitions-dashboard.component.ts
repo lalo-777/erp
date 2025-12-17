@@ -2,6 +2,7 @@ import { Component, signal, inject, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { FuelRequisitionService } from '../../../services/fuel-requisition.service';
 import { ToastService } from '../../../services/toast.service';
 import { FuelRequisition, FuelStats, getRequisitionStatusColor, getRequisitionStatusLabel, getFuelTypeLabel } from '../../../models/fuel-requisition.model';
@@ -16,6 +17,7 @@ import { TableColumn, PaginationInfo, RowAction } from '../../../shared/models/t
 @Component({
   selector: 'app-fuel-requisitions-dashboard',
   imports: [
+    MatIconModule,
     CommonModule,
     RouterLink,
     FormsModule,

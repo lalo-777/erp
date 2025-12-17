@@ -1,6 +1,7 @@
 import { Component, signal, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 import { InvoiceService } from '../../../services/invoice.service';
 import { ToastService } from '../../../services/toast.service';
 import { Invoice, InvoiceHistoryEntry } from '../../../models/invoice.model';
@@ -13,6 +14,7 @@ import { NewInvoiceModalComponent } from '../../../components/new-invoice-modal/
 @Component({
   selector: 'app-invoices-tracking',
   imports: [
+    MatIconModule,
     CommonModule,
     RouterLink,
     LoadingSpinnerComponent,

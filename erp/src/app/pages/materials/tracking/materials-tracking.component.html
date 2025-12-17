@@ -3,7 +3,7 @@
   <div class="row mb-4">
     <div class="col-12">
       <a routerLink="/materials" class="btn btn-link p-0 mb-2">
-        <i class="bi bi-arrow-left me-2"></i>
+        <mat-icon class="me-2">arrow_back</mat-icon>
         Volver a Materiales
       </a>
       @if (material()) {
@@ -32,7 +32,7 @@
   <!-- Error State -->
   @if (error() && !isLoading()) {
     <div class="alert alert-danger" role="alert">
-      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      <mat-icon class="me-2">warning</mat-icon>
       {{ error() }}
     </div>
   }
@@ -44,7 +44,7 @@
       <div class="row mb-4">
         <div class="col-12">
           <div class="alert alert-warning d-flex align-items-center" role="alert">
-            <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+            <mat-icon class="me-3 fs-4">warning</mat-icon>
             <div>
               <strong>Alerta de Reorden:</strong>
               El stock actual está por debajo del mínimo.
