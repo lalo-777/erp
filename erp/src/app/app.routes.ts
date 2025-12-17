@@ -147,6 +147,13 @@ export const routes: Routes = [
               ),
           },
           {
+            path: 'new',
+            loadComponent: () =>
+              import('./pages/pre-inventory/form/pre-inventory-form.component').then(
+                (m) => m.PreInventoryFormComponent
+              ),
+          },
+          {
             path: 'detail/:id',
             loadComponent: () =>
               import('./pages/pre-inventory/detail/pre-inventory-detail.component').then(

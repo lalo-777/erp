@@ -1,0 +1,18 @@
+.form-label {
+  &.fw-bold {
+    font-weight: 600;
+  }
+}
+
+.alert-info,
+.alert-secondary {
+  border-left: 4px solid;
+}
+
+.alert-info {
+  border-left-color: var(--bs-info);
+}
+
+.alert-secondary {
+  border-left-color: var(--bs-secondary);
+}

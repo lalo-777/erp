@@ -25,7 +25,8 @@
       "Bash(timeout 30 bash:*)",
       "Bash(python convert_icons.py:*)",
       "Bash(python replace_icons.py:*)",
-      "Bash(python add_maticon_simple.py:*)"
+      "Bash(python add_maticon_simple.py:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }
