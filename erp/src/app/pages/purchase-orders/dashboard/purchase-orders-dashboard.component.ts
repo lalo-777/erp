@@ -18,6 +18,7 @@ import { EmptyStateComponent } from '../../../shared/components/empty-state/empt
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { BadgeComponent } from '../../../shared/components/badge/badge.component';
 import { TableColumn, PaginationInfo, RowAction } from '../../../shared/models/table.model';
+import { NewPurchaseOrderModalComponent } from '../../../components/new-purchase-order-modal/new-purchase-order-modal.component';
 
 @Component({
   selector: 'app-purchase-orders-dashboard',
@@ -31,6 +32,7 @@ import { TableColumn, PaginationInfo, RowAction } from '../../../shared/models/t
     EmptyStateComponent,
     ConfirmDialogComponent,
     BadgeComponent,
+    NewPurchaseOrderModalComponent,
   ],
   templateUrl: './purchase-orders-dashboard.component.html',
   styleUrl: './purchase-orders-dashboard.component.scss',
@@ -41,6 +43,7 @@ export class PurchaseOrdersDashboardComponent implements OnInit {
   private toastService = inject(ToastService);
 
   @ViewChild(ConfirmDialogComponent) confirmDialog!: ConfirmDialogComponent;
+  @ViewChild(NewPurchaseOrderModalComponent) newPurchaseOrderModal!: NewPurchaseOrderModalComponent;
 
   // Signals
   purchaseOrders = signal<PurchaseOrder[]>([]);
@@ -153,7 +156,12 @@ export class PurchaseOrdersDashboardComponent implements OnInit {
   }
 
   onNewPurchaseOrder(): void {
-    this.router.navigate(['/purchase-orders/new']);
+    this.newPurchaseOrderModal.openModal();
+  }
+
+  onOrderSaved(): void {
+    this.loadPurchaseOrders();
+    this.loadStats();
   }
 
   onRowAction(action: RowAction): void {

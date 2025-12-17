@@ -103,4 +103,9 @@ export class PurchaseOrderService {
       `${environment.apiUrl}/catalogs/purchase-order-statuses`
     );
   }
+
+  // Get all suppliers
+  getAllSuppliers(): Observable<{ success: boolean; data: any[] }> {
+    return this.http.get<{ success: boolean; data: any[] }>(`${this.apiUrl}/suppliers`);
+  }
 }

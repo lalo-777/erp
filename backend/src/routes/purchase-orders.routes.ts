@@ -8,6 +8,7 @@ import {
   updatePurchaseOrderStatus,
   receiveMaterials,
   getPurchaseOrderStats,
+  getAllSuppliers,
 } from '../controllers/purchase-orders.controller';
 import { authenticate } from '../middleware/auth';
 
@@ -18,6 +19,7 @@ router.use(authenticate);
 
 // Specific routes FIRST (before parameterized routes)
 router.get('/stats', getPurchaseOrderStats);
+router.get('/suppliers', getAllSuppliers);
 
 // CRUD routes
 router.get('/', getAllPurchaseOrders);

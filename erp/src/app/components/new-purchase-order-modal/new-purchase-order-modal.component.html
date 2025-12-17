@@ -1,0 +1,285 @@
+<div
+  class="modal fade"
+  id="newPurchaseOrderModal"
+  tabindex="-1"
+  aria-labelledby="newPurchaseOrderModalLabel"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+>
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newPurchaseOrderModalLabel">{{ modalTitle() }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          [disabled]="isSaving()"
+          (click)="closeModal()"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          @if (isLoading()) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else {
+            @if (error()) {
+              <div class="alert alert-danger" role="alert">
+                {{ error() }}
+              </div>
+            }
+
+            <!-- Order Code Info -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="alert alert-info d-flex align-items-center">
+                  <mat-icon class="me-2">info</mat-icon>
+                  <div>
+                    <strong>Numero de Orden:</strong> Auto-generado (PO-XXXXXX)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Supplier and Project Selection -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="supplier_id" class="form-label">
+                  Proveedor <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select"
+                  id="supplier_id"
+                  formControlName="supplier_id"
+                  [class.is-invalid]="isFieldInvalid('supplier_id')"
+                >
+                  <option [ngValue]="null">Seleccionar proveedor...</option>
+                  @for (supplier of suppliers(); track supplier.id) {
+                    <option [ngValue]="supplier.id">
+                      {{ supplier.supplier_name }}
+                      @if (supplier.contact_name) {
+                        ({{ supplier.contact_name }})
+                      }
+                    </option>
+                  }
+                </select>
+                @if (isFieldInvalid('supplier_id')) {
+                  <div class="invalid-feedback">{{ getFieldError('supplier_id') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label for="project_id" class="form-label">
+                  Proyecto (Opcional)
+                </label>
+                <select
+                  class="form-select"
+                  id="project_id"
+                  formControlName="project_id"
+                >
+                  <option [ngValue]="null">Sin proyecto asignado</option>
+                  @for (project of projects(); track project.id) {
+                    <option [ngValue]="project.id">
+                      {{ project.project_code }} - {{ project.project_name }}
+                    </option>
+                  }
+                </select>
+                <small class="form-text text-muted">Asigna la orden a un proyecto especifico</small>
+              </div>
+            </div>
+
+            <!-- Order and Delivery Dates -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="order_date" class="form-label">
+                  Fecha de Orden <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="order_date"
+                  formControlName="order_date"
+                  [class.is-invalid]="isFieldInvalid('order_date')"
+                />
+                @if (isFieldInvalid('order_date')) {
+                  <div class="invalid-feedback">{{ getFieldError('order_date') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label for="expected_delivery_date" class="form-label">
+                  Fecha de Entrega Esperada
+                </label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="expected_delivery_date"
+                  formControlName="expected_delivery_date"
+                />
+                <small class="form-text text-muted">Fecha estimada de recepcion de materiales</small>
+              </div>
+            </div>
+
+            <!-- Items Section -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <label class="form-label mb-0">
+                    <strong>Materiales a Ordenar</strong> <span class="text-danger">*</span>
+                  </label>
+                  <button type="button" class="btn btn-outline-primary btn-sm" (click)="addItem()">
+                    <mat-icon class="me-1">add</mat-icon>
+                    Agregar Material
+                  </button>
+                </div>
+
+                @if (itemsFormArray.length === 0) {
+                  <div class="alert alert-warning">
+                    No hay materiales agregados. Haga clic en "Agregar Material" para comenzar.
+                  </div>
+                } @else {
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead class="table-light">
+                        <tr>
+                          <th style="width: 40%">Material</th>
+                          <th style="width: 15%">Cantidad</th>
+                          <th style="width: 20%">Precio Unitario</th>
+                          <th style="width: 20%">Subtotal</th>
+                          <th style="width: 5%"></th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="items">
+                        @for (item of itemsFormArray.controls; track $index) {
+                          <tr [formGroupName]="$index">
+                            <td>
+                              <select
+                                class="form-select form-select-sm"
+                                formControlName="material_id"
+                                [class.is-invalid]="isItemFieldInvalid($index, 'material_id')"
+                              >
+                                <option [ngValue]="null">Seleccionar...</option>
+                                @for (material of materials(); track material.id) {
+                                  <option [ngValue]="material.id">
+                                    {{ material.material_code }} - {{ material.material_name }}
+                                    @if (material.unit_of_measure) {
+                                      ({{ material.unit_of_measure }})
+                                    }
+                                  </option>
+                                }
+                              </select>
+                              @if (isItemFieldInvalid($index, 'material_id')) {
+                                <div class="invalid-feedback">{{ getItemFieldError($index, 'material_id') }}</div>
+                              }
+                            </td>
+                            <td>
+                              <input
+                                type="number"
+                                class="form-control form-control-sm"
+                                formControlName="quantity"
+                                step="0.01"
+                                min="0.01"
+                                [class.is-invalid]="isItemFieldInvalid($index, 'quantity')"
+                              />
+                              @if (isItemFieldInvalid($index, 'quantity')) {
+                                <div class="invalid-feedback">{{ getItemFieldError($index, 'quantity') }}</div>
+                              }
+                            </td>
+                            <td>
+                              <div class="input-group input-group-sm">
+                                <span class="input-group-text">$</span>
+                                <input
+                                  type="number"
+                                  class="form-control"
+                                  formControlName="unit_price"
+                                  step="0.01"
+                                  min="0.01"
+                                  [class.is-invalid]="isItemFieldInvalid($index, 'unit_price')"
+                                />
+                              </div>
+                              @if (isItemFieldInvalid($index, 'unit_price')) {
+                                <div class="invalid-feedback d-block">{{ getItemFieldError($index, 'unit_price') }}</div>
+                              }
+                            </td>
+                            <td class="text-end">
+                              <strong>{{ formatCurrency(getItemAmount($index)) }}</strong>
+                            </td>
+                            <td class="text-center">
+                              <button
+                                type="button"
+                                class="btn btn-outline-danger btn-sm"
+                                (click)="removeItem($index)"
+                                [disabled]="itemsFormArray.length === 1"
+                                title="Eliminar material"
+                              >
+                                <mat-icon>delete</mat-icon>
+                              </button>
+                            </td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <!-- Totals Section -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="notes" class="form-label">Notas Adicionales</label>
+                <textarea
+                  class="form-control"
+                  id="notes"
+                  formControlName="notes"
+                  rows="3"
+                  placeholder="Instrucciones especiales, detalles de entrega, etc."
+                ></textarea>
+              </div>
+              <div class="col-md-6">
+                <div class="card bg-light">
+                  <div class="card-body">
+                    <h6 class="card-title mb-3">Resumen de la Orden</h6>
+                    <div class="d-flex justify-content-between mb-2">
+                      <span>Subtotal:</span>
+                      <span>{{ formatCurrency(subtotal()) }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                      <span>IVA (16%):</span>
+                      <span>{{ formatCurrency(taxAmount()) }}</span>
+                    </div>
+                    <hr />
+                    <div class="d-flex justify-content-between">
+                      <strong class="fs-5">Total:</strong>
+                      <strong class="fs-5 text-primary">{{ formatCurrency(totalAmount()) }}</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" [disabled]="isSaving()" (click)="closeModal()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="isSaving() || isLoading()">
+            @if (isSaving()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Guardando...
+            } @else {
+              <mat-icon class="me-2">save</mat-icon>
+              Crear Orden de Compra
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

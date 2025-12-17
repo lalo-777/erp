@@ -608,3 +608,41 @@ export const getPurchaseOrderStats = async (req: Request, res: Response): Promis
     });
   }
 };
+
+/**
+ * Get all active suppliers
+ */
+export const getAllSuppliers = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const query = `
+      SELECT
+        s.id,
+        s.supplier_name,
+        s.contact_name,
+        s.phone,
+        s.email,
+        s.address,
+        s.payment_terms,
+        sc.name as category_name
+      FROM suppliers s
+      LEFT JOIN cat_supplier_categories sc ON s.supplier_category_id = sc.id
+      WHERE s.is_active = TRUE
+      ORDER BY s.supplier_name ASC
+    `;
+
+    const suppliers = await sequelize.query(query, {
+      type: QueryTypes.SELECT,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: suppliers,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve suppliers',
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+};

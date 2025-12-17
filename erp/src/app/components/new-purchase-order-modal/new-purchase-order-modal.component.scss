@@ -1,0 +1,45 @@
+.modal-xl {
+  max-width: 1000px;
+}
+
+.table {
+  margin-bottom: 0;
+
+  th {
+    font-size: 0.875rem;
+    vertical-align: middle;
+  }
+
+  td {
+    vertical-align: middle;
+  }
+}
+
+.form-select-sm,
+.form-control-sm {
+  font-size: 0.875rem;
+}
+
+.input-group-sm > .input-group-text {
+  font-size: 0.875rem;
+}
+
+mat-icon {
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
+}
+
+.btn mat-icon {
+  margin-right: 0;
+}
+
+.card.bg-light {
+  border: none;
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
