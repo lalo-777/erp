@@ -8,11 +8,11 @@
           <p class="text-muted mb-0">Gestión de inventario y ubicaciones</p>
         </div>
         <div class="btn-group">
-          <button class="btn btn-success" routerLink="/warehouse/adjust">
+          <button class="btn btn-success" (click)="onAdjustInventory()">
             <mat-icon class="me-2">swap_vert</mat-icon>
             Ajustar Inventario
           </button>
-          <button class="btn btn-primary" routerLink="/warehouse/transfer">
+          <button class="btn btn-primary" (click)="onTransferMaterial()">
             <mat-icon class="me-2">swap_horiz</mat-icon>
             Transferir Material
           </button>
@@ -263,4 +263,13 @@
       </div>
     </div>
   </div>
+
+  <!-- Modals -->
+  <app-adjust-inventory-modal
+    (adjustmentComplete)="onAdjustmentComplete()">
+  </app-adjust-inventory-modal>
+
+  <app-transfer-material-modal
+    (transferComplete)="onTransferComplete()">
+  </app-transfer-material-modal>
 </div>

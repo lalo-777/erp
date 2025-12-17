@@ -18,6 +18,8 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { BadgeComponent } from '../../../shared/components/badge/badge.component';
 import { TableColumn, PaginationInfo } from '../../../shared/models/table.model';
+import { AdjustInventoryModalComponent } from '../../../components/adjust-inventory-modal/adjust-inventory-modal.component';
+import { TransferMaterialModalComponent } from '../../../components/transfer-material-modal/transfer-material-modal.component';
 
 @Component({
   selector: 'app-warehouse-dashboard',
@@ -30,6 +32,8 @@ import { TableColumn, PaginationInfo } from '../../../shared/models/table.model'
     LoadingSpinnerComponent,
     EmptyStateComponent,
     BadgeComponent,
+    AdjustInventoryModalComponent,
+    TransferMaterialModalComponent,
   ],
   templateUrl: './warehouse-dashboard.component.html',
   styleUrl: './warehouse-dashboard.component.scss',
@@ -38,6 +42,9 @@ export class WarehouseDashboardComponent implements OnInit {
   private router = inject(Router);
   private warehouseService = inject(WarehouseService);
   private toastService = inject(ToastService);
+
+  @ViewChild(AdjustInventoryModalComponent) adjustInventoryModal!: AdjustInventoryModalComponent;
+  @ViewChild(TransferMaterialModalComponent) transferMaterialModal!: TransferMaterialModalComponent;
 
   // Signals
   locations = signal<WarehouseLocation[]>([]);
@@ -162,5 +169,27 @@ export class WarehouseDashboardComponent implements OnInit {
   getTotalStockValue(): number {
     if (!this.stats()) return 0;
     return this.stats()!.stock_by_location.reduce((sum, loc) => sum + (loc.stock_value || 0), 0);
+  }
+
+  onAdjustInventory(): void {
+    this.adjustInventoryModal.openModal();
+  }
+
+  onTransferMaterial(): void {
+    this.transferMaterialModal.openModal();
+  }
+
+  onAdjustmentComplete(): void {
+    this.toastService.showSuccess('Ajuste de inventario realizado exitosamente');
+    this.loadLocations();
+    this.loadStats();
+    this.loadRecentTransactions();
+  }
+
+  onTransferComplete(): void {
+    this.toastService.showSuccess('Transferencia realizada exitosamente');
+    this.loadLocations();
+    this.loadStats();
+    this.loadRecentTransactions();
   }
 }
