@@ -1,9 +1,10 @@
-import { Component, signal, output, inject, input, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, signal, output, inject, input, effect, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProjectService } from '../../services/project.service';
 import { CustomerService } from '../../services/customer.service';
 import { CatalogService } from '../../services/catalog.service';
+import { ToastService } from '../../services/toast.service';
 import { CreateProjectRequest, UpdateProjectRequest } from '../../models/project.model';
 
 declare const bootstrap: any;
@@ -45,6 +46,8 @@ export class NewProjectModalComponent {
   private projectService = inject(ProjectService);
   private customerService = inject(CustomerService);
   private catalogService = inject(CatalogService);
+  private toastService = inject(ToastService);
+  private platformId = inject(PLATFORM_ID);
 
   // Inputs
   projectId = input<number | null>(null);
@@ -59,8 +62,10 @@ export class NewProjectModalComponent {
   projectStatuses = signal<ProjectStatusItem[]>([]);
   users = signal<UserItem[]>([]);
   isLoading = signal(false);
+  isLoadingCatalogs = signal(false);
   isSaving = signal(false);
   error = signal<string | null>(null);
+  catalogError = signal<string | null>(null);
   isEditMode = signal(false);
   modalTitle = signal('Nuevo Proyecto');
 
@@ -109,6 +114,10 @@ export class NewProjectModalComponent {
   }
 
   openModal(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.loadCatalogs();
     const modalElement = document.getElementById('newProjectModal');
     if (modalElement) {
@@ -118,6 +127,10 @@ export class NewProjectModalComponent {
   }
 
   closeModal(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     if (this.modalInstance) {
       this.modalInstance.hide();
       this.resetForm();
@@ -132,9 +145,29 @@ export class NewProjectModalComponent {
       total_budget: 0,
     });
     this.error.set(null);
+    this.catalogError.set(null);
   }
 
   private loadCatalogs(): void {
+    this.isLoadingCatalogs.set(true);
+    this.catalogError.set(null);
+    let loadedCount = 0;
+    const totalCatalogs = 5;
+    const errors: string[] = [];
+
+    const checkComplete = () => {
+      loadedCount++;
+      if (loadedCount === totalCatalogs) {
+        this.isLoadingCatalogs.set(false);
+        if (errors.length > 0) {
+          this.catalogError.set(
+            'Error al cargar algunos catálogos. Por favor, recargue el formulario.'
+          );
+          this.toastService.showError('Error al cargar catálogos del formulario');
+        }
+      }
+    };
+
     // Load customers
     this.customerService.getAllCustomers(1, 1000).subscribe({
       next: (response) => {
@@ -145,8 +178,13 @@ export class NewProjectModalComponent {
           }));
           this.customers.set(customerItems);
         }
+        checkComplete();
       },
-      error: (err) => console.error('Error loading customers:', err),
+      error: (err) => {
+        console.error('Error loading customers:', err);
+        errors.push('clientes');
+        checkComplete();
+      },
     });
 
     // Load project types
@@ -155,8 +193,13 @@ export class NewProjectModalComponent {
         if (response.success) {
           this.projectTypes.set(response.data);
         }
+        checkComplete();
       },
-      error: (err) => console.error('Error loading project types:', err),
+      error: (err) => {
+        console.error('Error loading project types:', err);
+        errors.push('tipos de proyecto');
+        checkComplete();
+      },
     });
 
     // Load project areas
@@ -165,8 +208,13 @@ export class NewProjectModalComponent {
         if (response.success) {
           this.projectAreas.set(response.data);
         }
+        checkComplete();
       },
-      error: (err) => console.error('Error loading project areas:', err),
+      error: (err) => {
+        console.error('Error loading project areas:', err);
+        errors.push('áreas');
+        checkComplete();
+      },
     });
 
     // Load project statuses
@@ -182,8 +230,13 @@ export class NewProjectModalComponent {
             }
           }
         }
+        checkComplete();
       },
-      error: (err) => console.error('Error loading project statuses:', err),
+      error: (err) => {
+        console.error('Error loading project statuses:', err);
+        errors.push('estados');
+        checkComplete();
+      },
     });
 
     // Load users (project managers)
@@ -196,8 +249,13 @@ export class NewProjectModalComponent {
           }));
           this.users.set(userItems);
         }
+        checkComplete();
       },
-      error: (err) => console.error('Error loading users:', err),
+      error: (err) => {
+        console.error('Error loading users:', err);
+        errors.push('usuarios');
+        checkComplete();
+      },
     });
   }
 

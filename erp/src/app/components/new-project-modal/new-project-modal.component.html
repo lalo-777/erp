@@ -34,6 +34,23 @@
               </div>
             }
 
+            @if (catalogError()) {
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                {{ catalogError() }}
+                <button type="button" class="btn-close" (click)="catalogError.set(null)" aria-label="Close"></button>
+              </div>
+            }
+
+            @if (isLoadingCatalogs()) {
+              <div class="alert alert-info d-flex align-items-center" role="alert">
+                <div class="spinner-border spinner-border-sm me-2" role="status">
+                  <span class="visually-hidden">Cargando...</span>
+                </div>
+                <span>Cargando catálogos...</span>
+              </div>
+            }
+
             <!-- Basic Information Section -->
             <div class="row mb-3">
               <div class="col-md-6">
@@ -244,7 +261,7 @@
           <button type="button" class="btn btn-secondary" [disabled]="isSaving()" (click)="closeModal()">
             Cancelar
           </button>
-          <button type="submit" class="btn btn-primary" [disabled]="isSaving() || isLoading()">
+          <button type="submit" class="btn btn-primary" [disabled]="isSaving() || isLoading() || isLoadingCatalogs()">
             @if (isSaving()) {
               <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
               Guardando...
