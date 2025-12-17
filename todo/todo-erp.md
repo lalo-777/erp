@@ -9,7 +9,7 @@
 - [x] Phase 5: Invoices Module (7/7)
 - [x] Phase 6: Projects Module (7/7)
 - [x] Phase 7: Materials Module (6/6)
-- [ ] Phase 8: Operations Modules (14/15) - Labor, Warehouse, Pre-Inventory & Purchase Orders Complete
+- [x] Phase 8: Operations Modules (15/15) - All Modules Complete
 - [ ] Phase 9: Admin Module (0/5)
 
 ## Quick Links
@@ -51,8 +51,22 @@
   - Added helper functions (getTransactionTypeColor, getTransactionTypeIcon, getTransactionTypeLabel)
   - Implemented auto-generated transaction numbers (TRX-000001, TRX-000002, etc.)
 
+**Completed in This Sprint:**
+- [x] Phase 8.5: Fuel Requisitions Module (1/1)
+  - Created FuelRequisition model with full schema (requisition_code, vehicle_equipment_name, project_id, requisition_date, fuel_type, quantity_liters, unit_price, total_amount, odometer_reading, requisition_status, approved_by, approved_date, delivered_date)
+  - Implemented fuel-requisitions controller with CRUD operations (getAllRequisitions, getRequisitionById, createRequisition, updateRequisition, deleteRequisition)
+  - Added specialized endpoints (getFuelStats, getConsumptionReport, updateRequisitionStatus)
+  - Created fuel-requisitions routes and integrated in server.ts (/api/fuel-requisitions)
+  - Built Fuel Requisition models and interfaces (FuelRequisition, FuelStats, ConsumptionReport, CreateFuelRequisitionRequest, UpdateFuelRequisitionRequest, FuelRequisitionFilters)
+  - Implemented Fuel Requisition Service with all methods (CRUD, stats, consumption reports)
+  - Built Fuel Requisitions Dashboard with stats cards (total vehicles, total liters, total cost, pending amount), fuel type distribution, search, pagination, status/fuel type filters
+  - Built New Fuel Requisition Modal with vehicle/equipment selection, project assignment, fuel type selection, quantity/price inputs, automatic total calculation, odometer reading tracking
+  - Built Fuel Requisition Detail/Tracking page with requisition details, cost information, approval workflow buttons, status tracking
+  - Integrated fuel-requisitions routes in app.routes.ts and added to navigation menu
+  - Added helper functions (getRequisitionStatusLabel, getRequisitionStatusColor, getFuelTypeLabel, getFuelTypeColor, calculateTotalAmount, formatCurrency, formatLiters)
+
 **Next Up:**
-- [ ] Phase 8.5: Fuel Requisitions Module (0/1)
+- [ ] Phase 9: Admin Module (0/5)
 
 ## Detailed Task Files
 
@@ -75,4 +89,4 @@
 
 ---
 
-**Last Updated:** 2025-12-16 (Phase 8.1-8.4 Complete - Labor, Warehouse, Pre-Inventory & Purchase Orders Modules)
+**Last Updated:** 2025-12-16 (Phase 8 Complete - All Operations Modules Including Fuel Requisitions)

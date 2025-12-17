@@ -1,0 +1,257 @@
+<div class="container-fluid">
+  <!-- Page Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <a routerLink="/fuel-requisitions" class="btn btn-link p-0 mb-2">
+        <i class="bi bi-arrow-left me-2"></i>
+        Volver a Requisiciones de Combustible
+      </a>
+      @if (requisition()) {
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="mb-1">Requisición: {{ requisition()!.requisition_code }}</h2>
+            <p class="text-muted mb-0">
+              <strong>Vehículo/Equipo:</strong> {{ requisition()!.vehicle_equipment_name }}
+            </p>
+          </div>
+          <div>
+            <app-badge [color]="getRequisitionStatusBadgeClass()" [text]="getRequisitionStatusLabel()"></app-badge>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="text-center py-5">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error() && !isLoading()) {
+    <div class="alert alert-danger" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      {{ error() }}
+    </div>
+  }
+
+  <!-- Requisition Details -->
+  @if (requisition() && !isLoading()) {
+    <!-- Action Buttons -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="d-flex gap-2">
+          @if (canApprove()) {
+            <button
+              class="btn btn-success"
+              [disabled]="isUpdatingStatus()"
+              (click)="onApprove()"
+            >
+              <i class="bi bi-check-circle me-2"></i>
+              Aprobar Requisición
+            </button>
+          }
+          @if (canMarkAsDelivered()) {
+            <button
+              class="btn btn-primary"
+              [disabled]="isUpdatingStatus()"
+              (click)="onMarkAsDelivered()"
+            >
+              <i class="bi bi-box-seam me-2"></i>
+              Marcar como Entregada
+            </button>
+          }
+          @if (canCancel()) {
+            <button
+              class="btn btn-danger"
+              [disabled]="isUpdatingStatus()"
+              (click)="onCancel()"
+            >
+              <i class="bi bi-x-circle me-2"></i>
+              Cancelar Requisición
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Fecha de Requisición</h6>
+            <h5 class="mb-0">{{ formatDate(requisition()!.requisition_date) }}</h5>
+            <small class="text-muted">Fecha solicitada</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card border-info">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Cantidad</h6>
+            <h3 class="mb-0 text-info">{{ formatLiters(requisition()!.quantity_liters) }}</h3>
+            <small class="text-muted">{{ getFuelTypeLabel() }}</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card border-primary">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Precio Unitario</h6>
+            <h3 class="mb-0 text-primary">{{ getUnitPrice() }}</h3>
+            <small class="text-muted">por litro</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card border-success">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Monto Total</h6>
+            <h3 class="mb-0 text-success">{{ formatCurrency(requisition()!.total_amount) }}</h3>
+            <small class="text-muted">Costo total</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Details Section -->
+    <div class="row mb-4">
+      <!-- Requisition Details -->
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Detalles de la Requisición</h5>
+            <hr>
+            <div class="mb-3">
+              <strong>Código de Requisición:</strong>
+              <p class="mb-0">{{ requisition()!.requisition_code }}</p>
+            </div>
+            <div class="mb-3">
+              <strong>Vehículo/Equipo:</strong>
+              <p class="mb-0">{{ requisition()!.vehicle_equipment_name }}</p>
+            </div>
+            <div class="mb-3">
+              <strong>Proyecto Asignado:</strong>
+              <p class="mb-0">
+                @if (requisition()!.project_name) {
+                  {{ requisition()!.project_code }} - {{ requisition()!.project_name }}
+                } @else {
+                  <span class="text-muted">Sin proyecto asignado</span>
+                }
+              </p>
+            </div>
+            <div class="mb-3">
+              <strong>Tipo de Combustible:</strong>
+              <p class="mb-0">
+                <span class="badge bg-primary">{{ getFuelTypeLabel() }}</span>
+              </p>
+            </div>
+            <div class="mb-3">
+              <strong>Fecha de Requisición:</strong>
+              <p class="mb-0">{{ formatDate(requisition()!.requisition_date) }}</p>
+            </div>
+            <div class="mb-3">
+              <strong>Lectura del Odómetro:</strong>
+              <p class="mb-0">{{ getOdometerReading() }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cost and Status Details -->
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Información de Costos y Estado</h5>
+            <hr>
+            <div class="mb-3">
+              <strong>Estado de Requisición:</strong>
+              <p class="mb-0">
+                <app-badge [color]="getRequisitionStatusBadgeClass()" [text]="getRequisitionStatusLabel()"></app-badge>
+              </p>
+            </div>
+            <div class="mb-3">
+              <strong>Cantidad de Combustible:</strong>
+              <p class="mb-0">{{ formatLiters(requisition()!.quantity_liters) }}</p>
+            </div>
+            <div class="mb-3">
+              <strong>Precio por Litro:</strong>
+              <p class="mb-0">{{ getUnitPrice() }}</p>
+            </div>
+            <div class="mb-3">
+              <strong>Monto Total:</strong>
+              <p class="mb-0 fs-4 text-success">{{ formatCurrency(requisition()!.total_amount) }}</p>
+              <small class="text-muted">
+                {{ requisition()!.quantity_liters }} L × {{ getUnitPrice() }} /L
+              </small>
+            </div>
+            @if (requisition()!.approved_by_name) {
+              <div class="mb-3">
+                <strong>Aprobado por:</strong>
+                <p class="mb-0">{{ requisition()!.approved_by_name }}</p>
+                <small class="text-muted">{{ formatDateTime(requisition()!.approved_date) }}</small>
+              </div>
+            }
+            @if (requisition()!.delivered_date) {
+              <div class="mb-3">
+                <strong>Fecha de Entrega:</strong>
+                <p class="mb-0">{{ formatDateTime(requisition()!.delivered_date) }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes Section -->
+    @if (requisition()!.notes) {
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Notas Adicionales</h5>
+              <hr>
+              <p class="mb-0">{{ requisition()!.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Audit Information -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Información de Auditoría</h5>
+            <hr>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="mb-2">
+                  <strong>Creado por:</strong> {{ requisition()!.created_by_name || 'N/A' }}
+                </p>
+                <p class="mb-0">
+                  <strong>Fecha de creación:</strong> {{ formatDateTime(requisition()!.created_date) }}
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p class="mb-2">
+                  <strong>Modificado por:</strong> {{ requisition()!.modified_by_name || 'N/A' }}
+                </p>
+                <p class="mb-0">
+                  <strong>Última modificación:</strong> {{ formatDateTime(requisition()!.modified_date) }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

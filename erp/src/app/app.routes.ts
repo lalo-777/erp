@@ -182,6 +182,25 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'fuel-requisitions',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./pages/fuel-requisitions/dashboard/fuel-requisitions-dashboard.component').then(
+                (m) => m.FuelRequisitionsDashboardComponent
+              ),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./pages/fuel-requisitions/detail/fuel-requisition-detail.component').then(
+                (m) => m.FuelRequisitionDetailComponent
+              ),
+          },
+        ],
+      },
+      {
         path: 'admin',
         children: [
           {

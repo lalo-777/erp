@@ -257,6 +257,17 @@
               <span [class.d-none]="!isExpanded()">Órdenes de Compra</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a
+              class="nav-link d-flex align-items-center"
+              routerLink="/fuel-requisitions"
+              routerLinkActive="active"
+              (click)="onSidebarLinkClick()"
+            >
+              <mat-icon class="me-2">local_gas_station</mat-icon>
+              <span [class.d-none]="!isExpanded()">Combustible</span>
+            </a>
+          </li>
           <!-- Administrador Menu with Submenu -->
           <li class="nav-item">
             <div
