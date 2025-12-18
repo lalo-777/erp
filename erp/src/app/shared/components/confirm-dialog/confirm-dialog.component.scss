@@ -1,122 +1,250 @@
+// ===========================================
+// CONFIRM DIALOG COMPONENT - Estilos Modernos
+// ===========================================
+
 .modal-content {
   border: none;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
 }
 
+// ===========================================
+// MODAL HEADER
+// ===========================================
 .modal-header {
-  padding: 1rem 1rem 0 1rem;
+  padding: var(--space-4) var(--space-4) 0 var(--space-4);
+  border: none;
+  background: transparent;
 
   .btn-close {
-    &:focus {
-      box-shadow: none;
+    opacity: 0.5;
+    transition: var(--transition-fast);
+    padding: var(--space-2);
+    border-radius: var(--border-radius);
+
+    &:hover {
+      opacity: 1;
+      background: var(--color-gray-100);
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 2px var(--color-primary-light);
     }
   }
 }
 
+// ===========================================
+// MODAL BODY
+// ===========================================
 .modal-body {
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+
   .icon-container {
+    margin-bottom: var(--space-5);
+
     .icon {
-      font-size: 64px;
+      font-size: 72px;
       display: inline-block;
-      animation: scaleIn 0.3s ease-out;
+      animation: iconBounce 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+      // Color variants usando variables CSS
+      &.text-danger { color: var(--color-danger) !important; }
+      &.text-warning { color: var(--color-warning) !important; }
+      &.text-info { color: var(--color-info) !important; }
+      &.text-primary { color: var(--color-primary) !important; }
+      &.text-success { color: var(--color-success) !important; }
     }
   }
 
   .modal-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #212529;
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-3);
+    letter-spacing: -0.02em;
   }
 
+  .modal-message,
   p {
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    line-height: var(--line-height-relaxed);
+    max-width: 380px;
+    margin: 0 auto;
   }
 }
 
+// ===========================================
+// MODAL FOOTER
+// ===========================================
 .modal-footer {
-  padding: 0 1.5rem 1.5rem 1.5rem;
+  padding: 0 var(--space-6) var(--space-6) var(--space-6);
+  justify-content: center;
+  gap: var(--space-4);
+  border: none;
+  background: transparent;
 
   .btn {
-    min-width: 100px;
-    font-weight: 500;
-    transition: all 0.2s;
+    min-width: 120px;
+    padding: var(--space-3) var(--space-6);
+    font-weight: var(--font-weight-medium);
+    border-radius: var(--border-radius);
+    transition: var(--transition-all);
 
-    &:hover {
+    &:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--shadow-md);
     }
 
-    &:active {
+    &:active:not(:disabled) {
       transform: translateY(0);
     }
   }
+
+  // Cancel/Secondary button
+  .btn-secondary {
+    background: var(--color-white);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+
+    &:hover:not(:disabled) {
+      background: var(--color-gray-100);
+      border-color: var(--border-color-dark);
+      color: var(--text-primary);
+    }
+  }
+
+  // Danger button
+  .btn-danger {
+    background: var(--color-danger);
+    border: none;
+    color: var(--color-white);
+
+    &:hover:not(:disabled) {
+      background: var(--color-danger-light);
+      box-shadow: var(--shadow-danger);
+    }
+  }
+
+  // Warning button
+  .btn-warning {
+    background: var(--color-warning);
+    border: none;
+    color: var(--color-gray-900);
+
+    &:hover:not(:disabled) {
+      background: var(--color-warning-light);
+      box-shadow: var(--shadow-warning);
+    }
+  }
+
+  // Primary button
+  .btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+    color: var(--color-white);
+
+    &:hover:not(:disabled) {
+      background: var(--gradient-primary-hover);
+      box-shadow: var(--shadow-primary);
+    }
+  }
+
+  // Info button
+  .btn-info {
+    background: var(--color-info);
+    border: none;
+    color: var(--color-gray-900);
+
+    &:hover:not(:disabled) {
+      background: var(--color-info-light);
+    }
+  }
 }
 
-// Animations
-@keyframes scaleIn {
-  from {
+// ===========================================
+// ANIMATIONS
+// ===========================================
+@keyframes iconBounce {
+  0% {
     transform: scale(0);
     opacity: 0;
   }
-  to {
+  50% {
+    transform: scale(1.15);
+  }
+  70% {
+    transform: scale(0.95);
+  }
+  100% {
     transform: scale(1);
     opacity: 1;
   }
 }
 
-// Variant specific styles
-.text-danger {
-  color: #dc3545 !important;
-}
-
-.text-warning {
-  color: #ffc107 !important;
-}
-
-.text-info {
-  color: #0dcaf0 !important;
-}
-
-.text-primary {
-  color: #0d6efd !important;
-}
-
-// Modal animation
+// Modal entrance animation
 .modal.fade .modal-dialog {
-  transition: transform 0.3s ease-out;
-  transform: scale(0.7);
+  transition: transform var(--transition-slow), opacity var(--transition-slow);
+  transform: scale(0.85) translateY(-20px);
+  opacity: 0;
 }
 
 .modal.show .modal-dialog {
-  transform: scale(1);
+  transform: scale(1) translateY(0);
+  opacity: 1;
 }
 
-// Responsive
+// ===========================================
+// RESPONSIVE
+// ===========================================
 @media (max-width: 576px) {
   .modal-body {
-    padding: 2rem 1rem !important;
+    padding: var(--space-6) var(--space-4);
 
     .icon-container .icon {
-      font-size: 48px;
+      font-size: 56px;
     }
 
     .modal-title {
-      font-size: 1.25rem;
+      font-size: var(--font-size-xl);
     }
 
+    .modal-message,
     p {
-      font-size: 0.9rem;
+      font-size: var(--font-size-sm);
     }
   }
 
   .modal-footer {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--space-3);
+    padding: 0 var(--space-4) var(--space-5) var(--space-4);
 
     .btn {
       width: 100%;
     }
+  }
+}
+
+// ===========================================
+// VARIANT SPECIFIC BACKGROUNDS (opcional)
+// ===========================================
+.confirm-dialog-danger {
+  .modal-header {
+    background: linear-gradient(180deg, rgba(var(--color-danger-rgb), 0.05) 0%, transparent 100%);
+  }
+}
+
+.confirm-dialog-warning {
+  .modal-header {
+    background: linear-gradient(180deg, rgba(var(--color-warning-rgb), 0.1) 0%, transparent 100%);
+  }
+}
+
+.confirm-dialog-success {
+  .modal-header {
+    background: linear-gradient(180deg, rgba(var(--color-success-rgb), 0.05) 0%, transparent 100%);
   }
 }

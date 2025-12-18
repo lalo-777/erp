@@ -1,0 +1,2 @@
+Desarrollar e implementar cinco módulos de machine learning: predicción de costos de proyecto (Random Forest Regressasor), predicción de duración (Gradient Boosting Regressor), agrupamiento de clientes (K-Means Clustering), predicción de rotación de personal (Logistic Regression), y optimización de inventarios (ARIMA). Estos modelos transformaron grandes volúmenes de datos complejos en información comprensible, dinámica y de alto valor estratégico para la gestión.
+

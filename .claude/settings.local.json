@@ -28,7 +28,9 @@
       "Bash(python add_maticon_simple.py:*)",
       "Bash(npx tsc:*)",
       "Bash(npx ng build --configuration=development)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(test:*)"
     ]
   }
 }

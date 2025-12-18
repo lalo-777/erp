@@ -173,19 +173,19 @@ export function getTransactionTypeColor(type: string): string {
   }
 }
 
-// Helper function to get transaction type icon
+// Helper function to get transaction type icon (Material Symbols)
 export function getTransactionTypeIcon(type: string): string {
   switch (type.toLowerCase()) {
     case 'entry':
-      return 'bi-arrow-down-circle';
+      return 'arrow_circle_down';
     case 'exit':
-      return 'bi-arrow-up-circle';
+      return 'arrow_circle_up';
     case 'transfer':
-      return 'bi-arrow-left-right';
+      return 'swap_horiz';
     case 'adjustment':
-      return 'bi-pencil-square';
+      return 'edit_square';
     default:
-      return 'bi-question-circle';
+      return 'help';
   }
 }
 

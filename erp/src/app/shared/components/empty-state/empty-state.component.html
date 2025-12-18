@@ -1,6 +1,6 @@
 <div class="empty-state">
   <div class="empty-state-icon">
-    <span class="material-icons">{{ icon }}</span>
+    <span class="material-symbols-outlined">{{ icon }}</span>
   </div>
 
   <h3 class="empty-state-title">{{ title }}</h3>
@@ -13,7 +13,7 @@
     class="btn btn-primary mt-3"
     (click)="onActionClick()"
   >
-    <span *ngIf="actionIcon" class="material-icons me-2">{{ actionIcon }}</span>
+    <span *ngIf="actionIcon" class="material-symbols-outlined me-2">{{ actionIcon }}</span>
     {{ actionText }}
   </button>
 </div>

@@ -1,0 +1,290 @@
+// ===========================================
+// DESIGN TOKENS - ERP Sistema Balper
+// ===========================================
+// Sistema de variables CSS para consistencia visual
+// y soporte para tema oscuro (dark mode)
+// ===========================================
+
+:root {
+  // ===================
+  // PRIMARY COLORS (Azul corporativo)
+  // ===================
+  --color-primary: #013D52;
+  --color-primary-light: #5494f3;
+  --color-primary-dark: #012a3a;
+  --color-primary-rgb: 1, 61, 82;
+  --gradient-primary: linear-gradient(135deg, #013D52 0%, #5494f3 100%);
+  --gradient-primary-hover: linear-gradient(135deg, #012a3a 0%, #4180d9 100%);
+
+  // ===================
+  // SEMANTIC COLORS
+  // ===================
+  --color-success: #198754;
+  --color-success-light: #28a745;
+  --color-success-rgb: 25, 135, 84;
+
+  --color-warning: #ffc107;
+  --color-warning-light: #ffca2c;
+  --color-warning-rgb: 255, 193, 7;
+
+  --color-danger: #dc3545;
+  --color-danger-light: #e35d6a;
+  --color-danger-rgb: 220, 53, 69;
+
+  --color-info: #0dcaf0;
+  --color-info-light: #3dd5f3;
+  --color-info-rgb: 13, 202, 240;
+
+  // ===================
+  // NEUTRAL COLORS
+  // ===================
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --color-gray-50: #f8f9fa;
+  --color-gray-100: #e9ecef;
+  --color-gray-200: #dee2e6;
+  --color-gray-300: #ced4da;
+  --color-gray-400: #adb5bd;
+  --color-gray-500: #6c757d;
+  --color-gray-600: #565e64;
+  --color-gray-700: #495057;
+  --color-gray-800: #343a40;
+  --color-gray-900: #212529;
+
+  // ===================
+  // BACKGROUNDS
+  // ===================
+  --bg-body: #f8f9fa;
+  --bg-card: #ffffff;
+  --bg-sidebar: linear-gradient(to bottom, #ffffff 85%, #5494f3 100%);
+  --bg-navbar: #013D52;
+  --bg-input: #ffffff;
+  --bg-hover: rgba(1, 61, 82, 0.04);
+  --bg-active: rgba(1, 61, 82, 0.08);
+
+  // ===================
+  // TEXT COLORS
+  // ===================
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-muted: #adb5bd;
+  --text-inverse: #ffffff;
+  --text-link: #013D52;
+  --text-link-hover: #5494f3;
+
+  // ===================
+  // BORDER COLORS
+  // ===================
+  --border-color: #dee2e6;
+  --border-color-light: #e9ecef;
+  --border-color-dark: #ced4da;
+
+  // ===================
+  // TYPOGRAPHY
+  // ===================
+  --font-family-base: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+
+  --font-size-xs: 0.75rem;    // 12px
+  --font-size-sm: 0.875rem;   // 14px
+  --font-size-base: 1rem;     // 16px
+  --font-size-lg: 1.125rem;   // 18px
+  --font-size-xl: 1.25rem;    // 20px
+  --font-size-2xl: 1.5rem;    // 24px
+  --font-size-3xl: 1.875rem;  // 30px
+  --font-size-4xl: 2.25rem;   // 36px
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.25;
+  --line-height-base: 1.5;
+  --line-height-relaxed: 1.75;
+
+  // ===================
+  // SPACING SCALE
+  // ===================
+  --space-0: 0;
+  --space-1: 0.25rem;   // 4px
+  --space-2: 0.5rem;    // 8px
+  --space-3: 0.75rem;   // 12px
+  --space-4: 1rem;      // 16px
+  --space-5: 1.25rem;   // 20px
+  --space-6: 1.5rem;    // 24px
+  --space-8: 2rem;      // 32px
+  --space-10: 2.5rem;   // 40px
+  --space-12: 3rem;     // 48px
+  --space-16: 4rem;     // 64px
+
+  // ===================
+  // BORDER RADIUS
+  // ===================
+  --border-radius-sm: 4px;
+  --border-radius: 8px;
+  --border-radius-md: 10px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  --border-radius-2xl: 24px;
+  --border-radius-full: 9999px;
+
+  // ===================
+  // SHADOWS
+  // ===================
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.2);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+
+  // Colored shadows
+  --shadow-primary: 0 4px 14px rgba(1, 61, 82, 0.25);
+  --shadow-success: 0 4px 14px rgba(25, 135, 84, 0.25);
+  --shadow-danger: 0 4px 14px rgba(220, 53, 69, 0.25);
+  --shadow-warning: 0 4px 14px rgba(255, 193, 7, 0.25);
+
+  // ===================
+  // TRANSITIONS
+  // ===================
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+  --transition-slower: 0.5s ease;
+
+  // Specific transitions
+  --transition-color: color 0.15s ease;
+  --transition-bg: background-color 0.15s ease;
+  --transition-border: border-color 0.15s ease;
+  --transition-shadow: box-shadow 0.2s ease;
+  --transition-transform: transform 0.2s ease;
+  --transition-opacity: opacity 0.2s ease;
+  --transition-all: all 0.2s ease;
+
+  // ===================
+  // Z-INDEX SCALE
+  // ===================
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-toast: 1080;
+
+  // ===================
+  // LAYOUT
+  // ===================
+  --sidebar-width-expanded: 230px;
+  --sidebar-width-collapsed: 60px;
+  --navbar-height: 46px;
+  --content-max-width: 1400px;
+
+  // ===================
+  // ICON SETTINGS
+  // ===================
+  --icon-size-xs: 16px;
+  --icon-size-sm: 18px;
+  --icon-size-base: 20px;
+  --icon-size-md: 24px;
+  --icon-size-lg: 28px;
+  --icon-size-xl: 32px;
+  --icon-size-2xl: 48px;
+}
+
+// ===========================================
+// DARK THEME (Preparado para implementación)
+// ===========================================
+[data-theme="dark"] {
+  // Primary Colors (invertidos para dark)
+  --color-primary: #5494f3;
+  --color-primary-light: #7ab3ff;
+  --color-primary-dark: #3d7ad4;
+  --gradient-primary: linear-gradient(135deg, #5494f3 0%, #7ab3ff 100%);
+
+  // Backgrounds
+  --bg-body: #0f172a;
+  --bg-card: #1e293b;
+  --bg-sidebar: linear-gradient(to bottom, #1e293b 85%, #334155 100%);
+  --bg-navbar: #1e293b;
+  --bg-input: #334155;
+  --bg-hover: rgba(84, 148, 243, 0.08);
+  --bg-active: rgba(84, 148, 243, 0.12);
+
+  // Text Colors
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0f172a;
+  --text-link: #5494f3;
+  --text-link-hover: #7ab3ff;
+
+  // Neutral Colors
+  --color-gray-50: #1e293b;
+  --color-gray-100: #334155;
+  --color-gray-200: #475569;
+  --color-gray-300: #64748b;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #cbd5e1;
+  --color-gray-600: #e2e8f0;
+  --color-gray-700: #f1f5f9;
+  --color-gray-800: #f8fafc;
+  --color-gray-900: #ffffff;
+
+  // Border Colors
+  --border-color: #334155;
+  --border-color-light: #475569;
+  --border-color-dark: #1e293b;
+
+  // Shadows (más sutiles en dark mode)
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.7);
+}
+
+// ===========================================
+// UTILITY MIXINS
+// ===========================================
+
+// Focus ring mixin
+@mixin focus-ring {
+  outline: 2px solid var(--color-primary-light);
+  outline-offset: 2px;
+}
+
+// Card mixin
+@mixin card-base {
+  background: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color-light);
+}
+
+// Gradient text mixin
+@mixin gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Truncate text mixin
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Smooth scroll
+@mixin smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}

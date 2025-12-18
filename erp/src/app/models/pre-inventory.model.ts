@@ -149,19 +149,19 @@ export function getPreInventoryStatusColor(statusId: number): 'primary' | 'succe
   }
 }
 
-// Helper function to get status icon
+// Helper function to get status icon (Material Symbols)
 export function getPreInventoryStatusIcon(statusId: number): string {
   switch (statusId) {
     case 1: // Pending
-      return 'bi-clock';
+      return 'schedule';
     case 2: // Counted
-      return 'bi-check-circle';
+      return 'check_circle';
     case 3: // Adjusted
-      return 'bi-check-circle-fill';
+      return 'verified';
     case 4: // Cancelled
-      return 'bi-x-circle';
+      return 'cancel';
     default:
-      return 'bi-question-circle';
+      return 'help';
   }
 }
 
@@ -172,11 +172,11 @@ export function getDiscrepancyColor(discrepancy: number): 'primary' | 'success' 
   return 'danger';
 }
 
-// Helper function to get discrepancy icon
+// Helper function to get discrepancy icon (Material Symbols)
 export function getDiscrepancyIcon(discrepancy: number): string {
-  if (discrepancy === 0) return 'bi-check-circle';
-  if (discrepancy > 0) return 'bi-arrow-up-circle';
-  return 'bi-arrow-down-circle';
+  if (discrepancy === 0) return 'check_circle';
+  if (discrepancy > 0) return 'arrow_circle_up';
+  return 'arrow_circle_down';
 }
 
 // Helper function to get discrepancy label

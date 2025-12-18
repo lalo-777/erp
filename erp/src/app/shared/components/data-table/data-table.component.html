@@ -21,7 +21,7 @@
           >
             <div class="th-content">
               <span>{{ column.header }}</span>
-              <span *ngIf="column.sortable" class="material-icons sort-icon">
+              <span *ngIf="column.sortable" class="material-symbols-outlined sort-icon">
                 {{ getSortIcon(column) }}
               </span>
             </div>
@@ -34,7 +34,7 @@
         <tr *ngIf="!loading && data.length === 0">
           <td [attr.colspan]="columns.length + (showActions ? 1 : 0)" class="text-center py-5">
             <div class="empty-state">
-              <span class="material-icons empty-icon">inbox</span>
+              <span class="material-symbols-outlined empty-icon">inbox</span>
               <p class="text-muted mb-0">{{ emptyMessage }}</p>
             </div>
           </td>
@@ -66,7 +66,7 @@
                 (click)="onAction('view', row)"
                 [title]="actionLabels.view"
               >
-                <span class="material-icons">visibility</span>
+                <span class="material-symbols-outlined">visibility</span>
               </button>
               <button
                 type="button"
@@ -74,7 +74,7 @@
                 (click)="onAction('edit', row)"
                 [title]="actionLabels.edit"
               >
-                <span class="material-icons">edit</span>
+                <span class="material-symbols-outlined">edit</span>
               </button>
               <button
                 type="button"
@@ -82,7 +82,7 @@
                 (click)="onAction('delete', row)"
                 [title]="actionLabels.delete"
               >
-                <span class="material-icons">delete</span>
+                <span class="material-symbols-outlined">delete</span>
               </button>
             </div>
           </td>
@@ -102,7 +102,7 @@
       <ul class="pagination mb-0">
         <li class="page-item" [class.disabled]="pagination.currentPage === 1">
           <a class="page-link" (click)="onPageChange(pagination.currentPage - 1)">
-            <span class="material-icons">chevron_left</span>
+            <span class="material-symbols-outlined">chevron_left</span>
           </a>
         </li>
 
@@ -124,7 +124,7 @@
 
         <li class="page-item" [class.disabled]="pagination.currentPage === pagination.totalPages">
           <a class="page-link" (click)="onPageChange(pagination.currentPage + 1)">
-            <span class="material-icons">chevron_right</span>
+            <span class="material-symbols-outlined">chevron_right</span>
           </a>
         </li>
       </ul>
