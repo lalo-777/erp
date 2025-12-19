@@ -58,7 +58,7 @@ CREATE TABLE `materials` (
 
 LOCK TABLES `materials` WRITE;
 /*!40000 ALTER TABLE `materials` DISABLE KEYS */;
-INSERT INTO `materials` VALUES (1,'MAT-000001','Cemento Portland',1,1,125.50,50.00,100.00,75.00,'Cemento gris uso general',1,1,'2025-12-16 04:50:55','2025-12-16 04:50:55',1),(2,'MAT-000002','Varilla 3/8',1,2,85.75,50.00,25.00,40.00,'Varilla corrugada 3/8 pulgadas',1,1,'2025-12-16 04:51:05','2025-12-16 04:51:05',1);
+INSERT INTO `materials` VALUES (1,'MAT-000001','Cemento Portland',1,1,125.50,50.00,101.00,75.00,'Cemento gris uso general',1,1,'2025-12-16 04:50:55','2025-12-17 19:31:36',1),(2,'MAT-000002','Varilla 3/8',1,2,85.75,50.00,25.00,40.00,'Varilla corrugada 3/8 pulgadas',1,1,'2025-12-16 04:51:05','2025-12-16 04:51:05',1);
 /*!40000 ALTER TABLE `materials` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -71,4 +71,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-16 21:35:05
+-- Dump completed on 2025-12-19 17:29:29

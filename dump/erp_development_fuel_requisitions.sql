@@ -59,7 +59,7 @@ CREATE TABLE `fuel_requisitions` (
   CONSTRAINT `fk_fuel_created_by` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`),
   CONSTRAINT `fk_fuel_modified_by` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`),
   CONSTRAINT `fk_fuel_project` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,6 +68,7 @@ CREATE TABLE `fuel_requisitions` (
 
 LOCK TABLES `fuel_requisitions` WRITE;
 /*!40000 ALTER TABLE `fuel_requisitions` DISABLE KEYS */;
+INSERT INTO `fuel_requisitions` VALUES (1,'FR-000001','fas',1,'2025-12-17','diesel',2.00,22.00,44.00,3,'pending',NULL,NULL,NULL,NULL,1,1,'2025-12-17 19:58:49','2025-12-17 19:58:49',1);
 /*!40000 ALTER TABLE `fuel_requisitions` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -80,4 +81,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-16 21:35:03
+-- Dump completed on 2025-12-19 17:29:30

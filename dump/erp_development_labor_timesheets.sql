@@ -61,7 +61,7 @@ CREATE TABLE `labor_timesheets` (
 
 LOCK TABLES `labor_timesheets` WRITE;
 /*!40000 ALTER TABLE `labor_timesheets` DISABLE KEYS */;
-INSERT INTO `labor_timesheets` VALUES (1,'TS-000001','asdf',1,'2025-12-18',1.00,1.00,1.00,1.00,'pending',NULL,1,1,'2025-12-16 17:31:37','2025-12-16 17:31:37',1);
+INSERT INTO `labor_timesheets` VALUES (1,'TS-000001','asdf',1,'2025-12-18',1.00,1.00,1.00,1.00,'approved',NULL,1,1,'2025-12-16 17:31:37','2025-12-18 17:38:04',1);
 /*!40000 ALTER TABLE `labor_timesheets` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -74,4 +74,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-16 21:35:01
+-- Dump completed on 2025-12-19 17:29:25

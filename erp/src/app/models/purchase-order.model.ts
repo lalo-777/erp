@@ -36,7 +36,7 @@ export interface PurchaseOrderItem {
   material_id: number;
   quantity: number;
   unit_price: number;
-  amount: number;
+  subtotal: number;
   received_quantity: number;
   created_date: string;
 

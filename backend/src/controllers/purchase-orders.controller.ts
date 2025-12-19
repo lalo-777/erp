@@ -152,7 +152,7 @@ export const getPurchaseOrderById = async (req: Request, res: Response): Promise
         mc.name as category_name
       FROM purchase_order_items poi
       LEFT JOIN materials m ON poi.material_id = m.id
-      LEFT JOIN cat_units_of_measure uom ON m.unit_of_measure_id = uom.id
+      LEFT JOIN cat_unit_of_measure uom ON m.unit_of_measure_id = uom.id
       LEFT JOIN cat_material_categories mc ON m.category_id = mc.id
       WHERE poi.purchase_order_id = :id
       ORDER BY poi.id ASC
@@ -260,13 +260,13 @@ export const createPurchaseOrder = async (req: Request, res: Response): Promise<
 
     // Create purchase order items
     const itemPromises = items.map((item: any) => {
-      const itemAmount = parseFloat(item.quantity) * parseFloat(item.unit_price);
+      const itemSubtotal = parseFloat(item.quantity) * parseFloat(item.unit_price);
       return PurchaseOrderItem.create({
         purchase_order_id: purchaseOrder.id,
         material_id: item.material_id,
         quantity: item.quantity,
         unit_price: item.unit_price,
-        amount: itemAmount,
+        subtotal: itemSubtotal,
         received_quantity: 0,
       }, { transaction });
     });
@@ -353,13 +353,13 @@ export const updatePurchaseOrder = async (req: Request, res: Response): Promise<
       );
 
       const itemPromises = items.map((item: any) => {
-        const itemAmount = parseFloat(item.quantity) * parseFloat(item.unit_price);
+        const itemSubtotal = parseFloat(item.quantity) * parseFloat(item.unit_price);
         return PurchaseOrderItem.create({
           purchase_order_id: purchaseOrder.id,
           material_id: item.material_id,
           quantity: item.quantity,
           unit_price: item.unit_price,
-          amount: itemAmount,
+          subtotal: itemSubtotal,
           received_quantity: 0,
         }, { transaction });
       });

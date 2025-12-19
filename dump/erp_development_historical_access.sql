@@ -34,7 +34,7 @@ CREATE TABLE `historical_access` (
   KEY `idx_user_login` (`user_id`,`login_datetime` DESC),
   KEY `idx_login_date` (`login_datetime`),
   CONSTRAINT `historical_access_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `historical_access` (
 
 LOCK TABLES `historical_access` WRITE;
 /*!40000 ALTER TABLE `historical_access` DISABLE KEYS */;
-INSERT INTO `historical_access` VALUES (1,1,'2025-12-15 16:52:02','::1','PostmanRuntime/7.46.0','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO','2025-12-15 16:52:02'),(2,1,'2025-12-15 21:09:07','::1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO','2025-12-15 21:09:07'),(3,1,'2025-12-16 04:47:53','::ffff:127.0.0.1','curl/7.81.0','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO','2025-12-16 04:47:53'),(4,1,'2025-12-17 01:25:21','::ffff:127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO','2025-12-17 01:25:21'),(5,1,'2025-12-17 01:30:10','::1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO','2025-12-17 01:30:10');
+INSERT INTO `historical_access` VALUES (1,1,'2025-12-15 16:52:02','::1','PostmanRuntime/7.46.0','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO','2025-12-15 16:52:02'),(2,1,'2025-12-15 21:09:07','::1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO','2025-12-15 21:09:07'),(3,1,'2025-12-16 04:47:53','::ffff:127.0.0.1','curl/7.81.0','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO','2025-12-16 04:47:53'),(4,1,'2025-12-17 01:25:21','::ffff:127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO','2025-12-17 01:25:21'),(5,1,'2025-12-17 01:30:10','::1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO','2025-12-17 01:30:10'),(6,1,'2025-12-17 06:37:50','::ffff:127.0.0.1','curl/7.81.0','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO','2025-12-17 06:37:50'),(7,1,'2025-12-17 15:42:47','::ffff:127.0.0.1','curl/7.81.0','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO','2025-12-17 15:42:47'),(8,1,'2025-12-17 19:15:40','::1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO','2025-12-17 19:15:40');
 /*!40000 ALTER TABLE `historical_access` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-16 21:35:00
+-- Dump completed on 2025-12-19 17:29:24

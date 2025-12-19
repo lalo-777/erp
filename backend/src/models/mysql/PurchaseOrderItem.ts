@@ -7,7 +7,7 @@ interface PurchaseOrderItemAttributes {
   material_id: number;
   quantity: number;
   unit_price: number;
-  amount: number;
+  subtotal: number;
   received_quantity: number;
   created_date: Date;
 }
@@ -22,7 +22,7 @@ export class PurchaseOrderItem extends Model<PurchaseOrderItemAttributes, Purcha
   public material_id!: number;
   public quantity!: number;
   public unit_price!: number;
-  public amount!: number;
+  public subtotal!: number;
   public received_quantity!: number;
   public created_date!: Date;
 }
@@ -49,7 +49,7 @@ PurchaseOrderItem.init({
     type: DataTypes.DECIMAL(13, 2),
     allowNull: false,
   },
-  amount: {
+  subtotal: {
     type: DataTypes.DECIMAL(13, 2),
     allowNull: false,
   },

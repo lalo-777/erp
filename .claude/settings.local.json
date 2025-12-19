@@ -30,7 +30,8 @@
       "Bash(npx ng build --configuration=development)",
       "Bash(cat:*)",
       "Bash(find:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(powershell -Command:*)"
     ]
   }
 }
