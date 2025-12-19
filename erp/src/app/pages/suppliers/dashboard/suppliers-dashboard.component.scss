@@ -1,0 +1,25 @@
+.card {
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+}
+
+.stats-icon {
+  font-size: 3rem;
+  opacity: 0.7;
+}
+
+.table-responsive {
+  .table {
+    th {
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    td {
+      vertical-align: middle;
+    }
+  }
+}

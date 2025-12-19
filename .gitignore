@@ -1,0 +1,7 @@
+/django/ml_api/__pycache__/*
+/django/ml_api/datasets/__pycache__/*
+/django/ml_api/datasets/generators/__pycache__/*
+/django/ml_api/services/__pycache__/*
+/django/ml_api/models/__pycache__/*
+/django/config/__pycache__/*
+/django/venv/*

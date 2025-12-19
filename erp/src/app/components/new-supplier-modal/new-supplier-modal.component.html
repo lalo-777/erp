@@ -1,0 +1,175 @@
+<div
+  class="modal fade"
+  id="newSupplierModal"
+  tabindex="-1"
+  aria-labelledby="newSupplierModalLabel"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newSupplierModalLabel">{{ modalTitle() }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          [disabled]="isSaving()"
+          (click)="closeModal()"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          @if (isLoading()) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else {
+            @if (error()) {
+              <div class="alert alert-danger" role="alert">
+                {{ error() }}
+              </div>
+            }
+
+            <!-- Basic Information Section -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="supplier_name" class="form-label">
+                  Nombre del Proveedor <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="supplier_name"
+                  formControlName="supplier_name"
+                  placeholder="Ej: Materiales del Norte S.A."
+                  [class.is-invalid]="isFieldInvalid('supplier_name')"
+                />
+                @if (isFieldInvalid('supplier_name')) {
+                  <div class="invalid-feedback">{{ getFieldError('supplier_name') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label for="supplier_category_id" class="form-label">
+                  Categoría <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select"
+                  id="supplier_category_id"
+                  formControlName="supplier_category_id"
+                  [class.is-invalid]="isFieldInvalid('supplier_category_id')"
+                >
+                  <option [ngValue]="null">Seleccione una categoría...</option>
+                  @for (category of categories(); track category.id) {
+                    <option [ngValue]="category.id">{{ category.name }}</option>
+                  }
+                </select>
+                @if (isFieldInvalid('supplier_category_id')) {
+                  <div class="invalid-feedback">{{ getFieldError('supplier_category_id') }}</div>
+                }
+              </div>
+            </div>
+
+            <!-- Contact Information Section -->
+            <h6 class="text-muted mb-3">Información de Contacto</h6>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="contact_name" class="form-label">Nombre del Contacto</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="contact_name"
+                  formControlName="contact_name"
+                  placeholder="Ej: Juan Pérez"
+                  [class.is-invalid]="isFieldInvalid('contact_name')"
+                />
+                @if (isFieldInvalid('contact_name')) {
+                  <div class="invalid-feedback">{{ getFieldError('contact_name') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label for="phone" class="form-label">Teléfono</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phone"
+                  formControlName="phone"
+                  placeholder="Ej: 555-123-4567"
+                  [class.is-invalid]="isFieldInvalid('phone')"
+                />
+                @if (isFieldInvalid('phone')) {
+                  <div class="invalid-feedback">{{ getFieldError('phone') }}</div>
+                }
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  formControlName="email"
+                  placeholder="Ej: contacto@proveedor.com"
+                  [class.is-invalid]="isFieldInvalid('email')"
+                />
+                @if (isFieldInvalid('email')) {
+                  <div class="invalid-feedback">{{ getFieldError('email') }}</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label for="payment_terms" class="form-label">Términos de Pago</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="payment_terms"
+                  formControlName="payment_terms"
+                  placeholder="Ej: Net 30, Contado"
+                  [class.is-invalid]="isFieldInvalid('payment_terms')"
+                />
+                @if (isFieldInvalid('payment_terms')) {
+                  <div class="invalid-feedback">{{ getFieldError('payment_terms') }}</div>
+                }
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-12">
+                <label for="address" class="form-label">Dirección</label>
+                <textarea
+                  class="form-control"
+                  id="address"
+                  formControlName="address"
+                  rows="2"
+                  placeholder="Dirección completa del proveedor"
+                ></textarea>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" [disabled]="isSaving()" (click)="closeModal()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="isSaving() || isLoading()">
+            @if (isSaving()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Guardando...
+            } @else {
+              <mat-icon class="me-2">save</mat-icon>
+              {{ isEditMode() ? 'Actualizar' : 'Crear' }} Proveedor
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -189,6 +189,25 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'suppliers',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./pages/suppliers/dashboard/suppliers-dashboard.component').then(
+                (m) => m.SuppliersDashboardComponent
+              ),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./pages/suppliers/detail/supplier-detail.component').then(
+                (m) => m.SupplierDetailComponent
+              ),
+          },
+        ],
+      },
+      {
         path: 'fuel-requisitions',
         children: [
           {
@@ -203,6 +222,53 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./pages/fuel-requisitions/detail/fuel-requisition-detail.component').then(
                 (m) => m.FuelRequisitionDetailComponent
+              ),
+          },
+        ],
+      },
+      {
+        path: 'ml-analytics',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./pages/ml-analytics/dashboard/ml-dashboard.component').then(
+                (m) => m.MLDashboardComponent
+              ),
+          },
+          {
+            path: 'project-cost',
+            loadComponent: () =>
+              import('./pages/ml-analytics/project-cost/project-cost-prediction.component').then(
+                (m) => m.ProjectCostPredictionComponent
+              ),
+          },
+          {
+            path: 'project-duration',
+            loadComponent: () =>
+              import('./pages/ml-analytics/project-duration/project-duration-prediction.component').then(
+                (m) => m.ProjectDurationPredictionComponent
+              ),
+          },
+          {
+            path: 'customer-segments',
+            loadComponent: () =>
+              import('./pages/ml-analytics/customer-segments/customer-segments.component').then(
+                (m) => m.CustomerSegmentsComponent
+              ),
+          },
+          {
+            path: 'employee-turnover',
+            loadComponent: () =>
+              import('./pages/ml-analytics/employee-turnover/employee-turnover.component').then(
+                (m) => m.EmployeeTurnoverComponent
+              ),
+          },
+          {
+            path: 'inventory-forecast',
+            loadComponent: () =>
+              import('./pages/ml-analytics/inventory-forecast/inventory-forecast.component').then(
+                (m) => m.InventoryForecastComponent
               ),
           },
         ],

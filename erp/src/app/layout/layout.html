@@ -260,6 +260,17 @@
           <li class="nav-item">
             <a
               class="nav-link d-flex align-items-center"
+              routerLink="/suppliers"
+              routerLinkActive="active"
+              (click)="onSidebarLinkClick()"
+            >
+              <mat-icon class="me-2">local_shipping</mat-icon>
+              <span [class.d-none]="!isExpanded()">Proveedores</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link d-flex align-items-center"
               routerLink="/fuel-requisitions"
               routerLinkActive="active"
               (click)="onSidebarLinkClick()"
@@ -267,6 +278,96 @@
               <mat-icon class="me-2">local_gas_station</mat-icon>
               <span [class.d-none]="!isExpanded()">Combustible</span>
             </a>
+          </li>
+          <!-- ML Analytics Menu with Submenu -->
+          <li class="nav-item">
+            <div
+              class="nav-link d-flex align-items-center justify-content-between"
+              [class.cursor-pointer]="isExpanded()"
+              (click)="isExpanded() && toggleSubmenu('ml')"
+            >
+              <div class="d-flex align-items-center">
+                <mat-icon class="me-2">psychology</mat-icon>
+                <span [class.d-none]="!isExpanded()">ML Analytics</span>
+              </div>
+              @if (isExpanded()) {
+              <mat-icon>
+                {{ !isSubmenuExpanded('ml') ? 'expand_more' : 'expand_less' }}
+              </mat-icon>
+              }
+            </div>
+            <!-- Submenu -->
+            @if (isExpanded() && isSubmenuExpanded('ml')) {
+            <ul class="nav flex-column ms-3">
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center submenu-link"
+                  routerLink="/ml-analytics"
+                  [routerLinkActiveOptions]="{exact: true}"
+                  routerLinkActive="active"
+                  (click)="onSidebarLinkClick()"
+                >
+                  <mat-icon class="me-2">dashboard</mat-icon>
+                  <span>Dashboard ML</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center submenu-link"
+                  routerLink="/ml-analytics/project-cost"
+                  routerLinkActive="active"
+                  (click)="onSidebarLinkClick()"
+                >
+                  <mat-icon class="me-2">attach_money</mat-icon>
+                  <span>Pred. Costos</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center submenu-link"
+                  routerLink="/ml-analytics/project-duration"
+                  routerLinkActive="active"
+                  (click)="onSidebarLinkClick()"
+                >
+                  <mat-icon class="me-2">schedule</mat-icon>
+                  <span>Pred. Duracion</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center submenu-link"
+                  routerLink="/ml-analytics/customer-segments"
+                  routerLinkActive="active"
+                  (click)="onSidebarLinkClick()"
+                >
+                  <mat-icon class="me-2">pie_chart</mat-icon>
+                  <span>Seg. Clientes</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center submenu-link"
+                  routerLink="/ml-analytics/employee-turnover"
+                  routerLinkActive="active"
+                  (click)="onSidebarLinkClick()"
+                >
+                  <mat-icon class="me-2">person_off</mat-icon>
+                  <span>Rotacion Personal</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center submenu-link"
+                  routerLink="/ml-analytics/inventory-forecast"
+                  routerLinkActive="active"
+                  (click)="onSidebarLinkClick()"
+                >
+                  <mat-icon class="me-2">trending_up</mat-icon>
+                  <span>Forecast Inventario</span>
+                </a>
+              </li>
+            </ul>
+            }
           </li>
           <!-- Administrador Menu with Submenu -->
           <li class="nav-item">

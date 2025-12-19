@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { PurchaseOrderService } from '../../services/purchase-order.service';
 import { MaterialService } from '../../services/material.service';
 import { ProjectService } from '../../services/project.service';
+import { SupplierService } from '../../services/supplier.service';
 import { ToastService } from '../../services/toast.service';
 import {
   CreatePurchaseOrderRequest,
@@ -47,6 +48,7 @@ export class NewPurchaseOrderModalComponent implements OnInit {
   private purchaseOrderService = inject(PurchaseOrderService);
   private materialService = inject(MaterialService);
   private projectService = inject(ProjectService);
+  private supplierService = inject(SupplierService);
   private toastService = inject(ToastService);
 
   // Outputs
@@ -170,7 +172,7 @@ export class NewPurchaseOrderModalComponent implements OnInit {
     this.isLoading.set(true);
 
     // Load suppliers
-    this.purchaseOrderService.getAllSuppliers().subscribe({
+    this.supplierService.getAllSuppliers(1, 1000).subscribe({
       next: (response) => {
         if (response.success) {
           this.suppliers.set(response.data);

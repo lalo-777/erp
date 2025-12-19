@@ -1,0 +1,22 @@
+.card {
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  }
+}
+
+.table-borderless {
+  td {
+    padding: 0.5rem 0;
+  }
+}
+
+a {
+  color: #0d6efd;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

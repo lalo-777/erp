@@ -10,6 +10,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'warehouse/stock/:id', renderMode: RenderMode.Server },
   { path: 'pre-inventory/detail/:id', renderMode: RenderMode.Server },
   { path: 'purchase-orders/:id', renderMode: RenderMode.Server },
+  { path: 'suppliers/:id', renderMode: RenderMode.Server },
   { path: 'fuel-requisitions/:id', renderMode: RenderMode.Server },
   { path: 'admin/catalogs/:catalogName', renderMode: RenderMode.Server },
   // Default: prerender static routes
