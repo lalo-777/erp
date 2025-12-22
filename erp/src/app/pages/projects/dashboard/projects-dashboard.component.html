@@ -7,10 +7,35 @@
           <h2>Proyectos</h2>
           <p class="text-muted mb-0">Gestión de proyectos de construcción</p>
         </div>
-        <button class="btn btn-primary" (click)="onNewProject()">
-          <mat-icon class="me-2">add_circle</mat-icon>
-          Nuevo Proyecto
-        </button>
+        <div class="d-flex align-items-center gap-3">
+          <!-- View Toggle -->
+          <div class="btn-group" role="group" aria-label="Vista">
+            <button
+              type="button"
+              class="btn"
+              [class.btn-primary]="viewMode() === 'table'"
+              [class.btn-outline-secondary]="viewMode() !== 'table'"
+              (click)="setViewMode('table')"
+              title="Vista de tabla"
+            >
+              <mat-icon>view_list</mat-icon>
+            </button>
+            <button
+              type="button"
+              class="btn"
+              [class.btn-primary]="viewMode() === 'kanban'"
+              [class.btn-outline-secondary]="viewMode() !== 'kanban'"
+              (click)="setViewMode('kanban')"
+              title="Vista Kanban"
+            >
+              <mat-icon>view_kanban</mat-icon>
+            </button>
+          </div>
+          <button class="btn btn-primary" (click)="onNewProject()">
+            <mat-icon class="me-2">add_circle</mat-icon>
+            Nuevo Proyecto
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -98,57 +123,117 @@
     </div>
   }
 
-  <!-- Search Bar -->
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <div class="input-group">
-        <span class="input-group-text">
-          <mat-icon>search</mat-icon>
-        </span>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Buscar por código, nombre o cliente..."
-          [(ngModel)]="searchTerm"
-          (keyup.enter)="onSearch()"
-        />
-        <button class="btn btn-outline-secondary" type="button" (click)="onSearch()">Buscar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Projects Table -->
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-body">
-          @if (isLoading()) {
-            <div class="text-center py-5">
-              <app-loading-spinner></app-loading-spinner>
-            </div>
-          } @else if (projects().length === 0) {
-            <app-empty-state
-              message="No se encontraron proyectos"
-              icon="folder"
-              actionText="Crear Primer Proyecto"
-              (action)="onNewProject()"
-            ></app-empty-state>
-          } @else {
-            <app-data-table
-              [columns]="columns"
-              [data]="projects()"
-              [loading]="isLoading()"
-              [pagination]="pagination()"
-              [showActions]="true"
-              emptyMessage="No se encontraron proyectos"
-              (pageChange)="onPageChange($event)"
-              (rowAction)="onRowAction($event)"
-            ></app-data-table>
-          }
+  <!-- Table View -->
+  @if (viewMode() === 'table') {
+    <!-- Search Bar -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-text">
+            <mat-icon>search</mat-icon>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar por código, nombre o cliente..."
+            [(ngModel)]="searchTerm"
+            (keyup.enter)="onSearch()"
+          />
+          <button class="btn btn-outline-secondary" type="button" (click)="onSearch()">Buscar</button>
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- Projects Table -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            @if (isLoading()) {
+              <div class="text-center py-5">
+                <app-loading-spinner></app-loading-spinner>
+              </div>
+            } @else if (projects().length === 0) {
+              <app-empty-state
+                message="No se encontraron proyectos"
+                icon="folder"
+                actionText="Crear Primer Proyecto"
+                (action)="onNewProject()"
+              ></app-empty-state>
+            } @else {
+              <app-data-table
+                [columns]="columns"
+                [data]="projects()"
+                [loading]="isLoading()"
+                [pagination]="pagination()"
+                [showActions]="true"
+                emptyMessage="No se encontraron proyectos"
+                (pageChange)="onPageChange($event)"
+                (rowAction)="onRowAction($event)"
+              ></app-data-table>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Kanban View -->
+  @if (viewMode() === 'kanban') {
+    @if (isLoadingKanban()) {
+      <div class="text-center py-5">
+        <app-loading-spinner></app-loading-spinner>
+        <p class="mt-3 text-muted">Cargando vista Kanban...</p>
+      </div>
+    } @else {
+      <app-kanban-board
+        [columns]="kanbanColumns()"
+        [config]="{ columnWidth: 320, undoTimeout: 8000 }"
+        (itemMoved)="onKanbanItemMoved($event)"
+        (itemClicked)="onKanbanItemClicked($event)"
+        (undoMove)="onKanbanUndo()"
+      >
+        <ng-template #itemTemplate let-item>
+          <div class="proj-kanban-card">
+            <div class="proj-card-header">
+              <span class="proj-number">{{ item.project_number }}</span>
+              <span class="proj-type badge bg-light text-dark">{{ item.project_type_name }}</span>
+            </div>
+            <div class="proj-name">{{ item.project_name }}</div>
+            <div class="proj-customer">
+              <mat-icon class="me-1">business</mat-icon>
+              {{ item.company_name || 'Sin cliente' }}
+            </div>
+            <div class="proj-info">
+              @if (item.manager_name) {
+                <span class="proj-manager">
+                  <mat-icon>person</mat-icon>
+                  {{ item.manager_name }}
+                </span>
+              }
+              @if (item.total_budget) {
+                <span class="proj-budget">
+                  {{ item.total_budget | currency:'MXN':'symbol':'1.0-0' }}
+                </span>
+              }
+            </div>
+            <div class="proj-dates">
+              <span class="proj-date">
+                <mat-icon>event</mat-icon>
+                {{ item.start_date | date:'dd/MM/yy' }}
+              </span>
+              @if (item.estimated_end_date) {
+                <span class="proj-end">
+                  <mat-icon>flag</mat-icon>
+                  {{ item.estimated_end_date | date:'dd/MM/yy' }}
+                </span>
+              }
+            </div>
+          </div>
+        </ng-template>
+      </app-kanban-board>
+    }
+  }
 </div>
 
 <!-- New Project Modal -->

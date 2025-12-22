@@ -1,0 +1,69 @@
+// ===========================================
+// TrackingCard Component Styles
+// ===========================================
+// Estilos específicos del componente TrackingCard
+// Los estilos de Bootstrap ya proporcionan la mayor parte del estilo necesario
+
+.card {
+  border-radius: var(--border-radius-lg, 12px);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.08));
+  border: 1px solid var(--border-color-light, #e9ecef);
+}
+
+.card-header {
+  background: var(--bg-card, white);
+  border-bottom: 1px solid var(--border-color-light, #e9ecef);
+  padding: 0;
+}
+
+.nav-tabs {
+  border-bottom: none;
+  gap: 0;
+
+  .nav-item {
+    margin-bottom: 0;
+  }
+}
+
+.nav-link {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  color: var(--text-secondary, #6c757d);
+  font-weight: var(--font-weight-medium, 500);
+  font-size: var(--font-size-sm, 0.875rem);
+  transition: all 0.2s ease-in-out;
+
+  &:hover:not(.active) {
+    background-color: rgba(0, 0, 0, 0.03);
+    color: var(--text-primary, #212529);
+    border-bottom-color: var(--border-color, #dee2e6);
+  }
+
+  &.active {
+    color: var(--color-active-link, #04a9f5);
+    background-color: transparent;
+    border-bottom-color: var(--color-active-link, #04a9f5);
+
+    mat-icon {
+      color: var(--color-active-link, #04a9f5);
+    }
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: var(--text-secondary, #6c757d);
+    transition: color 0.2s ease;
+  }
+}
+
+.card-body {
+  padding: 1.5rem;
+  background: var(--bg-card, white);
+}

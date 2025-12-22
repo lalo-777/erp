@@ -39,6 +39,7 @@ export interface InvoiceListItem {
   customer_name: string;
   invoice_type: string;
   invoice_status: string;
+  invoice_status_id: number;
   invoice_date: string;
   due_date: string;
   total: number;

@@ -7,10 +7,35 @@
           <h2>Facturas</h2>
           <p class="text-muted mb-0">Gestión de facturas y pagos</p>
         </div>
-        <button class="btn btn-primary" (click)="onNewInvoice()">
-          <mat-icon class="me-2">add_circle</mat-icon>
-          Nueva Factura
-        </button>
+        <div class="d-flex align-items-center gap-3">
+          <!-- View Toggle -->
+          <div class="btn-group" role="group" aria-label="Vista">
+            <button
+              type="button"
+              class="btn"
+              [class.btn-primary]="viewMode() === 'table'"
+              [class.btn-outline-secondary]="viewMode() !== 'table'"
+              (click)="setViewMode('table')"
+              title="Vista de tabla"
+            >
+              <mat-icon>view_list</mat-icon>
+            </button>
+            <button
+              type="button"
+              class="btn"
+              [class.btn-primary]="viewMode() === 'kanban'"
+              [class.btn-outline-secondary]="viewMode() !== 'kanban'"
+              (click)="setViewMode('kanban')"
+              title="Vista Kanban"
+            >
+              <mat-icon>view_kanban</mat-icon>
+            </button>
+          </div>
+          <button class="btn btn-primary" (click)="onNewInvoice()">
+            <mat-icon class="me-2">add_circle</mat-icon>
+            Nueva Factura
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -98,57 +123,104 @@
     </div>
   }
 
-  <!-- Search Bar -->
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <div class="input-group">
-        <span class="input-group-text">
-          <mat-icon>search</mat-icon>
-        </span>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Buscar por número de factura o cliente..."
-          [(ngModel)]="searchTerm"
-          (keyup.enter)="onSearch()"
-        />
-        <button class="btn btn-outline-secondary" type="button" (click)="onSearch()">Buscar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Invoices Table -->
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-body">
-          @if (isLoading()) {
-            <div class="text-center py-5">
-              <app-loading-spinner></app-loading-spinner>
-            </div>
-          } @else if (invoices().length === 0) {
-            <app-empty-state
-              message="No se encontraron facturas"
-              icon="file-earmark-text"
-              actionText="Crear Primera Factura"
-              (action)="onNewInvoice()"
-            ></app-empty-state>
-          } @else {
-            <app-data-table
-              [columns]="columns"
-              [data]="invoices()"
-              [loading]="isLoading()"
-              [pagination]="pagination()"
-              [showActions]="true"
-              emptyMessage="No se encontraron facturas"
-              (pageChange)="onPageChange($event)"
-              (rowAction)="onRowAction($event)"
-            ></app-data-table>
-          }
+  <!-- Table View -->
+  @if (viewMode() === 'table') {
+    <!-- Search Bar -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-text">
+            <mat-icon>search</mat-icon>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar por número de factura o cliente..."
+            [(ngModel)]="searchTerm"
+            (keyup.enter)="onSearch()"
+          />
+          <button class="btn btn-outline-secondary" type="button" (click)="onSearch()">Buscar</button>
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- Invoices Table -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            @if (isLoading()) {
+              <div class="text-center py-5">
+                <app-loading-spinner></app-loading-spinner>
+              </div>
+            } @else if (invoices().length === 0) {
+              <app-empty-state
+                message="No se encontraron facturas"
+                icon="file-earmark-text"
+                actionText="Crear Primera Factura"
+                (action)="onNewInvoice()"
+              ></app-empty-state>
+            } @else {
+              <app-data-table
+                [columns]="columns"
+                [data]="invoices()"
+                [loading]="isLoading()"
+                [pagination]="pagination()"
+                [showActions]="true"
+                emptyMessage="No se encontraron facturas"
+                (pageChange)="onPageChange($event)"
+                (rowAction)="onRowAction($event)"
+              ></app-data-table>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Kanban View -->
+  @if (viewMode() === 'kanban') {
+    @if (isLoadingKanban()) {
+      <div class="text-center py-5">
+        <app-loading-spinner></app-loading-spinner>
+        <p class="mt-3 text-muted">Cargando vista Kanban...</p>
+      </div>
+    } @else {
+      <app-kanban-board
+        [columns]="kanbanColumns()"
+        [config]="{ columnWidth: 300, undoTimeout: 8000 }"
+        (itemMoved)="onKanbanItemMoved($event)"
+        (itemClicked)="onKanbanItemClicked($event)"
+        (undoMove)="onKanbanUndo()"
+      >
+        <ng-template #itemTemplate let-item>
+          <div class="inv-kanban-card">
+            <div class="inv-card-header">
+              <span class="inv-number">{{ item.invoice_number }}</span>
+              <span class="inv-type badge bg-light text-dark">{{ item.invoice_type }}</span>
+            </div>
+            <div class="inv-customer">
+              <mat-icon class="me-1">person</mat-icon>
+              {{ item.customer_name || 'Sin cliente' }}
+            </div>
+            <div class="inv-dates">
+              <span class="inv-date">
+                <mat-icon>event</mat-icon>
+                {{ item.invoice_date | date:'dd/MM/yy' }}
+              </span>
+              <span class="inv-due" [class.text-danger]="item.invoice_status === 'overdue'">
+                <mat-icon>schedule</mat-icon>
+                {{ item.due_date | date:'dd/MM/yy' }}
+              </span>
+            </div>
+            <div class="inv-card-footer">
+              <span class="inv-amount">{{ item.total | currency:'MXN':'symbol':'1.0-0' }}</span>
+            </div>
+          </div>
+        </ng-template>
+      </app-kanban-board>
+    }
+  }
 </div>
 
 <!-- New Invoice Modal -->

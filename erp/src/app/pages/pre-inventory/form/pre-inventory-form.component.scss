@@ -1,18 +1,163 @@
+// ===========================================
+// Pre-Inventory Form - CRM II Visual Styles
+// ===========================================
+
+// Card Styles
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Card header styles
+.card-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 1rem 1.25rem;
+
+  h5 {
+    display: flex;
+    align-items: center;
+    color: var(--text-primary, #212529);
+
+    mat-icon {
+      color: var(--color-middle-blue, #347a94);
+    }
+  }
+}
+
+// Form controls styling
 .form-label {
+  font-weight: 500;
+  color: var(--text-secondary, #495057);
+  margin-bottom: 0.375rem;
+
   &.fw-bold {
     font-weight: 600;
   }
 }
 
+.form-control,
+.form-select {
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+  &:focus {
+    border-color: var(--color-middle-blue, #347a94);
+    box-shadow: 0 0 0 0.2rem rgba(52, 122, 148, 0.25);
+  }
+
+  &.is-invalid {
+    border-color: var(--bs-danger);
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+  }
+}
+
+// Alert styling
 .alert-info,
-.alert-secondary {
+.alert-secondary,
+.alert-warning,
+.alert-success {
   border-left: 4px solid;
+  border-radius: 6px;
 }
 
 .alert-info {
   border-left-color: var(--bs-info);
+  background-color: rgba(13, 202, 240, 0.1);
 }
 
 .alert-secondary {
   border-left-color: var(--bs-secondary);
+  background-color: rgba(108, 117, 125, 0.1);
+}
+
+.alert-warning {
+  border-left-color: var(--bs-warning);
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.alert-success {
+  border-left-color: var(--bs-success);
+  background-color: rgba(25, 135, 84, 0.1);
+}
+
+// Button styling
+.btn {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// Breadcrumb styling
+.breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin-bottom: 0.5rem;
+
+  .breadcrumb-item {
+    a {
+      color: var(--color-middle-blue, #347a94);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &.active {
+      color: var(--text-muted, #6c757d);
+    }
+  }
+}
+
+// Page header styling
+h2 {
+  color: var(--text-primary, #212529);
+}
+
+// Material selection card
+.material-card {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--color-middle-blue, #347a94);
+    background-color: rgba(52, 122, 148, 0.05);
+  }
+
+  &.selected {
+    border-color: var(--color-middle-blue, #347a94);
+    border-width: 2px;
+    background-color: rgba(52, 122, 148, 0.08);
+  }
+}
+
+// Quantity input with larger font
+.quantity-input {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.75rem;
+
+  &:focus {
+    border-color: var(--color-middle-blue, #347a94);
+    box-shadow: 0 0 0 0.2rem rgba(52, 122, 148, 0.25);
+  }
 }

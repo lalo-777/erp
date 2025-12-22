@@ -1,0 +1,60 @@
+<div class="chatter-feed">
+  <!-- Form para nuevo comentario -->
+  <app-chatter-form
+    [entityId]="entityId()"
+    [entityType]="entityType()"
+    (postCreated)="onPostCreated()"
+  />
+
+  <!-- Error Alert -->
+  @if (error()) {
+    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+      <mat-icon class="me-2">error</mat-icon>
+      {{ error() }}
+      <button type="button" class="btn-close" (click)="error.set(null)"></button>
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="text-center py-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  }
+
+  <!-- Posts List -->
+  @if (!loading()) {
+    <div class="posts-list mt-3">
+      @for (post of posts(); track post.id) {
+        <app-chatter-post-item
+          [post]="post"
+          (postUpdated)="onPostUpdated()"
+          (postDeleted)="onPostDeleted()"
+        />
+      } @empty {
+        <div class="empty-state text-center py-4">
+          <mat-icon class="text-muted mb-2">chat_bubble_outline</mat-icon>
+          <p class="text-muted mb-0">No hay comentarios aún. ¡Sé el primero!</p>
+        </div>
+      }
+    </div>
+
+    <!-- Load More Button -->
+    @if (pagination()?.hasMore) {
+      <div class="text-center mt-3">
+        <button
+          class="btn btn-outline-primary btn-sm"
+          (click)="loadMore()"
+          [disabled]="loadingMore()"
+        >
+          @if (loadingMore()) {
+            <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+          }
+          Cargar más comentarios
+        </button>
+      </div>
+    }
+  }
+</div>

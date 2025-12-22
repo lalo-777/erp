@@ -1,0 +1,38 @@
+// ===========================================
+// ChatterForm Component Styles
+// ===========================================
+
+.chatter-form {
+  background: var(--bg-card, white);
+  border-radius: var(--border-radius, 8px);
+  padding: 1rem;
+  border: 1px solid var(--border-color-light, #e9ecef);
+}
+
+.form-container {
+  position: relative;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+  font-size: var(--font-size-sm, 0.875rem);
+
+  &:focus {
+    border-color: var(--color-active-link, #04a9f5);
+    box-shadow: 0 0 0 0.2rem rgba(4, 169, 245, 0.15);
+  }
+}
+
+.mentions-pills {
+  .badge {
+    font-size: var(--font-size-xs, 0.75rem);
+    font-weight: var(--font-weight-medium, 500);
+  }
+}
+
+.form-actions {
+  small {
+    font-size: var(--font-size-xs, 0.75rem);
+  }
+}

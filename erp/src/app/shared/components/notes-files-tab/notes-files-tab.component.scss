@@ -1,0 +1,211 @@
+// ===========================================
+// NotesFilesTab Component Styles
+// ===========================================
+
+.notes-files-container {
+  padding: 0;
+}
+
+.nav-tabs {
+  .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    color: var(--text-secondary, #6c757d);
+    font-weight: var(--font-weight-medium, 500);
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(.active) {
+      color: var(--text-primary, #212529);
+      border-bottom-color: var(--border-color, #dee2e6);
+    }
+
+    &.active {
+      color: var(--color-active-link, #04a9f5);
+      border-bottom-color: var(--color-active-link, #04a9f5);
+    }
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+.tab-header {
+  display: flex;
+  align-items: center;
+
+  button {
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+// Note Form Card
+.note-form-card {
+  border-radius: var(--border-radius, 8px);
+  border: 1px solid var(--color-primary-light, #5494f3);
+
+  .card-header {
+    background: var(--color-primary, #013D52);
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius, 8px) var(--border-radius, 8px) 0 0;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+}
+
+// Notes List
+.notes-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.note-card {
+  border-radius: var(--border-radius, 8px);
+  border: 1px solid var(--border-color-light, #e9ecef);
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.08));
+    border-color: var(--border-color, #dee2e6);
+  }
+
+  .card-body {
+    padding: 0.75rem 1rem;
+  }
+
+  .note-title {
+    font-weight: var(--font-weight-semibold, 600);
+    font-size: var(--font-size-sm, 0.875rem);
+    color: var(--text-primary, #212529);
+  }
+
+  .note-body {
+    font-size: var(--font-size-sm, 0.875rem);
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: var(--text-secondary, #6c757d);
+  }
+
+  .dropdown-toggle::after {
+    display: none;
+  }
+}
+
+// Files List
+.files-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.file-card {
+  border-radius: var(--border-radius, 8px);
+  border: 1px solid var(--border-color-light, #e9ecef);
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.08));
+    border-color: var(--border-color, #dee2e6);
+  }
+
+  .file-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--color-gray-100, #e9ecef);
+    border-radius: var(--border-radius, 8px);
+
+    mat-icon {
+      color: var(--color-active-link, #04a9f5);
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .file-info {
+    .file-name {
+      font-weight: var(--font-weight-medium, 500);
+      font-size: var(--font-size-sm, 0.875rem);
+    }
+  }
+
+  .file-actions {
+    button {
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      &:hover mat-icon {
+        color: var(--color-active-link, #04a9f5);
+      }
+
+      &.text-danger:hover mat-icon {
+        color: var(--color-danger, #dc3545);
+      }
+    }
+  }
+}
+
+// Upload Progress
+.upload-progress {
+  .progress {
+    height: 1.25rem;
+    border-radius: var(--border-radius, 8px);
+  }
+
+  .progress-bar {
+    background: var(--gradient-primary, linear-gradient(135deg, #013D52 0%, #5494f3 100%));
+    transition: width 0.3s ease;
+  }
+}
+
+// Empty State
+.empty-state {
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    opacity: 0.5;
+  }
+}
+
+// Min Width Override
+.min-width-0 {
+  min-width: 0;
+}
+
+// Dropdown Menu
+.dropdown-menu {
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    font-size: var(--font-size-sm, 0.875rem);
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}

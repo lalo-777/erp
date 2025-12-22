@@ -73,4 +73,13 @@ export class PreInventoryService {
   getPreInventoryStats(): Observable<{ success: boolean; data: PreInventoryStats }> {
     return this.http.get<{ success: boolean; data: PreInventoryStats }>(`${this.apiUrl}/reports/stats`);
   }
+
+  updatePreInventoryStatus(
+    id: number,
+    statusId: number
+  ): Observable<{ success: boolean; message: string }> {
+    return this.http.patch<{ success: boolean; message: string }>(`${this.apiUrl}/${id}/status`, {
+      status_id: statusId,
+    });
+  }
 }

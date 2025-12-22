@@ -1,0 +1,54 @@
+<div class="kanban-view-container">
+  <div cdkDropListGroup class="kanban-board">
+    @for (column of columns(); track trackColumn($index, column)) {
+      <div
+        class="kanban-column"
+        [style.width.px]="columnWidth"
+        [style.min-width.px]="columnWidth"
+      >
+        <!-- Column Header -->
+        <div class="kanban-column-header">
+          <span class="badge" [ngClass]="getColumnHeaderClass(column)">
+            {{ column.name }}
+          </span>
+          <span class="count">{{ column.items.length }}</span>
+        </div>
+
+        <!-- Column Body (Drop List) -->
+        <div
+          cdkDropList
+          class="kanban-column-body"
+          [cdkDropListData]="column"
+          cdkDropListSortingDisabled
+          (cdkDropListDropped)="onDrop($event)"
+        >
+          @for (item of column.items; track trackItem($index, item)) {
+            <div
+              cdkDrag
+              class="kanban-card"
+              (click)="onItemClick(item, $event)"
+            >
+              <!-- Custom Template -->
+              @if (itemTemplate) {
+                <ng-container
+                  [ngTemplateOutlet]="itemTemplate"
+                  [ngTemplateOutletContext]="{ $implicit: item }"
+                />
+              } @else {
+                <!-- Default Template -->
+                <div class="kanban-card-body">
+                  <div class="item-title">{{ (item | json) }}</div>
+                </div>
+              }
+            </div>
+          } @empty {
+            <div class="kanban-empty">
+              <mat-icon>inbox</mat-icon>
+              <span>Sin elementos</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

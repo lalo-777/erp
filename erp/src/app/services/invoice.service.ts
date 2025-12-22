@@ -74,4 +74,13 @@ export class InvoiceService {
     const params = new HttpParams().set('customer_id', customerId.toString());
     return this.http.get<PaginatedInvoices>(this.apiUrl, { params });
   }
+
+  updateInvoiceStatus(
+    id: number,
+    statusId: number
+  ): Observable<{ success: boolean; message: string }> {
+    return this.http.patch<{ success: boolean; message: string }>(`${this.apiUrl}/${id}/status`, {
+      invoice_status_id: statusId,
+    });
+  }
 }

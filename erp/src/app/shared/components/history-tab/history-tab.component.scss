@@ -1,0 +1,74 @@
+// ===========================================
+// HistoryTab Component Styles
+// ===========================================
+
+.history-container {
+  .form-label {
+    font-size: var(--font-size-sm, 0.875rem);
+    font-weight: var(--font-weight-medium, 500);
+    margin-bottom: var(--space-2, 0.5rem);
+    color: var(--text-secondary, #6c757d);
+  }
+
+  .table {
+    font-size: var(--font-size-sm, 0.875rem);
+
+    th {
+      font-weight: var(--font-weight-semibold, 600);
+      white-space: nowrap;
+      color: var(--text-secondary, #6c757d);
+      text-transform: uppercase;
+      font-size: var(--font-size-xs, 0.75rem);
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      vertical-align: middle;
+    }
+
+    tbody tr {
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: var(--bg-hover, rgba(1, 61, 82, 0.04));
+      }
+    }
+  }
+
+  .pagination {
+    margin-top: 1rem;
+
+    .page-link {
+      cursor: pointer;
+      color: var(--color-active-link, #04a9f5);
+      border-color: var(--border-color, #dee2e6);
+      transition: all 0.2s ease;
+
+      &:hover:not(:disabled) {
+        background-color: var(--color-active-link-bg, rgba(4, 169, 245, 0.1));
+        border-color: var(--color-active-link, #04a9f5);
+      }
+    }
+
+    .page-item.active .page-link {
+      background-color: var(--color-active-link, #04a9f5);
+      border-color: var(--color-active-link, #04a9f5);
+      color: white;
+    }
+
+    .page-item.disabled .page-link {
+      color: var(--text-muted, #adb5bd);
+      cursor: not-allowed;
+    }
+  }
+
+  .spinner-border {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .badge {
+    font-size: var(--font-size-xs, 0.75rem);
+    font-weight: var(--font-weight-medium, 500);
+  }
+}

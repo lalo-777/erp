@@ -7,15 +7,40 @@
           <h2>Pre-Inventario</h2>
           <p class="text-muted mb-0">Gestión de conteos físicos y discrepancias</p>
         </div>
-        <div class="btn-group">
-          <button class="btn btn-primary" (click)="onCreateNew()">
-            <mat-icon class="me-2">add_circle</mat-icon>
-            Nuevo Conteo
-          </button>
-          <button class="btn btn-info" (click)="onViewDiscrepancyReport()">
-            <mat-icon class="me-2">description</mat-icon>
-            Reporte de Discrepancias
-          </button>
+        <div class="d-flex align-items-center gap-3">
+          <!-- View Toggle -->
+          <div class="btn-group" role="group" aria-label="Vista">
+            <button
+              type="button"
+              class="btn"
+              [class.btn-primary]="viewMode() === 'table'"
+              [class.btn-outline-secondary]="viewMode() !== 'table'"
+              (click)="setViewMode('table')"
+              title="Vista de tabla"
+            >
+              <mat-icon>view_list</mat-icon>
+            </button>
+            <button
+              type="button"
+              class="btn"
+              [class.btn-primary]="viewMode() === 'kanban'"
+              [class.btn-outline-secondary]="viewMode() !== 'kanban'"
+              (click)="setViewMode('kanban')"
+              title="Vista Kanban"
+            >
+              <mat-icon>view_kanban</mat-icon>
+            </button>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="onCreateNew()">
+              <mat-icon class="me-2">add_circle</mat-icon>
+              Nuevo Conteo
+            </button>
+            <button class="btn btn-info" (click)="onViewDiscrepancyReport()">
+              <mat-icon class="me-2">description</mat-icon>
+              Reporte
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -145,80 +170,136 @@
     </div>
   }
 
-  <!-- Status Filters -->
-  <div class="row mb-3">
-    <div class="col-12">
-      <div class="btn-group" role="group">
-        <button
-          type="button"
-          class="btn btn-sm"
-          [class.btn-primary]="selectedStatusFilter() === undefined"
-          [class.btn-outline-primary]="selectedStatusFilter() !== undefined"
-          (click)="onFilterByStatus(undefined)">
-          Todos
-        </button>
-        <button
-          type="button"
-          class="btn btn-sm"
-          [class.btn-warning]="selectedStatusFilter() === 1"
-          [class.btn-outline-warning]="selectedStatusFilter() !== 1"
-          (click)="onFilterByStatus(1)">
-          Pendientes
-        </button>
-        <button
-          type="button"
-          class="btn btn-sm"
-          [class.btn-info]="selectedStatusFilter() === 2"
-          [class.btn-outline-info]="selectedStatusFilter() !== 2"
-          (click)="onFilterByStatus(2)">
-          Contados
-        </button>
-        <button
-          type="button"
-          class="btn btn-sm"
-          [class.btn-success]="selectedStatusFilter() === 3"
-          [class.btn-outline-success]="selectedStatusFilter() !== 3"
-          (click)="onFilterByStatus(3)">
-          Ajustados
-        </button>
+  <!-- Table View -->
+  @if (viewMode() === 'table') {
+    <!-- Status Filters -->
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="btn-group" role="group">
+          <button
+            type="button"
+            class="btn btn-sm"
+            [class.btn-primary]="selectedStatusFilter() === undefined"
+            [class.btn-outline-primary]="selectedStatusFilter() !== undefined"
+            (click)="onFilterByStatus(undefined)">
+            Todos
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm"
+            [class.btn-warning]="selectedStatusFilter() === 1"
+            [class.btn-outline-warning]="selectedStatusFilter() !== 1"
+            (click)="onFilterByStatus(1)">
+            Pendientes
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm"
+            [class.btn-info]="selectedStatusFilter() === 2"
+            [class.btn-outline-info]="selectedStatusFilter() !== 2"
+            (click)="onFilterByStatus(2)">
+            Contados
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm"
+            [class.btn-success]="selectedStatusFilter() === 3"
+            [class.btn-outline-success]="selectedStatusFilter() !== 3"
+            (click)="onFilterByStatus(3)">
+            Ajustados
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Pre-Inventory Records Table -->
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="mb-0">Registros de Pre-Inventario</h5>
-        </div>
-        <div class="card-body">
-          @if (isLoading()) {
-            <div class="text-center py-5">
-              <app-loading-spinner></app-loading-spinner>
-            </div>
-          } @else if (records().length === 0) {
-            <app-empty-state
-              icon="clipboard-x"
-              title="No hay registros"
-              message="No se encontraron registros de pre-inventario"
-              actionText="Crear Nuevo"
-              actionIcon="plus-circle"
-              (action)="onCreateNew()">
-            </app-empty-state>
-          } @else {
-            <app-data-table
-              [columns]="recordColumns"
-              [data]="records()"
-              [pagination]="pagination()"
-              (pageChange)="onPageChange($event)"
-              (rowAction)="onRowAction($event)">
-            </app-data-table>
-          }
+    <!-- Pre-Inventory Records Table -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Registros de Pre-Inventario</h5>
+          </div>
+          <div class="card-body">
+            @if (isLoading()) {
+              <div class="text-center py-5">
+                <app-loading-spinner></app-loading-spinner>
+              </div>
+            } @else if (records().length === 0) {
+              <app-empty-state
+                icon="clipboard-x"
+                title="No hay registros"
+                message="No se encontraron registros de pre-inventario"
+                actionText="Crear Nuevo"
+                actionIcon="plus-circle"
+                (action)="onCreateNew()">
+              </app-empty-state>
+            } @else {
+              <app-data-table
+                [columns]="recordColumns"
+                [data]="records()"
+                [pagination]="pagination()"
+                (pageChange)="onPageChange($event)"
+                (rowAction)="onRowAction($event)">
+              </app-data-table>
+            }
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  }
+
+  <!-- Kanban View -->
+  @if (viewMode() === 'kanban') {
+    @if (isLoadingKanban()) {
+      <div class="text-center py-5">
+        <app-loading-spinner></app-loading-spinner>
+        <p class="mt-3 text-muted">Cargando vista Kanban...</p>
+      </div>
+    } @else {
+      <app-kanban-board
+        [columns]="kanbanColumns()"
+        [config]="{ columnWidth: 300, undoTimeout: 8000 }"
+        (itemMoved)="onKanbanItemMoved($event)"
+        (itemClicked)="onKanbanItemClicked($event)"
+        (undoMove)="onKanbanUndo()"
+      >
+        <ng-template #itemTemplate let-item>
+          <div class="pi-kanban-card">
+            <div class="pi-card-header">
+              <span class="pi-number">{{ item.pre_inventory_number }}</span>
+              <span class="pi-date">{{ item.count_date | date:'dd/MM/yy' }}</span>
+            </div>
+            <div class="pi-material">
+              <strong>{{ item.material_name }}</strong>
+              @if (item.category_name) {
+                <small class="text-muted d-block">{{ item.category_name }}</small>
+              }
+            </div>
+            <div class="pi-location">
+              <mat-icon class="me-1">location_on</mat-icon>
+              {{ item.location_name }}
+            </div>
+            <div class="pi-quantities">
+              <div class="pi-expected">
+                <small class="text-muted">Esperado</small>
+                <span>{{ formatNumber(item.expected_quantity) }}</span>
+              </div>
+              <div class="pi-counted">
+                <small class="text-muted">Contado</small>
+                <span>{{ item.counted_quantity !== null ? formatNumber(item.counted_quantity) : '-' }}</span>
+              </div>
+              @if (item.discrepancy !== null && item.discrepancy !== 0) {
+                <div class="pi-discrepancy" [class.text-success]="item.discrepancy > 0" [class.text-danger]="item.discrepancy < 0">
+                  <small class="text-muted">Diferencia</small>
+                  <span>{{ formatNumber(item.discrepancy) }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        </ng-template>
+      </app-kanban-board>
+    }
+  }
 
   <!-- Recent Counts with Discrepancies -->
   @if (stats() && stats()!.recent_counts.length > 0) {

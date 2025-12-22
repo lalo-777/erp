@@ -1,0 +1,29 @@
+<div class="mention-autocomplete">
+  @if (loading()) {
+    <div class="loading-item">
+      <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+      Buscando...
+    </div>
+  } @else if (suggestions().length > 0) {
+    @for (user of suggestions(); track user.id; let i = $index) {
+      <button
+        type="button"
+        class="suggestion-item"
+        [class.selected]="selectedIndex() === i"
+        (click)="onSelect(user)"
+        (mouseenter)="selectedIndex.set(i)"
+      >
+        <span class="user-avatar">{{ user.initials }}</span>
+        <div class="user-info">
+          <span class="user-name">{{ user.name }}</span>
+          <span class="user-email">{{ user.email }}</span>
+        </div>
+      </button>
+    }
+  } @else {
+    <div class="no-results">
+      <mat-icon>person_search</mat-icon>
+      No se encontraron usuarios
+    </div>
+  }
+</div>

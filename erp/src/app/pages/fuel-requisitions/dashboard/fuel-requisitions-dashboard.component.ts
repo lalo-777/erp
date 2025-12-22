@@ -1,4 +1,4 @@
-import { Component, signal, inject, ViewChild, OnInit } from '@angular/core';
+import { Component, signal, inject, ViewChild, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -12,20 +12,31 @@ import { EmptyStateComponent } from '../../../shared/components/empty-state/empt
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { NewFuelRequisitionModalComponent } from '../../../components/new-fuel-requisition-modal/new-fuel-requisition-modal.component';
 import { TableColumn, PaginationInfo, RowAction } from '../../../shared/models/table.model';
+import { KanbanBoardComponent, KanbanColumn, KanbanMoveEvent } from '../../../shared/components/kanban-board/kanban-board.component';
+
+/** Tipo de vista del dashboard */
+type ViewMode = 'table' | 'kanban';
+
+/** Definición de estados para Kanban de Requisiciones */
+const FUEL_STATUS_COLUMNS = [
+  { id: 'pending', name: 'Pendiente', color: 'bg-warning' },
+  { id: 'approved', name: 'Aprobada', color: 'bg-info' },
+  { id: 'delivered', name: 'Entregada', color: 'bg-success' },
+  { id: 'cancelled', name: 'Cancelada', color: 'bg-secondary' },
+] as const;
 
 @Component({
   selector: 'app-fuel-requisitions-dashboard',
   imports: [
     MatIconModule,
     CommonModule,
-
     FormsModule,
     DataTableComponent,
     LoadingSpinnerComponent,
     EmptyStateComponent,
     ConfirmDialogComponent,
-
     NewFuelRequisitionModalComponent,
+    KanbanBoardComponent,
   ],
   templateUrl: './fuel-requisitions-dashboard.component.html',
   styleUrl: './fuel-requisitions-dashboard.component.scss',
@@ -40,9 +51,11 @@ export class FuelRequisitionsDashboardComponent implements OnInit {
 
   // Signals
   requisitions = signal<FuelRequisition[]>([]);
+  allRequisitions = signal<FuelRequisition[]>([]); // Para Kanban (sin paginación)
   stats = signal<FuelStats | null>(null);
   isLoading = signal(false);
   isLoadingStats = signal(false);
+  isLoadingKanban = signal(false);
   searchTerm = signal('');
   currentPage = signal(1);
   pageSize = signal(10);
@@ -50,6 +63,18 @@ export class FuelRequisitionsDashboardComponent implements OnInit {
   selectedRequisitionId = signal<number | null>(null);
   selectedRequisitionStatus = signal<string>('all');
   selectedFuelType = signal<string>('all');
+  viewMode = signal<ViewMode>('table');
+
+  /** Columnas del Kanban calculadas a partir de los datos */
+  kanbanColumns = computed<KanbanColumn<FuelRequisition>[]>(() => {
+    const reqList = this.allRequisitions();
+    return FUEL_STATUS_COLUMNS.map((status) => ({
+      id: status.id,
+      name: status.name,
+      color: status.color,
+      items: reqList.filter((r) => r.requisition_status === status.id),
+    }));
+  });
 
   // Table columns
   columns: TableColumn[] = [
@@ -263,5 +288,81 @@ export class FuelRequisitionsDashboardComponent implements OnInit {
 
   formatLiters(liters: number): string {
     return `${liters.toFixed(2)} L`;
+  }
+
+  // ==========================================
+  // Kanban Methods
+  // ==========================================
+
+  /** Cambia entre vista tabla y kanban */
+  setViewMode(mode: ViewMode): void {
+    this.viewMode.set(mode);
+    if (mode === 'kanban') {
+      this.loadAllRequisitionsForKanban();
+    }
+  }
+
+  /** Carga todas las requisiciones sin paginación para el Kanban */
+  loadAllRequisitionsForKanban(): void {
+    this.isLoadingKanban.set(true);
+
+    this.fuelService.getAllRequisitions(1, 1000).subscribe({
+      next: (response) => {
+        if (response.success) {
+          const requisitionsWithBadge = response.data.map((r: any) => ({
+            ...r,
+            requisition_status_label: getRequisitionStatusLabel(r.requisition_status),
+            requisition_status_color: getRequisitionStatusColor(r.requisition_status),
+            fuel_type_label: getFuelTypeLabel(r.fuel_type),
+          }));
+          this.allRequisitions.set(requisitionsWithBadge);
+        }
+        this.isLoadingKanban.set(false);
+      },
+      error: (err) => {
+        console.error('Error loading requisitions for kanban:', err);
+        this.toastService.showError('Error al cargar requisiciones para vista Kanban');
+        this.isLoadingKanban.set(false);
+      },
+    });
+  }
+
+  /** Maneja el movimiento de un item en el Kanban */
+  onKanbanItemMoved(event: KanbanMoveEvent<FuelRequisition>): void {
+    const newStatus = event.toColumnId as 'pending' | 'approved' | 'delivered' | 'cancelled';
+
+    this.fuelService.updateRequisitionStatus(event.item.id, newStatus).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.toastService.showSuccess('Estado actualizado correctamente');
+          // Actualizar localmente
+          this.allRequisitions.update((requisitions) =>
+            requisitions.map((r) =>
+              r.id === event.item.id ? { ...r, requisition_status: newStatus } : r
+            )
+          );
+          // Recargar stats
+          this.loadStats();
+        }
+      },
+      error: (err) => {
+        console.error('Error updating status:', err);
+        this.toastService.showError('Error al actualizar el estado');
+        // Recargar para revertir visualmente
+        this.loadAllRequisitionsForKanban();
+      },
+    });
+  }
+
+  /** Maneja el click en un item del Kanban */
+  onKanbanItemClicked(item: FuelRequisition): void {
+    this.router.navigate(['/fuel-requisitions', item.id]);
+  }
+
+  /** Maneja el undo del Kanban */
+  onKanbanUndo(): void {
+    // Recargar datos para sincronizar
+    this.loadAllRequisitionsForKanban();
+    this.loadStats();
   }
 }

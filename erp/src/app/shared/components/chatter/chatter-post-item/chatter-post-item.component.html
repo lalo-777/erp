@@ -1,0 +1,42 @@
+<div class="chatter-post" [class.deleting]="deleting()">
+  <div class="post-avatar">
+    <span class="avatar-initials">{{ authorInitials() }}</span>
+  </div>
+
+  <div class="post-content">
+    <div class="post-header">
+      <span class="author-name">{{ post().created_by_name }}</span>
+      <span class="post-date">{{ post().created_at | date:'short' }}</span>
+      @if (post().updated_at) {
+        <span class="post-edited">(editado)</span>
+      }
+    </div>
+
+    <div class="post-body" [innerHTML]="formattedBody()"></div>
+
+    <!-- Post Actions -->
+    @if (post().can_edit || post().can_delete) {
+      <div class="post-actions">
+        <div class="dropdown">
+          <button
+            class="btn btn-link btn-sm text-secondary p-0"
+            type="button"
+            (click)="toggleDropdown()"
+          >
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+          @if (showDropdown()) {
+            <div class="dropdown-menu show">
+              @if (post().can_delete) {
+                <button class="dropdown-item text-danger" (click)="deletePost()">
+                  <mat-icon class="me-2">delete</mat-icon>
+                  Eliminar
+                </button>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

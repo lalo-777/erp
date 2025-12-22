@@ -68,4 +68,13 @@ export class ProjectService {
   deleteProject(id: number): Observable<{ success: boolean; message: string }> {
     return this.http.delete<{ success: boolean; message: string }>(`${this.apiUrl}/${id}`);
   }
+
+  updateProjectStatus(
+    id: number,
+    statusId: number
+  ): Observable<{ success: boolean; message: string }> {
+    return this.http.patch<{ success: boolean; message: string }>(`${this.apiUrl}/${id}/status`, {
+      project_status_id: statusId,
+    });
+  }
 }

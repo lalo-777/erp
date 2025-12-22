@@ -1,0 +1,147 @@
+<div class="history-container">
+  <!-- Filters -->
+  <div class="row mb-3 g-3">
+    <div class="col-md-4">
+      <label class="form-label">Items por página</label>
+      <select
+        class="form-select"
+        [value]="filters().limit"
+        (change)="onLimitChange($event)"
+      >
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="15">15</option>
+        <option [value]="20">20</option>
+        <option [value]="30">30</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Desde</label>
+      <input
+        type="date"
+        class="form-control"
+        [value]="filters().dateFrom"
+        (change)="onDateFromChange($event)"
+      />
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Hasta</label>
+      <input
+        type="date"
+        class="form-control"
+        [value]="filters().dateTo"
+        (change)="onDateToChange($event)"
+      />
+    </div>
+    <div class="col-md-2 d-flex align-items-end">
+      <button class="btn btn-secondary w-100" (click)="onClearFiltersClick()">
+        <mat-icon>clear</mat-icon>
+        Limpiar
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  }
+
+  <!-- History Table -->
+  @if (!isLoading() && history().length > 0) {
+    <div class="table-responsive">
+      <table class="table table-hover table-sm">
+        <thead class="table-light">
+          <tr>
+            <th>Fecha y Hora</th>
+            <th>Campo</th>
+            <th>Valor Anterior</th>
+            <th>Valor Nuevo</th>
+            <th>Modificado Por</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (log of history(); track log.id) {
+            <tr>
+              <td>
+                <small>{{ log.change_date | date:'short' }}</small>
+              </td>
+              <td>
+                <strong>{{ log.field_display_name }}</strong>
+                <br>
+                <small class="text-muted">{{ log.table_name }}</small>
+              </td>
+              <td>
+                @if (log.is_foreign_key) {
+                  <span class="badge bg-secondary">{{ log.old_value_display || 'N/A' }}</span>
+                } @else {
+                  <span>{{ log.old_value || 'N/A' }}</span>
+                }
+              </td>
+              <td>
+                @if (log.is_foreign_key) {
+                  <span class="badge bg-primary">{{ log.new_value_display || 'N/A' }}</span>
+                } @else {
+                  <span>{{ log.new_value || 'N/A' }}</span>
+                }
+              </td>
+              <td>
+                <small>{{ log.changed_by_user }}</small>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    @if (pagination().totalPages > 1) {
+      <nav aria-label="History pagination">
+        <ul class="pagination pagination-sm justify-content-center mb-0">
+          <li class="page-item" [class.disabled]="pagination().currentPage === 1">
+            <button
+              class="page-link"
+              (click)="onPreviousClick()"
+              [disabled]="pagination().currentPage === 1"
+            >
+              Anterior
+            </button>
+          </li>
+          @for (page of paginationArray(); track page) {
+            <li
+              class="page-item"
+              [class.active]="pagination().currentPage === page"
+            >
+              <button class="page-link" (click)="onPageClick(page)">
+                {{ page }}
+              </button>
+            </li>
+          }
+          <li
+            class="page-item"
+            [class.disabled]="pagination().currentPage === pagination().totalPages"
+          >
+            <button
+              class="page-link"
+              (click)="onNextClick()"
+              [disabled]="pagination().currentPage === pagination().totalPages"
+            >
+              Siguiente
+            </button>
+          </li>
+        </ul>
+      </nav>
+    }
+  }
+
+  <!-- Empty State -->
+  @if (!isLoading() && history().length === 0) {
+    <div class="alert alert-info text-center">
+      <mat-icon class="me-2">info</mat-icon>
+      No se encontraron registros de historial.
+    </div>
+  }
+</div>

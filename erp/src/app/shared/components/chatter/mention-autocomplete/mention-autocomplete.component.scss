@@ -1,0 +1,102 @@
+// ===========================================
+// MentionAutocomplete Component Styles
+// ===========================================
+
+.mention-autocomplete {
+  position: absolute;
+  z-index: 1000;
+  min-width: 250px;
+  max-width: 350px;
+  max-height: 200px;
+  overflow-y: auto;
+  background: var(--bg-card, white);
+  border: 1px solid var(--border-color-light, #e9ecef);
+  border-radius: var(--border-radius, 8px);
+  box-shadow: var(--shadow-lg, 0 8px 24px rgba(0, 0, 0, 0.16));
+}
+
+.loading-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #6c757d);
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover,
+  &.selected {
+    background-color: var(--color-active-link-bg, rgba(4, 169, 245, 0.1));
+  }
+
+  &.selected {
+    .user-name {
+      color: var(--color-active-link, #04a9f5);
+    }
+  }
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-active-link, #04a9f5) 0%, #0284c7 100%);
+  color: white;
+  font-size: var(--font-size-xs, 0.75rem);
+  font-weight: var(--font-weight-semibold, 600);
+  flex-shrink: 0;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+
+  .user-name {
+    font-size: var(--font-size-sm, 0.875rem);
+    font-weight: var(--font-weight-medium, 500);
+    color: var(--text-primary, #212529);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .user-email {
+    font-size: var(--font-size-xs, 0.75rem);
+    color: var(--text-muted, #adb5bd);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  color: var(--text-muted, #adb5bd);
+  font-size: var(--font-size-sm, 0.875rem);
+
+  mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.5rem;
+  }
+}

@@ -1,0 +1,231 @@
+<div class="notes-files-container">
+  <!-- Tab Navigation -->
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+      <button
+        type="button"
+        class="nav-link"
+        [class.active]="activeTab() === 'notes'"
+        (click)="setActiveTab('notes')"
+      >
+        <mat-icon class="me-1">note</mat-icon>
+        Notas
+        @if (notes().length > 0) {
+          <span class="badge bg-secondary ms-1">{{ notes().length }}</span>
+        }
+      </button>
+    </li>
+    <li class="nav-item">
+      <button
+        type="button"
+        class="nav-link"
+        [class.active]="activeTab() === 'files'"
+        (click)="setActiveTab('files')"
+      >
+        <mat-icon class="me-1">attach_file</mat-icon>
+        Archivos
+        @if (files().length > 0) {
+          <span class="badge bg-secondary ms-1">{{ files().length }}</span>
+        }
+      </button>
+    </li>
+  </ul>
+
+  <!-- Error Alert -->
+  @if (error()) {
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <mat-icon class="me-2">error</mat-icon>
+      {{ error() }}
+      <button type="button" class="btn-close" (click)="error.set(null)"></button>
+    </div>
+  }
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <!-- Tab Notas -->
+    @if (activeTab() === 'notes') {
+      <div class="tab-pane active">
+        <div class="tab-header mb-3">
+          <button class="btn btn-primary btn-sm" (click)="openNoteForm()">
+            <mat-icon class="me-1">add</mat-icon>
+            Nueva Nota
+          </button>
+        </div>
+
+        @if (loading()) {
+          <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        }
+
+        @if (showNoteForm()) {
+          <div class="card note-form-card mb-3">
+            <div class="card-header">
+              <h6 class="mb-0">{{ editingNote() ? 'Editar Nota' : 'Nueva Nota' }}</h6>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="noteForm" (ngSubmit)="saveNote()">
+                <div class="mb-3">
+                  <label class="form-label">Título</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="title"
+                    maxlength="255"
+                    [class.is-invalid]="noteForm.get('title')?.invalid && noteForm.get('title')?.touched"
+                  />
+                  @if (noteForm.get('title')?.hasError('required') && noteForm.get('title')?.touched) {
+                    <div class="invalid-feedback">El título es requerido</div>
+                  }
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Contenido</label>
+                  <textarea
+                    class="form-control"
+                    formControlName="body"
+                    rows="4"
+                    [class.is-invalid]="noteForm.get('body')?.invalid && noteForm.get('body')?.touched"
+                  ></textarea>
+                  @if (noteForm.get('body')?.hasError('required') && noteForm.get('body')?.touched) {
+                    <div class="invalid-feedback">El contenido es requerido</div>
+                  }
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                  <button type="button" class="btn btn-secondary btn-sm" (click)="closeNoteForm()">
+                    Cancelar
+                  </button>
+                  <button type="submit" class="btn btn-primary btn-sm" [disabled]="noteForm.invalid">
+                    {{ editingNote() ? 'Actualizar' : 'Crear' }}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        }
+
+        <div class="notes-list">
+          @for (note of notes(); track note.id) {
+            <div class="card note-card mb-2">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h6 class="note-title mb-1">{{ note.title }}</h6>
+                    <small class="text-muted">
+                      {{ note.created_by_name }} - {{ note.created_date | date:'short' }}
+                    </small>
+                  </div>
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-link btn-sm text-secondary p-0"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                    >
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li>
+                        <button class="dropdown-item" (click)="openNoteForm(note)">
+                          <mat-icon class="me-2">edit</mat-icon>
+                          Editar
+                        </button>
+                      </li>
+                      <li>
+                        <button class="dropdown-item text-danger" (click)="archiveNote(note)">
+                          <mat-icon class="me-2">archive</mat-icon>
+                          Archivar
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <p class="note-body mt-2 mb-0">{{ note.body }}</p>
+              </div>
+            </div>
+          } @empty {
+            @if (!loading() && !showNoteForm()) {
+              <div class="empty-state text-center py-5">
+                <mat-icon class="text-muted mb-2">note</mat-icon>
+                <p class="text-muted mb-0">No hay notas registradas</p>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Tab Archivos -->
+    @if (activeTab() === 'files') {
+      <div class="tab-pane active">
+        <div class="tab-header mb-3 d-flex align-items-center gap-2">
+          <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
+          <button class="btn btn-primary btn-sm" (click)="fileInput.click()">
+            <mat-icon class="me-1">upload_file</mat-icon>
+            Subir Archivo
+          </button>
+          <span class="text-muted small">Máx 10MB</span>
+        </div>
+
+        @if (uploadProgress() !== null) {
+          <div class="upload-progress mb-3">
+            <div class="progress">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                [style.width.%]="uploadProgress()"
+                [attr.aria-valuenow]="uploadProgress()"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                {{ uploadProgress() }}%
+              </div>
+            </div>
+          </div>
+        }
+
+        <div class="files-list">
+          @for (file of files(); track file.id) {
+            <div class="card file-card mb-2">
+              <div class="card-body d-flex align-items-center gap-3 py-2">
+                <div class="file-icon">
+                  <mat-icon>{{ getFileIcon(file.mime_type) }}</mat-icon>
+                </div>
+                <div class="file-info flex-grow-1 min-width-0">
+                  <div class="file-name text-truncate">{{ file.original_name }}</div>
+                  <small class="text-muted">
+                    {{ formatFileSize(file.file_size) }} - {{ file.created_by_name }} -
+                    {{ file.created_date | date:'short' }}
+                  </small>
+                </div>
+                <div class="file-actions d-flex gap-1">
+                  <button
+                    class="btn btn-link btn-sm text-secondary p-1"
+                    title="Descargar"
+                    (click)="downloadFile(file)"
+                  >
+                    <mat-icon>download</mat-icon>
+                  </button>
+                  <button
+                    class="btn btn-link btn-sm text-danger p-1"
+                    title="Archivar"
+                    (click)="archiveFile(file)"
+                  >
+                    <mat-icon>archive</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          } @empty {
+            <div class="empty-state text-center py-5">
+              <mat-icon class="text-muted mb-2">folder_open</mat-icon>
+              <p class="text-muted mb-0">No hay archivos registrados</p>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

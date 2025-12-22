@@ -22,6 +22,8 @@ import preInventoryRoutes from './routes/pre-inventory.routes';
 import purchaseOrdersRoutes from './routes/purchase-orders.routes';
 import suppliersRoutes from './routes/suppliers.routes';
 import fuelRequisitionsRoutes from './routes/fuel-requisitions.routes';
+import chatterRoutes from './routes/chatter.routes';
+import historyRoutes from './routes/history.routes';
 
 const app: Application = express();
 
@@ -61,6 +63,8 @@ app.use('/api/pre-inventory', preInventoryRoutes);
 app.use('/api/purchase-orders', purchaseOrdersRoutes);
 app.use('/api/suppliers', suppliersRoutes);
 app.use('/api/fuel-requisitions', fuelRequisitionsRoutes);
+app.use('/api/chatter', chatterRoutes);
+app.use('/api/history', historyRoutes);
 
 // Error handling
 app.use(notFound);
@@ -94,6 +98,8 @@ const startServer = async () => {
       console.log(`  ✓ Purchase Orders (/api/purchase-orders)`);
       console.log(`  ✓ Suppliers (/api/suppliers)`);
       console.log(`  ✓ Fuel Requisitions (/api/fuel-requisitions)`);
+      console.log(`  ✓ Chatter (/api/chatter)`);
+      console.log(`  ✓ History (/api/history)`);
       console.log(`  ✓ ML Analysis (/api/ml-analysis)`);
       console.log(`========================================`);
     });

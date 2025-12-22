@@ -1,0 +1,63 @@
+<div class="chatter-form">
+  <div class="form-container">
+    <textarea
+      #textarea
+      class="form-control"
+      placeholder="Escribe un comentario... Usa @ para mencionar usuarios"
+      rows="3"
+      [value]="body()"
+      (input)="onInput($event)"
+      (keydown)="onKeydown($event)"
+    ></textarea>
+
+    <!-- Mention Autocomplete -->
+    @if (showMentions()) {
+      <app-mention-autocomplete
+        [search]="mentionSearch()"
+        [style.top.px]="mentionPosition().top"
+        [style.left.px]="mentionPosition().left"
+        (selectUser)="onMentionSelect($event)"
+        (close)="onMentionClose()"
+      />
+    }
+  </div>
+
+  <!-- Selected Mentions Pills -->
+  @if (selectedMentions().length > 0) {
+    <div class="mentions-pills mt-2">
+      @for (mention of selectedMentions(); track mention.id) {
+        <span class="badge bg-primary me-1">
+          @{{ mention.name }}
+        </span>
+      }
+    </div>
+  }
+
+  <!-- Form Actions -->
+  <div class="form-actions mt-2 d-flex justify-content-between align-items-center">
+    <small class="text-muted">Ctrl + Enter para enviar</small>
+    <div class="d-flex gap-2">
+      @if (editingPost()) {
+        <button
+          type="button"
+          class="btn btn-secondary btn-sm"
+          (click)="onCancel()"
+          [disabled]="submitting()"
+        >
+          Cancelar
+        </button>
+      }
+      <button
+        type="button"
+        class="btn btn-primary btn-sm"
+        (click)="submit()"
+        [disabled]="!body().trim() || submitting()"
+      >
+        @if (submitting()) {
+          <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+        }
+        {{ editingPost() ? 'Actualizar' : 'Comentar' }}
+      </button>
+    </div>
+  </div>
+</div>

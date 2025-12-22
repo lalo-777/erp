@@ -1,0 +1,91 @@
+<div class="card" [class]="cardClass()">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      @for (tab of tabs(); track tab.id) {
+        <li class="nav-item">
+          <button
+            type="button"
+            class="nav-link"
+            [class.active]="currentTabId() === tab.id"
+            (click)="onTabClick(tab.id)"
+          >
+            @if (tab.icon) {
+              <mat-icon class="me-1">{{ tab.icon }}</mat-icon>
+            }
+            {{ tab.label }}
+          </button>
+        </li>
+      }
+    </ul>
+  </div>
+  <div class="card-body">
+    <!-- Details Tab -->
+    @if (currentTabId() === 'details') {
+      <ng-content select="[tab-details]" />
+    }
+    <!-- History Tab -->
+    @if (currentTabId() === 'history') {
+      <ng-content select="[tab-history]" />
+    }
+    <!-- Chatter Tab -->
+    @if (currentTabId() === 'chatter') {
+      <ng-content select="[tab-chatter]" />
+    }
+    <!-- Notes & Files Tab -->
+    @if (currentTabId() === 'notes-files') {
+      <ng-content select="[tab-notes-files]" />
+    }
+    <!-- Items Tab (for invoices, purchase orders, etc.) -->
+    @if (currentTabId() === 'items') {
+      <ng-content select="[tab-items]" />
+    }
+    <!-- Payments Tab -->
+    @if (currentTabId() === 'payments') {
+      <ng-content select="[tab-payments]" />
+    }
+    <!-- Materials Tab -->
+    @if (currentTabId() === 'materials') {
+      <ng-content select="[tab-materials]" />
+    }
+    <!-- Labor Tab -->
+    @if (currentTabId() === 'labor') {
+      <ng-content select="[tab-labor]" />
+    }
+    <!-- Invoices Tab -->
+    @if (currentTabId() === 'invoices') {
+      <ng-content select="[tab-invoices]" />
+    }
+    <!-- Projects Tab -->
+    @if (currentTabId() === 'projects') {
+      <ng-content select="[tab-projects]" />
+    }
+    <!-- Orders Tab (for suppliers) -->
+    @if (currentTabId() === 'orders') {
+      <ng-content select="[tab-orders]" />
+    }
+    <!-- Stock Tab (for warehouse) -->
+    @if (currentTabId() === 'stock') {
+      <ng-content select="[tab-stock]" />
+    }
+    <!-- Transactions Tab -->
+    @if (currentTabId() === 'transactions') {
+      <ng-content select="[tab-transactions]" />
+    }
+    <!-- Related Tab -->
+    @if (currentTabId() === 'related') {
+      <ng-content select="[tab-related]" />
+    }
+    <!-- Activity Tab -->
+    @if (currentTabId() === 'activity') {
+      <ng-content select="[tab-activity]" />
+    }
+    <!-- Summary Tab -->
+    @if (currentTabId() === 'summary') {
+      <ng-content select="[tab-summary]" />
+    }
+    <!-- Custom Tab (for any custom content) -->
+    @if (currentTabId() === 'custom') {
+      <ng-content select="[tab-custom]" />
+    }
+  </div>
+</div>

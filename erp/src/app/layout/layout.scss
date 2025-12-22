@@ -4,8 +4,8 @@ $sidebar-width-collapsed: 60px;
 $sidebar-transition-duration: 0.3s;
 $navbar-height: 46px;
 
-$middle-blue: #5494f3;
-$soft-blue: #0D6EFD;
+$middle-blue: #347a94;
+$soft-blue: #013D52;
 
 // Contenedor principal del layout
 .layout-container {
@@ -267,29 +267,36 @@ $soft-blue: #0D6EFD;
   overflow-y: auto;
   background-image: linear-gradient(to bottom, #ffffff 85%, $middle-blue 100%);
   border-radius: 0 0.5rem 0 0;
-  position: relative; // Por defecto: en flujo normal
-  width: $sidebar-width-collapsed; // Por defecto: ancho colapsado
-  z-index: 1;
+  // Por defecto: posicion absoluta para flotar sobre el contenido
+  // El body-content tiene margin-left que reserva el espacio
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: $sidebar-width-collapsed;
+  z-index: 1050;
   display: flex;
   flex-direction: column;
 
-  // Estado fijado y expandido
-  &.pinned:not(.collapsed) {
-    width: $sidebar-width-expanded;
+  // Estado fijado (pinned): entra en el flujo normal del layout
+  &.pinned {
+    position: relative;
+    height: auto;
+    z-index: 1;
+    box-shadow: none;
+
+    &:not(.collapsed) {
+      width: $sidebar-width-expanded;
+    }
   }
 
-  // Estado expandido sin fijar (modo hover - overlay)
+  // Estado expandido sin fijar (modo hover - overlay/fantasma)
   &:not(.pinned):not(.collapsed) {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
     width: $sidebar-width-expanded;
-    z-index: 1050; // Mayor que navbar (1000) para mostrar botones de toggle
     box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2);
   }
 
-  // Estilos del estado colapsado
+  // Estilos del estado colapsado (aplica a ambos: pinned y no pinned)
   &.collapsed {
     width: $sidebar-width-collapsed;
 
@@ -385,9 +392,12 @@ $soft-blue: #0D6EFD;
   display: flex;
   border-radius: 1rem 1rem 0 0;
   flex-direction: column;
-  margin-left: 3px;
+  // Reserva espacio para el sidebar colapsado (60px + 3px gap)
+  // Esto evita que el body se re-renderice durante el hover del sidebar fantasma
+  margin-left: calc(#{$sidebar-width-collapsed} + 3px);
   flex-grow: 1;
   width: 100%;
+  transition: margin-left $sidebar-transition-duration ease-in-out;
 
   .container-fluid {
     flex-grow: 1;
@@ -398,23 +408,30 @@ $soft-blue: #0D6EFD;
   }
 }
 
-// Ajustes del área de contenido principal
+// Ajustes del area de contenido principal
 .main-content {
   position: relative;
 
-  // Cuando el sidebar está fijado, ajusta el margen del contenido
+  // Cuando el sidebar esta fijado (pinned), entra en el flujo normal
+  // El body-content solo necesita el gap de 3px porque el sidebar ocupa su espacio
+
+  // Pinned y expandido: sidebar ocupa 230px en el flujo
   &:has(.sidebar.pinned:not(.collapsed)) {
     .body-content {
       margin-left: 3px;
     }
   }
 
-  // Cuando el sidebar está fijado y colapsado
+  // Pinned y colapsado: sidebar ocupa 60px en el flujo
   &:has(.sidebar.pinned.collapsed) {
     .body-content {
       margin-left: 3px;
     }
   }
+
+  // Nota: Cuando el sidebar NO esta pinned (estados collapsed y hover/fantasma),
+  // el sidebar usa position: absolute y no afecta el flujo.
+  // El body-content mantiene su margin-left base de 63px que reserva el espacio visual.
 }
 
 // Ajustes responsive para la barra de navegación

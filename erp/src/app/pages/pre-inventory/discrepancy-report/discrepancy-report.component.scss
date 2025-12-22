@@ -1,7 +1,17 @@
+// ===========================================
+// Discrepancy Report - CRM II Visual Styles
+// ===========================================
+
+// Card Styles with hover-lift effect
 .card {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
 
   &.border-primary {
     border-left: 4px solid var(--bs-primary);
@@ -19,12 +29,226 @@
     border-left: 4px solid var(--bs-success);
   }
 
+  &.border-info {
+    border-left: 4px solid var(--bs-info);
+  }
+
   &.bg-light {
     background-color: #f8f9fa !important;
     border: 1px solid #dee2e6;
   }
 }
 
+// Card header styles
+.card-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 1rem 1.25rem;
+
+  h5 {
+    display: flex;
+    align-items: center;
+    color: var(--text-primary, #212529);
+
+    mat-icon {
+      color: var(--color-middle-blue, #347a94);
+    }
+  }
+}
+
+// Stats card content
+.card-body {
+  h6.text-muted {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  h3, h4 {
+    font-weight: 700;
+    color: var(--text-primary, #212529);
+  }
+
+  .text-primary mat-icon,
+  .text-info mat-icon,
+  .text-success mat-icon,
+  .text-danger mat-icon,
+  .text-warning mat-icon {
+    font-size: 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    opacity: 0.9;
+  }
+}
+
+// Table Styles
+.table-responsive {
+  border-radius: 0.5rem;
+  overflow: hidden;
+
+  table {
+    margin-bottom: 0;
+
+    th {
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary, #495057);
+      border-bottom: 2px solid #dee2e6;
+      padding: 1rem 0.75rem;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 0.875rem 0.75rem;
+      vertical-align: middle;
+    }
+
+    tbody tr {
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: rgba(52, 122, 148, 0.05);
+      }
+    }
+
+    // Row status colors
+    .table-success {
+      background-color: rgba(25, 135, 84, 0.1) !important;
+
+      &:hover {
+        background-color: rgba(25, 135, 84, 0.18) !important;
+      }
+    }
+
+    .table-danger {
+      background-color: rgba(220, 53, 69, 0.1) !important;
+
+      &:hover {
+        background-color: rgba(220, 53, 69, 0.18) !important;
+      }
+    }
+
+    tfoot {
+      font-weight: 600;
+
+      th, td {
+        padding: 1rem 0.75rem;
+        border-top: 2px solid #dee2e6;
+      }
+    }
+  }
+}
+
+// Form controls
 .form-check-label {
   user-select: none;
+  font-weight: 500;
+  color: var(--text-secondary, #495057);
+}
+
+.form-control,
+.form-select {
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+  &:focus {
+    border-color: var(--color-middle-blue, #347a94);
+    box-shadow: 0 0 0 0.2rem rgba(52, 122, 148, 0.25);
+  }
+}
+
+.form-label {
+  font-weight: 500;
+  color: var(--text-secondary, #495057);
+  margin-bottom: 0.375rem;
+}
+
+// Breadcrumb styling
+.breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin-bottom: 0.5rem;
+
+  .breadcrumb-item {
+    a {
+      color: var(--color-middle-blue, #347a94);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &.active {
+      color: var(--text-muted, #6c757d);
+    }
+  }
+}
+
+// Page header styling
+h2 {
+  display: flex;
+  align-items: center;
+  color: var(--text-primary, #212529);
+
+  mat-icon {
+    color: var(--color-middle-blue, #347a94);
+  }
+}
+
+// Badge styling
+.badge {
+  padding: 0.5em 0.75em;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+// Summary cards
+.summary-card {
+  text-align: center;
+  padding: 1.5rem;
+
+  .summary-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+  }
+
+  .summary-value {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .summary-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted, #6c757d);
+  }
+}
+
+// Filter section
+.filter-section {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid #e9ecef;
+  margin-bottom: 1.5rem;
+}
+
+// Button styling
+.btn {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
 }

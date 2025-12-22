@@ -68,3 +68,4 @@ export { PurchaseOrderItem } from './PurchaseOrderItem';
 // Support Models
 export { File } from './File';
 export { Note } from './Note';
+export { ChatterPost } from './ChatterPost';
